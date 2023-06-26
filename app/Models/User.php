@@ -43,4 +43,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'isAdmin',
+    ];
+
+    /**
+     * Get the value indicating whether the user is an admin.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute()
+    {
+        // Add your logic here to determine if the user is an admin.
+        // For example, you can check if the user has a specific role.
+        return $this->hasRole('admin');
+    }
 }

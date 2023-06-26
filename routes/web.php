@@ -24,9 +24,9 @@ Route::get('/', function () {
 
 // MIDDLEWARES
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'role:user'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'role:user'])->name('dashboard');
 
 // Route accessible for both User and Admin
 Route::middleware(['auth', 'role:user|admin'])->group(function () {
