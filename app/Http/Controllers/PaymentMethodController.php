@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+Use DataTables;
 Use View;
 Use Storage;
+Use DB;
+Use Validator;
+Use Illuminate\Support\Facades\Hash;
 
 class PaymentMethodController extends Controller
 {
@@ -14,11 +18,23 @@ class PaymentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pmethods = PaymentMethod::all();
+        // $pmethods = PaymentMethod::all();
         
-        return View::make('paymentmethods.index',compact('pmethods'));
+        // return View::make('paymentmethods.index',compact('pmethods'));
+
+        if ($request->ajax()) {
+            $data = PaymentMethod::select('id','methods')->get();
+            return DataTables::of($data)->addIndexColumn()
+            ->addColumn('action', function($data){
+                $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
+                $button .= '   <button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"> <i class="bi bi-backspace-reverse-fill"></i> Delete</button>';
+                return $button;
+            })
+            ->make(true);
+        }
+        return view('paymentmethods.index');
     }
 
     /**
@@ -28,7 +44,7 @@ class PaymentMethodController extends Controller
      */
     public function create()
     {
-        return View::make('paymentmethods.create');
+        //return View::make('paymentmethods.create');
     }
 
     /**
@@ -39,7 +55,24 @@ class PaymentMethodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'methods'    =>  'required'
+        );
+ 
+        $error = Validator::make($request->all(), $rules);
+ 
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+ 
+        $form_data = array(
+            'methods'        =>  $request->methods
+        );
+ 
+        PaymentMethod::create($form_data);
+ 
+        return response()->json(['success' => 'Payment Method Added Successfully.']);
     }
 
     /**
@@ -61,8 +94,14 @@ class PaymentMethodController extends Controller
      */
     public function edit($id)
     {
-        $pmethods =  PaymentMethod::find($id);
-        return view('paymentmethods.edit', compact('pmethods'));
+        // $pmethods =  PaymentMethod::find($id);
+        // return view('paymentmethods.edit', compact('pmethods'));
+
+        if(request()->ajax())
+        {
+            $data = PaymentMethod::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
     }
 
     /**
@@ -72,9 +111,26 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $rules = array(
+            'methods'        =>  'required'
+        );
+ 
+        $error = Validator::make($request->all(), $rules);
+ 
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        $form_data = array(
+            'methods'    =>  $request->methods
+        );
+ 
+        PaymentMethod::whereId($request->hidden_id)->update($form_data);
+ 
+        return response()->json(['success' => 'Data is successfully updated']);
+    
     }
 
     /**
@@ -85,6 +141,7 @@ class PaymentMethodController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = PaymentMethod::findOrFail($id);
+        $data->delete();
     }
 }
