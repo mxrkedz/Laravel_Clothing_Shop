@@ -23,6 +23,9 @@ Route::get('/', function () {
 });
 
 // MIDDLEWARES
+
+
+
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'role:user'])->name('dashboard');
