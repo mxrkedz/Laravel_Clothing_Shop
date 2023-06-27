@@ -32,7 +32,6 @@ Route::middleware(['auth', 'role:user|admin'])->group(function () {
         Route::get('/home', 'Index');
     });
 });
-
 // Route accessible for users with only Admin role
 Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
