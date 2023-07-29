@@ -94,7 +94,9 @@
             {data: 'id', name: 'id'},
             {data: 'methods', name: 'methods'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
+        ],
+        dom: 'lBfrtip',
+        buttons: ['excel'],
     });
     $('#create_record').click(function(){
         $('.modal-title').text('Add New Record');
@@ -128,6 +130,10 @@
             success: function(data) {
                 console.log('success: '+data);
                 var html = '';
+                // $('#formModal').modal('hide');
+                $('#sample_form')[0].reset();
+                table.ajax.reload(null, false);
+
                 if(data.errors)
                 {
                     html = '<div class="alert alert-danger">';
