@@ -100,11 +100,11 @@
             <li class="menu-item parent-menu">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="DataTable">DataTables</div>
+                <div data-i18n="DataTable">Data Tables</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/categories" class="menu-link @if(isset($active_menu) && $active_menu == 'categories') active @endif">
+                  <a href="/categories/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'categories') active @endif">
                     <div data-i18n="categories">Categories</div>
                   </a>
                 </li>
