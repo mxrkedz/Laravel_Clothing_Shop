@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('customer.dashboard');
 });
 
 // MIDDLEWARES
@@ -42,17 +41,19 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/admin','AdminIndex');
         //DataTables Routes
         //Users
-        Route::get('users', [UserController::class, 'Index'])->name('users.index');
-        Route::post('users/store', [UserController::class, 'store'])->name('users.store');
-        Route::get('users/edit/{id}/', [UserController::class, 'edit']);
-        Route::post('users/update', [UserController::class, 'update'])->name('users.update');
-        Route::get('users/destroy/{id}/', [UserController::class, 'destroy']);
+        // Route::get('users', [UserController::class, 'Index'])->name('users.index');
+        // Route::post('users/store', [UserController::class, 'store'])->name('users.store');
+        // Route::get('users/edit/{id}/', [UserController::class, 'edit']);
+        // Route::post('users/update', [UserController::class, 'update'])->name('users.update');
+        // Route::get('users/destroy/{id}/', [UserController::class, 'destroy']);
         //Payment Methods
-        Route::get('paymentmethods', [PaymentMethodController::class, 'Index'])->name('paymentmethods.index');
-        Route::post('paymentmethods/store', [PaymentMethodController::class, 'store'])->name('paymentmethods.store');
-        Route::get('paymentmethods/edit/{id}/', [PaymentMethodController::class, 'edit']);
-        Route::post('paymentmethods/update', [PaymentMethodController::class, 'update'])->name('paymentmethods.update');
-        Route::get('paymentmethods/destroy/{id}/', [PaymentMethodController::class, 'destroy']);
+        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store'])->name('paymentmethods.store');
+        Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit']);
+        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update'])->name('paymentmethods.update');
+        Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy']);
+        Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
+        Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
+        
         //CRUD Routes
         Route::resource("category", CategoryController::class);
         // Route::resource("paymentmethods", PaymentMethodController::class);

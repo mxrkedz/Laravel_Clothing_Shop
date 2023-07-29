@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shipping', function (Blueprint $table) {
-            $table->id();
-            $table->text('ship_name');
-            $table->timestamps();
+        Schema::table('customers', function (Blueprint $table) {
+            $table->bigInteger('user_id')->unsigned()->index()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipping');
+        Schema::table('customers', function (Blueprint $table) {
+            //
+        });
     }
 };

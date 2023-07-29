@@ -16,10 +16,11 @@
     <div class="row">
         <div class="col-12 table-responsive">
         <div align="left">
-            <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start ">Create New</button>
-            <br></br>
+            <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
+            <a href="{{url('paymentmethods/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
-        <br />
+        <br>
+
             <table class="table table-striped table-bordered payment_methods_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>
                     <tr> <!--Change to desired datas to display-->
@@ -89,14 +90,12 @@
         var table = $('.payment_methods_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
         processing: true,
         serverSide: true,
-        ajax: "{{ route('paymentmethods.index') }}", //Change route index
+        ajax: "{{ route('paymentmethods.datatable') }}", //Change route index
         columns: [
             {data: 'id', name: 'id'},
             {data: 'methods', name: 'methods'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        dom: 'lBfrtip',
-        buttons: ['excel'],
+        ]
     });
     $('#create_record').click(function(){
         $('.modal-title').text('Add New Record');
@@ -164,7 +163,7 @@
         $('#form_result').html('');
 
         $.ajax({
-            url :"/paymentmethods/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+            url :"/paymentmethods/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType:"json",
             success:function(data)
@@ -192,7 +191,7 @@
 
     $('#ok_button').click(function(){
         $.ajax({
-            url:"paymentmethods/destroy/"+methods_id,
+            url:"/paymentmethods/datatables/destroy/"+methods_id,
             beforeSend:function(){
                 $('#ok_button').text('Deleting...');
             },
@@ -202,6 +201,8 @@
                 $('#confirmModal').modal('hide');
                 $('#payment_methods_table').DataTable().ajax.reload();
                 //alert('Data Deleted');
+                $('#sample_form')[0].reset();
+                table.ajax.reload(null, false);
                 }, 2000);
             }
         })

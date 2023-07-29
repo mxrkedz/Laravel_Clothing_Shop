@@ -86,7 +86,7 @@
             <li class="menu-item parent-menu">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bxs-edit-alt"></i>
-                <div data-i18n="Manage">Manage</div>
+                <div data-i18n="Manage">Manage</div> <!-- CRUD -->
               </a>
 
               <ul class="menu-sub">
@@ -96,17 +96,51 @@
                   </a>
                 </li>
               </ul>
+              <!-- Manage DataTables-->
+            <li class="menu-item parent-menu">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="DataTable">DataTables</div>
+              </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods" class="menu-link @if(isset($active_menu) && $active_menu == 'paymentmethods') active @endif">
-                    <div data-i18n="paymentmethods">Payment Methods</div>
+                  <a href="/categories" class="menu-link @if(isset($active_menu) && $active_menu == 'categories') active @endif">
+                    <div data-i18n="categories">Categories</div>
                   </a>
                 </li>
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/users" class="menu-link @if(isset($active_menu) && $active_menu == 'category') active @endif">
-                    <div data-i18n="Users">Users</div>
+                  <a href="/customers" class="menu-link @if(isset($active_menu) && $active_menu == 'customers') active @endif">
+                    <div data-i18n="customers">Customers</div>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/items" class="menu-link @if(isset($active_menu) && $active_menu == 'items') active @endif">
+                    <div data-i18n="items">Items</div>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/shipping" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
+                    <div data-i18n="shipping">Shipping</div>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/suppliers" class="menu-link @if(isset($active_menu) && $active_menu == 'suppliers') active @endif">
+                    <div data-i18n="suppliers">Suppliers</div>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/paymentmethods/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'paymentmethods') active @endif">
+                    <div data-i18n="paymentmethods">Payment Methods</div>
                   </a>
                 </li>
               </ul>
