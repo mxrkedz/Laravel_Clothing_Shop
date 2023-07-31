@@ -10,21 +10,22 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4">Manage <span class="text-muted fw-light">/ Payment Methods</span></h4> <!--Change "Payment Methods" -->
+<h4 class="fw-bold py-3 mb-4">Manage <span class="text-muted fw-light">/ Categories</span></h4> <!--Change "Payment Methods" -->
     <div class="card">
         <div class="card-body">   
     <div class="row">
         <div class="col-12 table-responsive">
         <div align="left">
-            <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start ">Create New</button>
-            <br></br>
+            <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
+            <a href="{{url('category/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
-        <br />
-            <table class="table table-striped table-bordered payment_methods_datatable"> <!--Change "payment_methods_datatable" -->
+        <br>
+
+            <table class="table table-striped table-bordered category_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>
                     <tr> <!--Change to desired datas to display-->
                         <th>ID</th>
-                        <th>Payment Method</th>
+                        <th>Name</th>
                         <th width="180px">Action</th>
                     </tr>
                 </thead>
@@ -44,8 +45,8 @@
             <div class="modal-body">
                 <span id="form_result"></span>
                 <div class="form-group">
-                    <label>Payment Method : </label>
-                    <input type="text" name="methods" id="methods" class="form-control" />
+                    <label>Category : </label>
+                    <input type="text" name="category_name" id="category_name" class="form-control" />
                 </div>
                 <input type="hidden" name="action" id="action" value="Add" />
                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -86,13 +87,13 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('.payment_methods_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
+        var table = $('.category_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
         processing: true,
         serverSide: true,
-        ajax: "{{ route('paymentmethods.index') }}", //Change route index
+        ajax: "{{ route('categorys.datatable') }}", //Change route index
         columns: [
             {data: 'id', name: 'id'},
-            {data: 'methods', name: 'methods'},
+            {data: 'category_name', name: 'category_name'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
@@ -111,12 +112,12 @@
 
         if($('#action').val() == 'Add')
         {
-            action_url = "{{ route('paymentmethods.store') }}";
+            action_url = "{{ route('categorys.store') }}";
         }
 
         if($('#action').val() == 'Edit')
         {
-            action_url = "{{ route('paymentmethods.update') }}";
+            action_url = "{{ route('categorys.update') }}";
         }
 
         $.ajax({
@@ -128,6 +129,10 @@
             success: function(data) {
                 console.log('success: '+data);
                 var html = '';
+                // $('#formModal').modal('hide');
+                $('#sample_form')[0].reset();
+                table.ajax.reload(null, false);
+
                 if(data.errors)
                 {
                     html = '<div class="alert alert-danger">';
@@ -141,7 +146,7 @@
                 {
                     html = '<div class="alert alert-success">' + data.success + '</div>';
                     $('#sample_form')[0].reset();
-                    $('#payment_methods_table').DataTable().ajax.reload(null, false);
+                    $('#category_datatable').DataTable().ajax.reload(null, false);
                 }
                 $('#form_result').html(html);
             },
@@ -158,13 +163,13 @@
         $('#form_result').html('');
 
         $.ajax({
-            url :"/paymentmethods/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+            url :"/category/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType:"json",
             success:function(data)
             {
                 console.log('success: '+data);
-                $('#methods').val(data.result.methods);
+                $('#category_name').val(data.result.category_name);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Update');
@@ -186,7 +191,7 @@
 
     $('#ok_button').click(function(){
         $.ajax({
-            url:"paymentmethods/destroy/"+methods_id,
+            url:"/category/datatables/destroy/"+methods_id,
             beforeSend:function(){
                 $('#ok_button').text('Deleting...');
             },
@@ -194,8 +199,10 @@
             {
                 setTimeout(function(){
                 $('#confirmModal').modal('hide');
-                $('#payment_methods_table').DataTable().ajax.reload();
+                $('#category_datatable').DataTable().ajax.reload();
                 //alert('Data Deleted');
+                $('#sample_form')[0].reset();
+                table.ajax.reload(null, false);
                 }, 2000);
             }
         })
