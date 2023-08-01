@@ -43,9 +43,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         //DataTables Routes
         //Payment Methods
         Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store');
-        Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit']);
+        Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit2']);
         Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update');
-        Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy']);
+        Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy2']);
         Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
         Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
 
