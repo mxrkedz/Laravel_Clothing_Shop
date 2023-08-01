@@ -17,7 +17,7 @@
         <div class="col-12 table-responsive">
         <div align="left">
             <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
-            <a href="{{url('category/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+            <a href="{{url('supplier/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
         <br>
 
@@ -49,8 +49,24 @@
             <div class="modal-body">
                 <span id="form_result"></span>
                 <div class="form-group">
-                    <label>Category : </label>
-                    <input type="text" name="category_name" id="category_name" class="form-control" />
+                    <label>Supplier Name : </label>
+                    <input type="text" name="sup_name" id="sup_name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Contact No. : </label>
+                    <input type="text" name="sup_name" id="sup_name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Address : </label>
+                    <input type="text" name="sup_address" id="sup_address" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Email : </label>
+                    <input type="text" name="sup_email" id="sup_email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Upload Image : </label>
+                    <input type="file"  id="img_path" name="img_path" accept='image/*' class="form-control">
                 </div>
                 <input type="hidden" name="action" id="action" value="Add" />
                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -120,12 +136,12 @@
 
         if($('#action').val() == 'Add')
         {
-            action_url = "{{ route('categorys.store') }}";
+            action_url = "{{ route('suppliers.store') }}";
         }
 
         if($('#action').val() == 'Edit')
         {
-            action_url = "{{ route('categorys.update') }}";
+            action_url = "{{ route('suppliers.update') }}";
         }
 
         $.ajax({
@@ -171,7 +187,7 @@
         $('#form_result').html('');
 
         $.ajax({
-            url :"/category/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+            url :"/supplier/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType:"json",
             success:function(data)
@@ -199,7 +215,7 @@
 
     $('#ok_button').click(function(){
         $.ajax({
-            url:"/category/datatables/destroy/"+methods_id,
+            url:"/supplier/datatables/destroy/"+methods_id,
             beforeSend:function(){
                 $('#ok_button').text('Deleting...');
             },

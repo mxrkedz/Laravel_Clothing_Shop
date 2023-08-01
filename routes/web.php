@@ -59,6 +59,11 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         //Suppliers
         Route::get('supplier/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+        Route::post('supplier/datatables/store', [SupplierController::class, 'store2'])->name('suppliers.store');
+        Route::get('supplier/datatables/edit/{id}/', [SupplierController::class, 'edit2']);
+        Route::post('supplier/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update');
+        Route::get('supplier/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
+        Route::get('supplier/export', [SupplierController::class, 'exportData']);
 
         //CRUD Routes
         Route::resource("category", CategoryController::class);
