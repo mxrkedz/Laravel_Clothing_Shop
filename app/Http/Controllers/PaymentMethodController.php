@@ -24,9 +24,9 @@ class PaymentMethodController extends Controller
      */
     public function index(Request $request)
     {
-        // $pmethods = PaymentMethod::all();
+        $pmethods = PaymentMethod::all();
         
-        // return View::make('paymentmethods.index',compact('pmethods'));
+        return View::make('paymentmethods.index',compact('pmethods'));
 
         // if ($request->ajax()) {
         //     $data = PaymentMethod::select('id','methods')->get();
@@ -67,7 +67,7 @@ class PaymentMethodController extends Controller
      */
     public function create()
     {
-        //return View::make('paymentmethods.create');
+        return View::make('paymentmethods.create');
     }
 
     /**
@@ -77,6 +77,25 @@ class PaymentMethodController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+        $rules = [
+            'methods' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'methods.required' => 'The :attribute field is required.',
+            'methods.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+        $pmethods = new PaymentMethod;
+
+        $pmethods->methods = $request->methods;
+
+        $pmethods->save();
+        return redirect()->route('paymentmethods.index')->with('added','Added!');
+    }
+    
+    public function store2(Request $request)
     {
         $rules = array(
             'methods'    =>  'required'
@@ -134,7 +153,30 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+
+     public function update(Request $request)
+    {
+        $rules = array(
+            'methods'        =>  'required'
+        );
+ 
+        $error = Validator::make($request->all(), $rules);
+ 
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        $form_data = array(
+            'methods'    =>  $request->methods
+        );
+ 
+        PaymentMethod::whereId($request->hidden_id)->update($form_data);
+ 
+        return response()->json(['success' => 'Data is successfully updated']);
+    
+    }
+
+    public function update2(Request $request)
     {
         $rules = array(
             'methods'        =>  'required'
