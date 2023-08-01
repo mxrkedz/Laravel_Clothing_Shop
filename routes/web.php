@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,7 @@ Route::middleware(['auth', 'role:user|admin'])->group(function () {
 // Route accessible for users with only Admin role
 Route::middleware(['auth','role:admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/admin','AdminIndex');
+        Route::get('/admin', 'AdminIndex');
         //DataTables Routes
         //Payment Methods
         Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store'])->name('paymentmethods.store');
@@ -55,7 +56,10 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('category/datatables/destroy/{id}/', [CategoryController::class, 'destroy2']);
         Route::get('categories/datatables', [CategoryController::class, 'datatable'])->name('categorys.datatable');
         Route::get('category/export', [CategoryController::class, 'exportData']);
-        
+
+        //Suppliers
+        Route::get('supplier/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+
         //CRUD Routes
         Route::resource("category", CategoryController::class);
         // Route::resource("paymentmethods", PaymentMethodController::class);
