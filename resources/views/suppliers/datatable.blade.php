@@ -54,7 +54,7 @@
                 </div>
                 <div class="form-group">
                     <label>Contact No. : </label>
-                    <input type="text" name="sup_name" id="sup_name" class="form-control" />
+                    <input type="text" name="sup_contact" id="sup_contact" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label>Address : </label>
@@ -126,7 +126,7 @@
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#form_result').html('');
- 
+        $('#sample_form')[0].reset();
         $('#formModal').modal('show');
     });
 
@@ -170,7 +170,7 @@
                 {
                     html = '<div class="alert alert-success">' + data.success + '</div>';
                     $('#sample_form')[0].reset();
-                    $('#category_datatable').DataTable().ajax.reload(null, false);
+                    $('#supplier_datatable').DataTable().ajax.reload(null, false);
                 }
                 $('#form_result').html(html);
             },

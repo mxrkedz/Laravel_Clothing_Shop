@@ -62,6 +62,40 @@ class SupplierController extends Controller
         // FOR CRUD
     }
 
+    public function store2(Request $request)
+    {
+        $rules = array(
+            'sup_name'    =>  'required',
+            'sup_contact'    =>  'required',
+            'sup_address'    =>  'required',
+            'sup_email'    =>  'required',
+            'img_path'    =>  'required|image|mimes:jpeg,png,jpg,gif'
+
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        $form_data = array(
+            'sup_name'        =>  $request->sup_name,
+            'sup_contact'        =>  $request->sup_contact,
+            'sup_address'        =>  $request->sup_address,
+            'sup_email'        =>  $request->sup_email,
+
+        );
+        if ($request->hasFile('img_path')) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('public/images', $fileName);
+            $form_data['img_path'] = '/storage/images/' . $fileName;
+        }
+
+        Supplier::create($form_data);
+
+        return response()->json(['success' => 'Supplier Added Successfully.']);
+    }
     /**
      * Display the specified resource.
      *
