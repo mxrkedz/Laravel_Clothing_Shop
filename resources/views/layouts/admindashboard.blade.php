@@ -96,6 +96,14 @@
                   </a>
                 </li>
               </ul>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/paymentmethods" class="menu-link @if(isset($active_menu) && $active_menu == 'paymenthmethod') active @endif">
+                    <div data-i18n="Payment Method">Payment Method</div>
+                  </a>
+                </li>
+              </ul>
               <!-- Manage DataTables-->
             <li class="menu-item parent-menu">
               <a href="javascript:void(0);" class="menu-link menu-toggle">

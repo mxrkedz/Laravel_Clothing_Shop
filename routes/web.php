@@ -41,9 +41,9 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/admin','AdminIndex');
         //DataTables Routes
         //Payment Methods
-        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store'])->name('paymentmethods.store');
+        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store');
         Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit']);
-        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update'])->name('paymentmethods.update');
+        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update');
         Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy']);
         Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
         Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
@@ -58,7 +58,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
         
         //CRUD Routes
         Route::resource("category", CategoryController::class);
-        // Route::resource("paymentmethods", PaymentMethodController::class);
+        Route::resource("paymentmethods", PaymentMethodController::class);
     });
 });
 
