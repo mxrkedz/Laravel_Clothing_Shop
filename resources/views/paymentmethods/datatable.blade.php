@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4">Manage <span class="text-muted fw-light">/ Payment Methods</span></h4> <!--Change "Payment Methods" -->
+<h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Payment Methods</span></h4> <!--Change "Payment Methods" -->
     <div class="card">
         <div class="card-body">   
     <div class="row">

@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Categories</span></h4> <!--Change "Payment Methods" -->
+<h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Suppliers</span></h4> <!--Change "Payment Methods" -->
     <div class="card">
         <div class="card-body">   
     <div class="row">
@@ -21,11 +21,15 @@
         </div>
         <br>
 
-            <table class="table table-striped table-bordered category_datatable"> <!--Change "payment_methods_datatable" -->
+            <table class="table table-striped table-bordered supplier_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>
                     <tr> <!--Change to desired datas to display-->
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Image</th>
                         <th width="180px">Action</th>
                     </tr>
                 </thead>
@@ -87,13 +91,17 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('.category_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
+        var table = $('.supplier_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
         processing: true,
         serverSide: true,
-        ajax: "{{ route('categorys.datatable') }}", //Change route index
+        ajax: "{{ route('suppliers.datatable') }}", //Change route index
         columns: [
             {data: 'id', name: 'id'},
-            {data: 'category_name', name: 'category_name'},
+            {data: 'sup_name', name: 'sup_name'},
+            {data: 'sup_contact', name: 'sup_contact'},
+            {data: 'sup_address', name: 'sup_address'},
+            {data: 'sup_email', name: 'sup_email'},
+            {data: 'img_path', name: 'img_path'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
