@@ -136,9 +136,11 @@ class PaymentMethodController extends Controller
      */
     public function edit($id)
     {
-        // $pmethods =  PaymentMethod::find($id);
-        // return view('paymentmethods.edit', compact('pmethods'));
-
+        $pmethods =  PaymentMethod::find($id);
+        return view('paymentmethods.edit', compact('pmethods'));
+    }
+    public function edit2($id)
+    {
         if(request()->ajax())
         {
             $data = PaymentMethod::findOrFail($id);
@@ -154,26 +156,28 @@ class PaymentMethodController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function update(Request $request)
+     public function update(Request $request, $id)
     {
-        $rules = array(
-            'methods'        =>  'required'
-        );
+        $rules = [
+            'methods' => 'required|max:255|min:3',
+        ];
+        $messages = [
+            'methods.required' => 'Please enter payment method name.',
+            
+        ];
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            $pmethods = PaymentMethod::find($id);
+
+        $pmethods->methods = $request->methods;
  
-        $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
-            return response()->json(['errors' => $error->errors()->all()]);
+        $pmethods->save();
+          
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
-        $form_data = array(
-            'methods'    =>  $request->methods
-        );
- 
-        PaymentMethod::whereId($request->hidden_id)->update($form_data);
- 
-        return response()->json(['success' => 'Data is successfully updated']);
-    
+        
+                return redirect()->route('paymentmethods.index')->with('updated','Updated!');
     }
 
     public function update2(Request $request)
@@ -204,7 +208,14 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+     public function destroy($id)
+    {
+        PaymentMethod::destroy($id);
+       return back()->with('deleted','Deleted!');
+    }
+
+    public function destroy2($id)
     {
         $data = PaymentMethod::findOrFail($id);
         $data->delete();
