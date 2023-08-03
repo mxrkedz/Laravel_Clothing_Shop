@@ -24,7 +24,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // FOR CRUD
+        $items = Item::all();
+        return View::make('items.index',compact('items'));
+
     }
     public function datatable(Request $request)
     {
@@ -48,7 +50,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        // FOR CRUD
+        return View::make('items.create');
     }
 
     /**
@@ -59,7 +61,27 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        // FOR CRUD
+        $rules = [
+            'item_name' => 'required|min:3',
+            'sellprice' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'item_name.required' => 'The :attribute field is required.',
+            'item_name.min' => 'Minimum of 3 characters please',
+            'sellprice.required' => 'The :attribute field is required.',
+            'sellprice.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+
+        $items = new Item;
+
+        $items->item_name = $request->item_name;
+        $items->sellprice = $request->sellprice;
+
+        $items->save();
+        return redirect()->route('items.index')->with('added','Added!');
+  
     }
 
     /**

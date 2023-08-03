@@ -104,6 +104,15 @@
                   </a>
                 </li>
               </ul>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/items" class="menu-link @if(isset($active_menu) && $active_menu == 'item') active @endif">
+                    <div data-i18n="Items">Items</div>
+                  </a>
+                </li>
+              </ul>
+
               <!-- Manage DataTables-->
             <li class="menu-item parent-menu">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
