@@ -99,8 +99,8 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods" class="menu-link @if(isset($active_menu) && $active_menu == 'paymenthmethod') active @endif">
-                    <div data-i18n="Payment Method">Payment Method</div>
+                  <a href="/paymentmethods/manage" class="menu-link @if(isset($active_menu) && $active_menu == 'test') active @endif">
+                    <div data-i18n="payment">Payment Method</div>
                   </a>
                 </li>
               </ul>
@@ -140,14 +140,14 @@
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/supplier/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'suppliers') active @endif">
+                  <a href="/suppliers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'suppliers') active @endif">
                     <div data-i18n="suppliers">Suppliers</div>
                   </a>
                 </li>
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'paymentmethods') active @endif">
+                  <a href="/paymentmethods/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'paymentmethods/datatables') active @endif">
                     <div data-i18n="paymentmethods">Payment Methods</div>
                   </a>
                 </li>

@@ -42,11 +42,11 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/admin', 'AdminIndex');
         //DataTables Routes
         //Payment Methods
-        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store');
+        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store2');
         Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit2']);
-        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update');
+        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update2');
         Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy2']);
-        Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
+        Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable2');
         Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
 
         //Categories
@@ -58,16 +58,24 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('category/export', [CategoryController::class, 'exportData']);
 
         //Suppliers
-        Route::get('supplier/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
-        Route::post('supplier/datatables/store', [SupplierController::class, 'store2'])->name('suppliers.store');
-        Route::get('supplier/datatables/edit/{id}/', [SupplierController::class, 'edit2']);
-        Route::post('supplier/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update');
-        Route::get('supplier/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
-        Route::get('supplier/export', [SupplierController::class, 'exportData']);
+        Route::get('suppliers/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+        Route::post('suppliers/datatables/store', [SupplierController::class, 'store2'])->name('suppliers.store2');
+        Route::get('suppliers/datatables/edit/{id}/', [SupplierController::class, 'edit2']);
+        Route::post('suppliers/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update2');
+        Route::get('suppliers/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
+        Route::get('suppliers/export', [SupplierController::class, 'exportData']);
 
         //CRUD Routes
         Route::resource("category", CategoryController::class);
-        Route::resource("paymentmethods", PaymentMethodController::class);
+        Route::get('paymentmethods/manage', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
+        Route::get('paymentmethods/create', [PaymentMethodController::class, 'create'])->name('paymentmethods.create');
+        Route::post('paymentmethods/store', [PaymentMethodController::class, 'store'])->name('paymentmethods.store');
+        Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'edit'])->name('paymentmethods.edit');
+        Route::put('paymentmethods/update/{id}', [PaymentMethodController::class, 'update'])->name('paymentmethods.update');
+        Route::delete('paymentmethods/destroy{id}', [PaymentMethodController::class, 'destroy'])->name('paymentmethods.destroy');
+
+
+
     });
 });
 
