@@ -36,6 +36,9 @@ Route::get('/', function () {
 Route::middleware(['auth', 'role:user|admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/home', 'Index');
+        Route::get('/womens', function () {
+            return view('customer.women');
+        });
     });
 });
 // Route accessible for users with only Admin role
