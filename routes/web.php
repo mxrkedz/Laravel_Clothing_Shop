@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ShipperController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +65,14 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('suppliers/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update2');
         Route::get('suppliers/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
         Route::get('suppliers/export', [SupplierController::class, 'exportData']);
+
+        //Shippings
+        Route::get('shippers/datatables', [ShipperController::class, 'datatable'])->name('shippers.datatable');
+        Route::post('shippers/datatables/store', [ShipperController::class, 'store2'])->name('shippers.store2');
+        Route::get('shippers/datatables/edit/{id}/', [ShipperController::class, 'edit2']);
+        Route::post('shippers/datatables/update', [ShipperController::class, 'update2'])->name('shippers.update2');
+        Route::get('shippers/datatables/destroy/{id}/', [ShipperController::class, 'destroy2']);
+        Route::get('shippers/export', [ShipperController::class, 'exportData']);
 
         //CRUD Routes
         Route::resource("category", CategoryController::class);
