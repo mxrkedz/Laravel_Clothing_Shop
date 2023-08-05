@@ -185,7 +185,7 @@
                     $('#sample_form')[0].reset();
                     $('#supplier_datatable').DataTable().ajax.reload(null, false);
                 }
-                $('#form_result').html(html);
+                $('#form_result').html(html);//test
             },
             error: function(data) {
                 var errors = data.responseJSON;
