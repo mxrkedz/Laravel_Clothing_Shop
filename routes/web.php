@@ -7,6 +7,7 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,6 +74,22 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::post('shippers/datatables/update', [ShipperController::class, 'update2'])->name('shippers.update2');
         Route::get('shippers/datatables/destroy/{id}/', [ShipperController::class, 'destroy2']);
         Route::get('shippers/export', [ShipperController::class, 'exportData']);
+
+        //Stocks
+        Route::get('stocks/datatables', [StockController::class, 'datatable'])->name('stocks.datatable');
+        Route::post('stocks/datatables/store', [StockController::class, 'store2'])->name('stocks.store2');
+        Route::get('stocks/datatables/edit/{id}/', [StockController::class, 'edit2']);
+        Route::post('stocks/datatables/update', [StockController::class, 'update2'])->name('stocks.update2');
+        Route::get('stocks/datatables/destroy/{id}/', [StockController::class, 'destroy2']);
+        Route::get('stocks/export', [StockController::class, 'exportData']);
+
+        //Items
+        Route::get('items/datatables', [ItemController::class, 'datatable'])->name('items.datatable');
+        Route::post('items/datatables/store', [ItemController::class, 'store2'])->name('items.store2');
+        Route::get('items/datatables/edit/{id}/', [ItemController::class, 'edit2']);
+        Route::post('items/datatables/update', [ItemController::class, 'update2'])->name('items.update2');
+        Route::get('items/datatables/destroy/{id}/', [ItemController::class, 'destroy2']);
+        Route::get('items/export', [ItemController::class, 'exportData']);
 
         //CRUD Routes
         Route::resource("category", CategoryController::class);

@@ -140,6 +140,13 @@
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
+                  <a href="/stocks/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
+                    <div data-i18n="shipping">Stocks</div>
+                  </a>
+                </li>
+              </ul>
+              <ul class="menu-sub">
+                <li class="menu-item">
                   <a href="/suppliers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'suppliers') active @endif">
                     <div data-i18n="suppliers">Suppliers</div>
                   </a>

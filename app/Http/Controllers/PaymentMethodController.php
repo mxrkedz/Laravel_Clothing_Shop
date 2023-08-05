@@ -79,7 +79,7 @@ class PaymentMethodController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'methods' => 'required|min:3',
+            'methods' => 'required|max:255|min:3',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
@@ -98,7 +98,7 @@ class PaymentMethodController extends Controller
     public function store2(Request $request)
     {
         $rules = array(
-            'methods'    =>  'required'
+            'methods'    =>  'required|max:255|min:3'
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -183,7 +183,7 @@ class PaymentMethodController extends Controller
     public function update2(Request $request)
     {
         $rules = array(
-            'methods'        =>  'required'
+            'methods'        =>  'required|max:255|min:3'
         );
  
         $error = Validator::make($request->all(), $rules);

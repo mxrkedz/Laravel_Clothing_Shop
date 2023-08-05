@@ -81,7 +81,7 @@ class CategoryController extends Controller
     public function store2(Request $request)
     {
         $rules = array(
-            'category_name'    =>  'required'
+            'category_name'    =>  'required|max:255|min:3'
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -168,7 +168,7 @@ class CategoryController extends Controller
     public function update2(Request $request)
     {
         $rules = array(
-            'category_name'        =>  'required'
+            'category_name'        =>  'required|max:255|min:3'
         );
  
         $error = Validator::make($request->all(), $rules);
