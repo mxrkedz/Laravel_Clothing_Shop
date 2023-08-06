@@ -6,8 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ItemController;
-
+use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +36,9 @@ Route::get('/', function () {
 Route::middleware(['auth', 'role:user|admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/home', 'Index');
+        Route::get('/womens', function () {
+            return view('customer.women');
+        });
     });
 });
 // Route accessible for users with only Admin role
@@ -44,11 +47,11 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/admin', 'AdminIndex');
         //DataTables Routes
         //Payment Methods
-        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store');
+        Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store2');
         Route::get('paymentmethods/datatables/edit/{id}/', [PaymentMethodController::class, 'edit2']);
-        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update');
+        Route::post('paymentmethods/datatables/update', [PaymentMethodController::class, 'update2'])->name('paymentmethods.update2');
         Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy2']);
-        Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
+        Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable2');
         Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
 
         //Categories
@@ -60,17 +63,40 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('category/export', [CategoryController::class, 'exportData']);
 
         //Suppliers
-        Route::get('supplier/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
-        Route::post('supplier/datatables/store', [SupplierController::class, 'store2'])->name('suppliers.store');
-        Route::get('supplier/datatables/edit/{id}/', [SupplierController::class, 'edit2']);
-        Route::post('supplier/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update');
-        Route::get('supplier/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
-        Route::get('supplier/export', [SupplierController::class, 'exportData']);
+        Route::get('suppliers/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
+        Route::post('suppliers/datatables/store', [SupplierController::class, 'store2'])->name('suppliers.store2');
+        Route::get('suppliers/datatables/edit/{id}/', [SupplierController::class, 'edit2']);
+        Route::post('suppliers/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update2');
+        Route::get('suppliers/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
+        Route::get('suppliers/export', [SupplierController::class, 'exportData']);
+
+        //Shippings
+        Route::get('shippers/datatables', [ShipperController::class, 'datatable'])->name('shippers.datatable');
+        Route::post('shippers/datatables/store', [ShipperController::class, 'store2'])->name('shippers.store2');
+        Route::get('shippers/datatables/edit/{id}/', [ShipperController::class, 'edit2']);
+        Route::post('shippers/datatables/update', [ShipperController::class, 'update2'])->name('shippers.update2');
+        Route::get('shippers/datatables/destroy/{id}/', [ShipperController::class, 'destroy2']);
+        Route::get('shippers/export', [ShipperController::class, 'exportData']);
+
+        //Stocks
+        Route::get('stocks/datatables', [StockController::class, 'datatable'])->name('stocks.datatable');
+        Route::post('stocks/datatables/store', [StockController::class, 'store2'])->name('stocks.store2');
+        Route::get('stocks/datatables/edit/{id}/', [StockController::class, 'edit2']);
+        Route::post('stocks/datatables/update', [StockController::class, 'update2'])->name('stocks.update2');
+        Route::get('stocks/datatables/destroy/{id}/', [StockController::class, 'destroy2']);
+        Route::get('stocks/export', [StockController::class, 'exportData']);
+
+        //Items
+        Route::get('items/datatables', [ItemController::class, 'datatable'])->name('items.datatable');
+        Route::post('items/datatables/store', [ItemController::class, 'store2'])->name('items.store2');
+        Route::get('items/datatables/edit/{id}/', [ItemController::class, 'edit2']);
+        Route::post('items/datatables/update', [ItemController::class, 'update2'])->name('items.update2');
+        Route::get('items/datatables/destroy/{id}/', [ItemController::class, 'destroy2']);
+        Route::get('items/export', [ItemController::class, 'exportData']);
 
         //CRUD Routes
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);
-        Route::resource("items", ItemController::class);
     });
 });
 

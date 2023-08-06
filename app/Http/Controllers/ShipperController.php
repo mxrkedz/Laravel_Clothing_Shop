@@ -2,62 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-Use DataTables;
-Use View;
-Use Storage;
-Use DB;
-Use Validator;
+use App\Models\Shipper;
+use View;
+use Storage;
+use DB;
+use Validator;
+use DataTables;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-Use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 
-class PaymentMethodController extends Controller
+class ShipperController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $pmethods = PaymentMethod::all();
-        
-        return View::make('paymentmethods.index',compact('pmethods'));
-
-        // if ($request->ajax()) {
-        //     $data = PaymentMethod::select('id','methods')->get();
-        //     return DataTables::of($data)->addIndexColumn()
-        //     ->addColumn('action', function($data){
-        //         $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
-        //         $button .= '   <button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"> <i class="bi bi-backspace-reverse-fill"></i> Delete</button>';
-        //         return $button;
-        //     })
-        //     ->make(true);
-        // }
-        // return view('paymentmethods.index');
+        // FOR CRUD
     }
 
     public function datatable(Request $request)
     {
-        // $pmethods = PaymentMethod::all();
-        
-        // return View::make('paymentmethods.index',compact('pmethods'));
-
+        // dd($request);
         if ($request->ajax()) {
-            $data = PaymentMethod::select('id','methods')->get();
+            $data = Shipper::select('id', 'ship_name', 'img_path' )->get();
             return DataTables::of($data)->addIndexColumn()
-            ->addColumn('action', function($data){
+            ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
                 $button .= '   <button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"> <i class="bi bi-backspace-reverse-fill"></i> Delete</button>';
                 return $button;
             })
             ->make(true);
         }
-        return view('paymentmethods.datatable');
+        return view('shippers.datatable');
     }
 
     /**
@@ -67,7 +51,7 @@ class PaymentMethodController extends Controller
      */
     public function create()
     {
-        return View::make('paymentmethods.create');
+        // FOR CRUD
     }
 
     /**
@@ -78,43 +62,41 @@ class PaymentMethodController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'methods' => 'required|max:255|min:3',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages = [
-            'methods.required' => 'The :attribute field is required.',
-            'methods.min' => 'Minimum of 3 characters please',
-        ])->validate();
-
-        $pmethods = new PaymentMethod;
-
-        $pmethods->methods = $request->methods;
-
-        $pmethods->save();
-        return redirect()->route('paymentmethods.index')->with('added','Added!');
+        // FOR CRUD
     }
-    
+
     public function store2(Request $request)
     {
+        // dd($request);
         $rules = array(
-            'methods'    =>  'required|max:255|min:3'
+            'ship_name'    =>  'required|min:3',
+            'img_path'    =>  'required|image',
+
         );
- 
+
         $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
+
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
- 
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/shippers', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
+        
         $form_data = array(
-            'methods'        =>  $request->methods
+            'ship_name'    => $request->ship_name,
+            'img_path'    => $imgPath
         );
- 
-        PaymentMethod::create($form_data);
- 
-        return response()->json(['success' => 'Payment Method Added Successfully.']);
+        
+        $shipper = Shipper::create($form_data);
+        
+        return response()->json(['success' => 'Shipping added successfully.']);
+
     }
 
     /**
@@ -125,7 +107,7 @@ class PaymentMethodController extends Controller
      */
     public function show($id)
     {
-        //
+        // FOR CRUD
     }
 
     /**
@@ -136,14 +118,14 @@ class PaymentMethodController extends Controller
      */
     public function edit($id)
     {
-        $pmethods =  PaymentMethod::find($id);
-        return view('paymentmethods.edit', compact('pmethods'));
+        // FOR CRUD
     }
+
     public function edit2($id)
     {
         if(request()->ajax())
         {
-            $data = PaymentMethod::findOrFail($id);
+            $data = Shipper::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -155,48 +137,40 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-     public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $rules = [
-            'methods' => 'required|max:255|min:3',
-        ];
-        $messages = [
-            'methods.required' => 'Please enter payment method name.',
-            
-        ];
-        try {
-            $validatedData = $request->validate($rules, $messages);
-            $pmethods = PaymentMethod::find($id);
-
-        $pmethods->methods = $request->methods;
- 
-        $pmethods->save();
-          
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-        }
-        
-                return redirect()->route('paymentmethods.index')->with('updated','Updated!');
+        // FOR CRUD
     }
 
     public function update2(Request $request)
     {
+// dd($request);
         $rules = array(
-            'methods'        =>  'required|max:255|min:3'
+            'ship_name'    =>  'required|min:3',
+            'img_path'    =>  'required|image',
+
         );
- 
+
         $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
+
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/shippers', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
+        
         $form_data = array(
-            'methods'    =>  $request->methods
+            'ship_name'    => $request->ship_name,
+            'img_path'    => $imgPath
         );
- 
-        PaymentMethod::whereId($request->hidden_id)->update($form_data);
+              
+        Shipper::whereId($request->hidden_id)->update($form_data);
  
         return response()->json(['success' => 'Data is successfully updated']);
     
@@ -208,19 +182,15 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-     public function destroy($id)
+    public function destroy($id)
     {
-        PaymentMethod::destroy($id);
-       return back()->with('deleted','Deleted!');
+        // FOR CRUD
     }
-
     public function destroy2($id)
     {
-        $data = PaymentMethod::findOrFail($id);
+        $data = Shipper::findOrFail($id);
         $data->delete();
     }
-
     public function ExportExcel($data){
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '4000M');
@@ -239,7 +209,7 @@ class PaymentMethodController extends Controller
             $Excel_writer = new Xls($spreadSheet);
             
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="PaymentMethods_ExportedData.xls"');
+            header('Content-Disposition: attachment;filename="Shipper_ExportedData.xls"');
             header('Cache-Control: max-age=0');
             ob_end_clean();
             
@@ -249,18 +219,15 @@ class PaymentMethodController extends Controller
             return;
         }
     }
-    /**
-     *This function loads the customer data from the database then converts it
-     * into an Array that will be exported to Excel
-     */
     public function exportData(){
-        $data = PaymentMethod::select('id','methods','created_at','updated_at')->get();
-        $data_array [] = array("id","methods","created_at","updated_at");
+        $data = Shipper::select('id','ship_name','img_path','created_at','updated_at')->get();
+        $data_array [] = array("id","ship_name","img_path","created_at","updated_at");
         foreach($data as $data_item)
         {
             $data_array[] = array(
                 'id' =>$data_item->id,
-                'methods' => $data_item->methods,
+                'ship_name' => $data_item->ship_name,
+                'img_path' => $data_item->img_path,
                 'created_at' => $data_item->created_at,
                 'updated_at' => $data_item->updated_at
             );

@@ -17,7 +17,7 @@
         <div class="col-12 table-responsive">
         <div align="left">
             <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
-            <a href="{{url('supplier/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+            <a href="{{url('suppliers/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
         <br>
 
@@ -41,7 +41,7 @@
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
-        <form method="post" id="sample_form" class="form-horizontal">
+        <form method="post" id="sample_form" class="form-horizontal" enctype="multipart/form-data">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Add New Record</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label>Upload Image : </label>
-                    <input type="file"  id="img_path" name="img_path" accept='image/*' class="form-control">
+                    <input type="file" name="img_path" accept='image/*' class="form-control">
                 </div>
                 <input type="hidden" name="action" id="action" value="Add" />
                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -117,7 +117,15 @@
             {data: 'sup_contact', name: 'sup_contact'},
             {data: 'sup_address', name: 'sup_address'},
             {data: 'sup_email', name: 'sup_email'},
-            {data: 'img_path', name: 'img_path'},
+            { data: 'img_path', name: 'img_path', render: function(data, type, full, meta) {
+    if (type === 'display' && data) {
+        return '<img src="' + '{{ url('/') }}/' + data + '" class="img-thumbnail" width="100" height="100" />';
+    } else {
+        return data;
+    }
+}
+
+    },
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
@@ -136,20 +144,25 @@
 
         if($('#action').val() == 'Add')
         {
-            action_url = "{{ route('suppliers.store') }}";
+            action_url = "{{ route('suppliers.store2') }}";
         }
 
         if($('#action').val() == 'Edit')
         {
-            action_url = "{{ route('suppliers.update') }}";
+            action_url = "{{ route('suppliers.update2') }}";
         }
 
+        var formData = new FormData($('#sample_form')[0]);
+        
         $.ajax({
             type: 'post',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: action_url,
-            data:$(this).serialize(),
+            data: formData,
             dataType: 'json',
+            contentType: false,
+            processData: false,
+
             success: function(data) {
                 console.log('success: '+data);
                 var html = '';
@@ -172,7 +185,7 @@
                     $('#sample_form')[0].reset();
                     $('#supplier_datatable').DataTable().ajax.reload(null, false);
                 }
-                $('#form_result').html(html);
+                $('#form_result').html(html);//test
             },
             error: function(data) {
                 var errors = data.responseJSON;
@@ -187,13 +200,17 @@
         $('#form_result').html('');
 
         $.ajax({
-            url :"/supplier/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+            url :"/suppliers/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType:"json",
             success:function(data)
             {
                 console.log('success: '+data);
-                $('#category_name').val(data.result.category_name);
+                $('#sup_name').val(data.result.sup_name);
+                $('#sup_contact').val(data.result.sup_contact);
+                $('#sup_address').val(data.result.sup_address);
+                $('#sup_email').val(data.result.sup_email);
+                $('#img_path').val(data.result.img_path);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Update');
@@ -215,7 +232,7 @@
 
     $('#ok_button').click(function(){
         $.ajax({
-            url:"/supplier/datatables/destroy/"+methods_id,
+            url:"/suppliers/datatables/destroy/"+methods_id,
             beforeSend:function(){
                 $('#ok_button').text('Deleting...');
             },

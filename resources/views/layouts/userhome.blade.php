@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>PixelCoin</title>
+    <title>TwentyO'2</title>
 
      <!-- Fonts -->
      <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Favicon  -->
-    <link rel="icon" href="{{ asset('dashboard/assets/userdashboard/img/core-img/pixelcoin.png') }}   ">
+    <link rel="icon" href="{{ asset('dashboard/assets/userdashboard/img/core-img/brand1.png') }}   ">
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/css/core-style.css') }}">
@@ -36,7 +36,7 @@
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
-                <a class="nav-brand" href="homepage"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/pixelcoin.png') }}" style="width: auto; height: 70px;" alt=""></a>
+                <a class="nav-brand" href="/home"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/brand1.png') }}" style="width: auto; height: 70px;" alt=""></a>
                 <!-- Navbar Toggler -->
                 <div class="classy-navbar-toggler">
                     <span class="navbarToggler"><span></span><span></span><span></span></span>
@@ -48,25 +48,19 @@
                         <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
                     </div>
                     <!-- Nav Start -->
+                    
                     <div class="classynav" style="position: relative;">
                         <ul>
-                        <li><a href="/homepage">Home</a></li>
-                            <li><a href='/homepage#categories'>Shop</a>
-                                <div class="dropdown" style="top: 60px">
-                                    <ul class="single-mega cn-col-4">
-                                        <li class="title" style="text-align: center; color: red; font-weight: bold;">Riot Games</li>
-                                        <li><a href="/valorant">Valorant</a></li>
-                                        <li><a href="/leagueoflegends">League of Legends</a></li>
-                                        <li><a href="/runeterra">Runeterra</a></li>
-                                        <li><a href="/tft">Teamfight Tactics</a></li>
-                                        <li><a href="/wildrift">LoL: WildRift</a></li>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href='/#categories' class="scroll-link">Shop</a>
+    <div class="dropdown" style="top: 60px; max-height: 400px; overflow-y: auto; margin-left: 25px;">
+        <ul class="single-mega cn-col-4">
+            <li><a href="/womens">Women's Collection</a></li>
+            <li><a href="/mens">Men's Collection</a></li>
+        </ul>
+    </div>
+</li>
 
-                                    </ul>
-                                    <div class="single-mega cn-col-4">
-                                        <img src="img/bg-img/bg-6.jpg" alt="">
-                                    </div>
-                                </div>
-                            </li>
                             @auth
                             @if (Auth::user()->isAdmin)
                             <li><a href="{{ url('/admin') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Admin Dashboard</a></li>
@@ -92,10 +86,6 @@
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
                 </div>
-                <!-- User Login Info -->
-                <div class="user-login-info">
-                    <a style="display:flex;justify-content:center;"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/user.svg') }}" alt=""></a>
-                </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
                     <a href="" id="essenceCartBtn" style="display:flex;justify-content:center;"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt=""></a>
@@ -107,17 +97,70 @@
     <!-- ##### Header Area End ##### -->
 
     @yield('customerguestindex')
-    <!-- ##### Footer Area Start ##### -->
+
     <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area d-flex mb-30">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="/home"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/brand2.png') }}" style="width: auto; height: 30px;" alt=""></a>
+                        </div>
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <ul>
+                                <li><a href="shop.html">Shop</a></li>
+                                
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area mb-30">
+                        <ul class="footer_widget_menu">
+                            <li><a href="#">Order Status</a></li>
+                            <li><a href="#">Payment Options</a></li>
+                            <li><a href="#">Shipping and Delivery</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_social_area">
+                            <p>Find Us On</P>
+                            <a href="https://www.facebook.com/twentyO2" data-toggle="tooltip" target="_blank" data-placement="top" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="https://www.instagram.com/twentyo2mnl/" data-toggle="tooltip" target="_blank" data-placement="top" title="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="row mt-5">
                 <div class="col-md-12 text-center">
                     <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
-    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+     &copy;<script>document.write(new Date().getFullYear());</script>, TwentyO'2. All rights reserved.
                     </p>
                 </div>
+                    </p>
+                </div>
+            </div>
+
+        </div>
     </footer>
     <!-- ##### Footer Area End ##### -->
+
+</body>
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
@@ -132,6 +175,22 @@
     <!-- Active js -->
     <script src="js/active.js"></script>
 
-</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add smooth scrolling to links with the class "scroll-link"
+        $(".scroll-link").on('click', function(event) {
+            if (this.hash !== "") {
+                event.preventDefault();
 
+                var hash = this.hash;
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 400, function(){
+                    window.location.hash = hash;
+                });
+            }
+        });
+    });
+</script>
 </html>

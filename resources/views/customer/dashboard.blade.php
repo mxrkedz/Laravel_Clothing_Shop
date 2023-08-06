@@ -3,16 +3,18 @@
 
     <!-- ##### Welcome Area Start ##### -->
     
-    <section class="welcome_area bg-img background-overlay" style="">
+    <section class="welcome_area bg-img background-overlay" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/banner.webp') }});">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
-                <div class="col-12">
-                    <div class="hero-content">
-                        <h3 style="color: white; text-shadow: 2px 2px 4px #666666;">Welcome To</h3>
-                        <h2 style="color: white; text-shadow: 2px 2px 4px #666666;">PixelCoin</h2>
-                        <a onclick="location.href='#categories'" class="btn essence-btn">View Categories</a>
-                    </div>
-                </div>
+            <div class="col-12">
+    <div class="hero-content">
+        <h2 style="text-align: center;">
+            <a href="#categories" class="scroll-link">
+                <img src="{{ asset('dashboard/assets/userdashboard/img/core-img/brand1.png') }}" style="width: auto; height: auto;" alt="">
+            </a>
+        </h2>
+    </div>
+</div>
             </div>
         </div>
     </section>
@@ -20,51 +22,45 @@
 
     <!-- ##### Top Catagory Area Start ##### -->
     <div id="categories" class="top_catagory_area section-padding-80 clearfix">
-        <div class="container">
+        <div class="container" >
+        <div class="section-heading text-center">
+                        <h2>COLLECTION</h2>
+                    </div>
             <div class="row justify-content-center">
                 <!-- Single Catagory -->
                 <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/valorantlogo.jpg') }});">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/women.webp') }});">
                         <div class="catagory-content">
-                            <a href="valorant">Valorant</a>
+                            <a href="/womens">Womens</a>
                         </div>
                     </div>
                 </div>
                 <!-- Single Catagory -->
                 <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image:url({{ asset('dashboard/assets/userdashboard/img/bg-img/lollogo.webp') }});">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image:url({{ asset('dashboard/assets/userdashboard/img/bg-img/men.webp') }});">
                         <div class="catagory-content">
-                            <a href="leagueoflegends">League of Legends</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Catagory -->
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/lorlogo.webp') }});">
-                        <div class="catagory-content">
-                            <a href="runeterra">Runeterra</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Catagory -->
-                <div class="col-12 col-sm-6 col-md-4" style="margin-top: 30px;">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image:url({{ asset('dashboard/assets/userdashboard/img/bg-img/tftlogo.png') }});">
-                        <div class="catagory-content">
-                            <a href="tft">Teamfight Tactics</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Catagory -->
-                <div class="col-12 col-sm-6 col-md-4" style="margin-top: 30px;">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/lolwrlogo.png') }});">
-                        <div class="catagory-content">
-                            <a href="wildrift">LoL: WildRift</a>
+                            <a href="#">Mens</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="top_catagory_area section-padding-80 clearfix" style="background-color: #f2f2f2;">
+    <div class="container" >
+            <div class="row" >
+                <div class="col-12">
+                    <div class="section-heading text-center" >
+                        <h2>SHOP FASHION FOR MEN AND WOMEN ONLINE ON TWENTY'O2</h2><br>
+                        <h7>A truly exceptional brand hailing from the Philippines, TwentyO'2 represents a unique fusion of fashion and ideals. At the core of its offerings lies a profound commitment to world peace and love. By infusing its products with elements that radiate positivity and harmony, TwentyO'2 crafts stylish and contemporary clothing items that embody these principles. With every design, TwentyO'2 strives to inspire individuals to embrace the ideals of peace and love in their everyday lives.<br>
+                        <br>The brand's designs are rich with symbolism, expressing unity and compassion through striking graphics, thought-provoking slogans, and meaningful motifs. TwentyO'2 doesn't just create fashion; it crafts statements that resonate with those who believe in a better, more peaceful world. Each piece serves as a testament to the power of clothing as a medium for spreading positive messages and fostering a sense of togetherness.
+                            <br><br>In a world where fashion and ideals intersect, TwentyO'2 stands as a beacon of hope and positivity, inviting all to wear their values and make a meaningful impact. By donning TwentyO'2's creations, you become a part of a movement that envisions a brighter future, one where fashion becomes a force for change, a conduit for harmony, and a celebration of the universal principles of peace and love.
+                        </h7>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     <!-- ##### Top Catagory Area End ##### -->
 @endsection
  
@@ -80,3 +76,21 @@
     </form>
     @endif
 @endauth
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add smooth scrolling to links with the class "scroll-link"
+        $(".scroll-link").on('click', function(event) {
+            if (this.hash !== "") {
+                event.preventDefault();
+
+                var hash = this.hash;
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 800, function(){
+                    window.location.hash = hash;
+                });
+            }
+        });
+    });
+</script>

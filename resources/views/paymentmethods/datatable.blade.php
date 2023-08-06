@@ -90,7 +90,7 @@
         var table = $('.payment_methods_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
         processing: true,
         serverSide: true,
-        ajax: "{{ route('paymentmethods.datatable') }}", //Change route index
+        ajax: "{{ route('paymentmethods.datatable2') }}", //Change route index
         columns: [
             {data: 'id', name: 'id'},
             {data: 'methods', name: 'methods'},
@@ -112,12 +112,12 @@
 
         if($('#action').val() == 'Add')
         {
-            action_url = "{{ route('paymentmethods.store') }}";
+            action_url = "{{ route('paymentmethods.store2') }}";
         }
 
         if($('#action').val() == 'Edit')
         {
-            action_url = "{{ route('paymentmethods.update') }}";
+            action_url = "{{ route('paymentmethods.update2') }}";
         }
 
         $.ajax({

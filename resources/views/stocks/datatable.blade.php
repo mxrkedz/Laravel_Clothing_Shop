@@ -10,26 +10,24 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Items</span></h4> <!--Change "Payment Methods" -->
+<h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Stocks</span></h4> <!--Change "Payment Methods" -->
     <div class="card">
         <div class="card-body">   
     <div class="row">
         <div class="col-12 table-responsive">
         <div align="left">
             <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
-            <a href="{{url('items/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+            <a href="{{url('stocks/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
         <br>
 
-            <table class="table table-striped table-bordered shipping_datatable"> <!--Change "payment_methods_datatable" -->
+            <table class="table table-striped table-bordered stocks_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>
                     <tr> <!--Change to desired datas to display-->
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Price</th>
                         <th>Image</th>
-                        <th>Supplier</th>
-                        <th>Category</th>
+                        <th>Quantity</th>
                         <th width="180px">Action</th>
                     </tr>
                 </thead>
@@ -49,25 +47,8 @@
             <div class="modal-body">
                 <span id="form_result"></span>
                 <div class="form-group">
-                    <label>Item Name : </label>
-                    <input type="text" name="item_name" id="item_name" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Price : </label>
-                    <input type="text" name="sell_price" id="sell_price" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Supplier : </label>
-                    <input type="text" name="sup_name" id="sup_name" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Category : </label>
-                    <input type="text" name="category_name" id="category_name" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Upload Image : </label>
-                    <input type="file" name="img_path" accept='image/*' class="form-control">
+                    <label>Quantity : </label>
+                    <input type="text" name="quantity" id="quantity" class="form-control" />
                 </div>
                 <input type="hidden" name="action" id="action" value="Add" />
                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -109,22 +90,22 @@
 <script type="text/javascript">
     var table;
     $(document).ready(function() {
-        table = $('.shipping_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
+    table = $('.stocks_datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('shippers.datatable') }}", //Change route index
+        ajax: "{{ route('stocks.datatable') }}",
         columns: [
-            {data: 'id', name: 'id'},
-            {data: 'ship_name', name: 'ship_name'},
-            { data: 'img_path', name: 'img_path', render: function(data, type, full, meta) {
-    if (type === 'display' && data) {
-        return '<img src="' + '{{ url('/') }}/' + data + '" class="img-thumbnail" width="100" height="100" />';
-    } else {
-        return data;
-    }
-}
-
-    },
+            {data: 'item_id', name: 'items.id'},
+            {data: 'item_name', name: 'item_name'},
+            {data: 'img_path', name: 'img_path', render: function(data, type, full, meta) {
+                    if (type === 'display' && data) {
+                        return '<img src="' + '{{ url('/') }}/' + data + '" class="img-thumbnail" width="100" height="100" />';
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            {data: 'quantity', name: 'quantity'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
