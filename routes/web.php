@@ -99,6 +99,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);
         Route::resource("items", ItemController::class);
+        Route::resource("shippers", ShipperController::class);
+        Route::resource("suppliers", SupplierController::class);
 
     });
 });

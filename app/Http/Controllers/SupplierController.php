@@ -24,7 +24,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        // FOR CRUD
+        $suppliers = Supplier::all();
+        return View::make('suppliers.index',compact('suppliers'));
     }
     public function datatable(Request $request)
     {
@@ -49,7 +50,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        // FOR CRUD
+        return View::make('suppliers.create');
     }
 
     /**
@@ -60,7 +61,49 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        // FOR CRUD
+        $rules = [
+            'sup_name' => 'required|min:3',
+            'sup_contact' => 'required|min:3',
+            'sup_address' => 'required|min:3',
+            'sup_email' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'sup_name.required' => 'The :attribute field is required.',
+            'sup_name.min' => 'Minimum of 3 characters please',
+            'sup_contact.required' => 'The :attribute field is required.',
+            'sup_contact.min' => 'Minimum of 3 characters please',
+            'sup_address.required' => 'The :attribute field is required.',
+            'sup_address.min' => 'Minimum of 3 characters please',
+            'sup_email.required' => 'The :attribute field is required.',
+            'sup_email.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+        
+        $suppliers = new Supplier;
+
+        $suppliers->sup_name = $request->sup_name;
+        $suppliers->sup_contact = $request->sup_contact;
+        $suppliers->sup_address = $request->sup_address;
+        $suppliers->sup_email = $request->sup_email;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $suppliers->img_path = '/storage/images/' . $fileName;
+
+        }
+
+        $suppliers->save();
+        return redirect()->route('suppliers.index')->with('added','Added!');
     }
 
     public function store2(Request $request)
@@ -119,7 +162,8 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        // FOR CRUD
+        $suppliers =  Supplier::find($id);
+        return view('suppliers.edit', compact('suppliers'));
     }
 
     public function edit2($id)
@@ -140,7 +184,55 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // FOR CRUD
+        $rules = [
+            'sup_name' => 'required|min:3',
+            'sup_contact' => 'required|min:3',
+            'sup_address' => 'required|min:3',
+            'sup_email' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'sup_name.required' => 'The :attribute field is required.',
+            'sup_name.min' => 'Minimum of 3 characters please',
+            'sup_contact.required' => 'The :attribute field is required.',
+            'sup_contact.min' => 'Minimum of 3 characters please',
+            'sup_address.required' => 'The :attribute field is required.',
+            'sup_address.min' => 'Minimum of 3 characters please',
+            'sup_email.required' => 'The :attribute field is required.',
+            'sup_email.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+        
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            $suppliers = Supplier::find($id);
+
+        $suppliers->sup_name = $request->sup_name;
+        $suppliers->sup_contact = $request->sup_contact;
+        $suppliers->sup_address = $request->sup_address;
+        $suppliers->sup_email = $request->sup_email;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $suppliers->img_path = '/storage/images/' . $fileName;
+
+        }
+
+        $suppliers->save();
+    } catch (ValidationException $e) {
+        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
+    }
+    
+            return redirect()->route('suppliers.index')->with('updated','Updated!');
     }
 
     public function update2(Request $request)
@@ -190,7 +282,8 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        // FOR CRUD
+        Supplier::destroy($id);
+       return back()->with('deleted','Deleted!');
     }
     public function destroy2($id)
     {

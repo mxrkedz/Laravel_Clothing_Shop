@@ -25,7 +25,8 @@ class ShipperController extends Controller
      */
     public function index()
     {
-        // FOR CRUD
+        $shippers = Shipper::all();
+        return View::make('shippers.index',compact('shippers'));
     }
 
     public function datatable(Request $request)
@@ -51,7 +52,7 @@ class ShipperController extends Controller
      */
     public function create()
     {
-        // FOR CRUD
+        return View::make('shippers.create');
     }
 
     /**
@@ -62,7 +63,37 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-        // FOR CRUD
+        $rules = [
+            'ship_name' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'ship_name.required' => 'The :attribute field is required.',
+            'ship_name.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+        
+        $shippers = new Shipper;
+
+        $shippers->ship_name = $request->ship_name;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $shippers->img_path = '/storage/images/' . $fileName;
+
+        }
+
+        $shippers->save();
+        return redirect()->route('shippers.index')->with('added','Added!');
     }
 
     public function store2(Request $request)
@@ -93,7 +124,7 @@ class ShipperController extends Controller
             'img_path'    => $imgPath
         );
         
-        $shipper = Shipper::create($form_data);
+        $shippers = Shipper::create($form_data);
         
         return response()->json(['success' => 'Shipping added successfully.']);
 
@@ -118,7 +149,8 @@ class ShipperController extends Controller
      */
     public function edit($id)
     {
-        // FOR CRUD
+        $shippers =  Shipper::find($id);
+        return view('shippers.edit', compact('shippers'));
     }
 
     public function edit2($id)
@@ -139,7 +171,43 @@ class ShipperController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // FOR CRUD
+        $rules = [
+            'ship_name' => 'required|min:3',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'ship_name.required' => 'The :attribute field is required.',
+            'ship_name.min' => 'Minimum of 3 characters please',
+        ])->validate();
+
+        
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            $shippers = Shipper::find($id);
+
+        $shippers->ship_name = $request->ship_name;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $shippers->img_path = '/storage/images/' . $fileName;
+
+        }
+
+        $shippers->save();
+    } catch (ValidationException $e) {
+        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
+    }
+    
+            return redirect()->route('shippers.index')->with('updated','Updated!');
     }
 
     public function update2(Request $request)
@@ -184,7 +252,8 @@ class ShipperController extends Controller
      */
     public function destroy($id)
     {
-        // FOR CRUD
+        Shipper::destroy($id);
+       return back()->with('deleted','Deleted!');
     }
     public function destroy2($id)
     {

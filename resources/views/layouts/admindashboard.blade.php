@@ -99,7 +99,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods/manage" class="menu-link @if(isset($active_menu) && $active_menu == 'test') active @endif">
+                  <a href="/paymentmethods" class="menu-link @if(isset($active_menu) && $active_menu == 'test') active @endif">
                     <div data-i18n="payment">Payment Method</div>
                   </a>
                 </li>
@@ -109,6 +109,22 @@
                 <li class="menu-item">
                   <a href="/items" class="menu-link @if(isset($active_menu) && $active_menu == 'item') active @endif">
                     <div data-i18n="Items">Items</div>
+                  </a>
+                </li>
+              </ul>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/shippers" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
+                    <div data-i18n="Items">Shipping</div>
+                  </a>
+                </li>
+              </ul>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="/suppliers" class="menu-link @if(isset($active_menu) && $active_menu == 'supplier') active @endif">
+                    <div data-i18n="Items">Suppliers</div>
                   </a>
                 </li>
               </ul>

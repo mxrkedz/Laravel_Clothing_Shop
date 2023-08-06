@@ -63,21 +63,35 @@ class ItemController extends Controller
     {
         $rules = [
             'item_name' => 'required|min:3',
-            'sellprice' => 'required|min:3',
+            'sellprice' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
             'item_name.required' => 'The :attribute field is required.',
             'item_name.min' => 'Minimum of 3 characters please',
             'sellprice.required' => 'The :attribute field is required.',
-            'sellprice.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-
+        
         $items = new Item;
 
         $items->item_name = $request->item_name;
         $items->sellprice = $request->sellprice;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $items->img_path = '/storage/images/' . $fileName;
+
+        }
 
         $items->save();
         return redirect()->route('items.index')->with('added','Added!');
@@ -103,7 +117,8 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        // FOR CRUD
+        $items =  Item::find($id);
+        return view('items.edit', compact('items'));
     }
 
     /**
@@ -115,7 +130,46 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // FOR CRUD
+        $rules = [
+            'item_name' => 'required|min:3',
+            'sellprice' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages = [
+            'item_name.required' => 'The :attribute field is required.',
+            'item_name.min' => 'Minimum of 3 characters please',
+            'sellprice.required' => 'The :attribute field is required.',
+        ])->validate();
+
+        
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            $items = Item::find($id);
+
+        $items->item_name = $request->item_name;
+        $items->sellprice = $request->sellprice;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $items->img_path = '/storage/images/' . $fileName;
+
+        }
+
+        $items->save();
+    } catch (ValidationException $e) {
+        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
+    }
+    
+            return redirect()->route('items.index')->with('updated','Updated!');
     }
 
     /**
@@ -126,6 +180,7 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        // FOR CRUD
+        Item::destroy($id);
+       return back()->with('deleted','Deleted!');
     }
 }
