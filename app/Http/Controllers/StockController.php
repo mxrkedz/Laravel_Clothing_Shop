@@ -31,18 +31,8 @@ class StockController extends Controller
 
     public function datatable(Request $request)
     {
-
-        // $item = Stock::join('items', 'stocks.item_id', '=', 'items.id')
-        // ->select('stocks.*', 'items.item_name', 'items.img_path')
-        // ->get();
-
-        // dd($item);
-
-    // return view('your.view', compact('stockItems'));
-        // dump($item);
-        // dd($request);
         if ($request->ajax()) {
-            $data = Stock::join('items', 'stocks.item_id', '=', 'items.id')
+            $data = Stock::join('items', 'stocks.id', '=', 'items.id')
             ->select('stocks.*', 'items.item_name', 'items.img_path')
             ->get();
             return DataTables::of($data)->addIndexColumn()
@@ -53,7 +43,9 @@ class StockController extends Controller
             })
             ->make(true);
         }
-        return view('stocks.datatable');
+
+        $items = Item::all();
+        return view('stocks.datatable' , compact('items'));
     }
 
     
@@ -66,7 +58,8 @@ class StockController extends Controller
      */
     public function create()
     {
-        //
+        // $items = Item::all();
+        // return View::make('items.create', compact('items'));
     }
 
     /**
@@ -78,6 +71,30 @@ class StockController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function store2(Request $request)
+    {
+        // dd($request);
+        $rules = array(
+            'quantity'    =>  'required|numeric'
+
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        
+        $form_data = array(
+            'quantity'    => $request->quantity,
+        );
+              
+        $stock = Stock::create($form_data);
+        
+        return response()->json(['success' => 'Stocks added successfully.']);
+
     }
 
     /**
@@ -99,7 +116,18 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        //
+        // FOR CRUD
+    }
+
+    public function edit2($id )
+    {
+        if (request()->ajax()) {
+            $data = Stock::join('items', 'stocks.id', '=', 'items.id')
+                ->select('stocks.*', 'items.id as item_id', 'items.item_name', 'items.img_path')
+                ->findOrFail($id);
+        
+            return response()->json(['result' => $data]);
+        }
     }
 
     /**
@@ -112,6 +140,30 @@ class StockController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function update2(Request $request)
+    {
+        // dd($request);
+        $rules = array(
+            'quantity'    =>  'required|numeric'
+
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        
+        $form_data = array(
+            'quantity'    => $request->quantity,
+        );
+              
+        Stock::whereId($request->hidden_id)->update($form_data);
+ 
+        return response()->json(['success' => 'Data is successfully updated']);
+    
     }
 
     /**

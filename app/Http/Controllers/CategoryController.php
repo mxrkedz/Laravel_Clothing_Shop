@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = Category::select('id','category_name')->get();
+            $data = Category::select('id','category_name', 'img_path')->get();
             return DataTables::of($data)->addIndexColumn()
             ->addColumn('action', function($data){
                 $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
@@ -81,7 +81,9 @@ class CategoryController extends Controller
     public function store2(Request $request)
     {
         $rules = array(
-            'category_name'    =>  'required|max:255|min:3'
+            'category_name'    =>  'required|max:255|min:3',
+            'img_path'    =>  'required|image',
+
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -90,9 +92,18 @@ class CategoryController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/category', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
  
         $form_data = array(
-            'category_name'        =>  $request->category_name
+            'category_name'        =>  $request->category_name,
+            'img_path'    =>  $imgPath
         );
  
         Category::create($form_data);
@@ -168,7 +179,9 @@ class CategoryController extends Controller
     public function update2(Request $request)
     {
         $rules = array(
-            'category_name'        =>  'required|max:255|min:3'
+            'category_name'        =>  'required|max:255|min:3',
+            'img_path'    =>  'required|image',
+
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -177,8 +190,18 @@ class CategoryController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/category', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
+
         $form_data = array(
-            'category_name'    =>  $request->category_name
+            'category_name'    =>  $request->category_name,
+            'img_path'    => $imgPath
         );
  
         Category::whereId($request->hidden_id)->update($form_data);
@@ -236,13 +259,14 @@ class CategoryController extends Controller
      * into an Array that will be exported to Excel
      */
     public function exportData(){
-        $data = Category::select('id','category_name','created_at','updated_at')->get();
-        $data_array [] = array("id","category_name","created_at","updated_at");
+        $data = Category::select('id','category_name','img_path','created_at','updated_at')->get();
+        $data_array [] = array("id","category_name","img_path","created_at","updated_at");
         foreach($data as $data_item)
         {
             $data_array[] = array(
                 'id' =>$data_item->id,
                 'category_name' => $data_item->category_name,
+                'img_path' => $data_item->img_path,
                 'created_at' => $data_item->created_at,
                 'updated_at' => $data_item->updated_at
             );

@@ -158,6 +158,7 @@ class ShipperController extends Controller
         if(request()->ajax())
         {
             $data = Shipper::findOrFail($id);
+            // dd($data);
             return response()->json(['result' => $data]);
         }
     }

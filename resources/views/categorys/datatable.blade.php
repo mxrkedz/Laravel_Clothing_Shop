@@ -26,6 +26,7 @@
                     <tr> <!--Change to desired datas to display-->
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Image</th>
                         <th width="180px">Action</th>
                     </tr>
                 </thead>
@@ -47,6 +48,10 @@
                 <div class="form-group">
                     <label>Category : </label>
                     <input type="text" name="category_name" id="category_name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Upload Image : </label>
+                    <input type="file" name="img_path" accept='image/*' class="form-control">
                 </div>
                 <input type="hidden" name="action" id="action" value="Add" />
                 <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -94,6 +99,15 @@
         columns: [
             {data: 'id', name: 'id'},
             {data: 'category_name', name: 'category_name'},
+            { data: 'img_path', name: 'img_path', render: function(data, type, full, meta) {
+    if (type === 'display' && data) {
+        return '<img src="' + '{{ url('/') }}/' + data + '" class="img-thumbnail" width="100" height="100" />';
+    } else {
+        return data;
+    }
+}
+
+    },
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
@@ -102,7 +116,7 @@
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#form_result').html('');
- 
+        $('#sample_form')[0].reset();
         $('#formModal').modal('show');
     });
 
@@ -120,12 +134,16 @@
             action_url = "{{ route('categorys.update') }}";
         }
 
+        var formData = new FormData($('#sample_form')[0]);
+
         $.ajax({
             type: 'post',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             url: action_url,
-            data:$(this).serialize(),
+            data: formData,
             dataType: 'json',
+            contentType: false,
+            processData: false,
             success: function(data) {
                 console.log('success: '+data);
                 var html = '';
@@ -170,6 +188,7 @@
             {
                 console.log('success: '+data);
                 $('#category_name').val(data.result.category_name);
+                $('#img_path').val(data.result.img_path);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Update');

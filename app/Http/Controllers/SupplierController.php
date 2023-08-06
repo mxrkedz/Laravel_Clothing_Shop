@@ -238,11 +238,11 @@ class SupplierController extends Controller
     public function update2(Request $request)
     {
         $rules = array(
-            'sup_name'    =>  'required',
-            'sup_contact'    =>  'required',
-            'sup_address'    =>  'required',
-            'sup_email'    =>  'required',
-            'img_path'    =>  'required'
+            'sup_name'    =>  'required|min:3',
+            'sup_contact' =>  'required|numeric|min:5',
+            'sup_address' =>  'required|min:5',
+            'sup_email'   =>  'required|email',
+            'img_path'    =>  'required|image'
 
         );
  

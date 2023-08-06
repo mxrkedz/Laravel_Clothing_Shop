@@ -11,12 +11,15 @@ class Stock extends Model
 
     protected $table = 'stocks';
 
+    protected $primaryKey = "id";
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'id');
+    }
+
     protected $fillable = [
         'quantity'
     ];
 
-    public function item()
-    {
-        return $this->belongsTo(Item::class, 'item_id');
-    }
+    
 }

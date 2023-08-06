@@ -40,12 +40,21 @@
         <div class="modal-dialog">
         <div class="modal-content">
         <form method="post" id="sample_form" class="form-horizontal" enctype="multipart/form-data">
+        @csrf
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Add New Record</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <span id="form_result"></span>
+                <div class="form-group1">
+                <label>Product : </label>
+                    <select class="form-select" id="exampleFormControlSelect1" >
+                        <option value="0" disabled selected style="display: none;">Open this select menu</option>
+                        @foreach($items as $item)
+                            <option value="{{$item->id}}">{{$item->id}} - {{$item->item_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Quantity : </label>
                     <input type="text" name="quantity" id="quantity" class="form-control" />
@@ -87,6 +96,18 @@
 </div>
 </div>
 </body>
+<!-- Script for select form -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var selectMenu = document.getElementById("exampleFormControlSelect1");
+        selectMenu.addEventListener("change", function() {
+            var selectedValue = selectMenu.value;
+            if (selectedValue === "0") {
+                selectMenu.selectedIndex = -1;
+            }
+        });
+    });
+</script>
 <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -95,7 +116,7 @@
         serverSide: true,
         ajax: "{{ route('stocks.datatable') }}",
         columns: [
-            {data: 'item_id', name: 'items.id'},
+            {data: 'id', name: 'items.id'},
             {data: 'item_name', name: 'item_name'},
             {data: 'img_path', name: 'img_path', render: function(data, type, full, meta) {
                     if (type === 'display' && data) {
@@ -115,6 +136,7 @@
         $('#action').val('Add');
         $('#form_result').html('');
         $('#sample_form')[0].reset();
+        $('.form-group1').show();
         $('#formModal').modal('show');
     });
     });
@@ -124,16 +146,20 @@
 
         if($('#action').val() == 'Add')
         {
-            action_url = "{{ route('shippers.store2') }}";
+            action_url = "{{ route('stocks.store2') }}";
         }
 
         if($('#action').val() == 'Edit')
         {
-            action_url = "{{ route('shippers.update2') }}";
+            action_url = "{{ route('stocks.update2') }}";
         }
 
+        // Get the selected item ID from the dropdown
+        var selectedItemID = $('#exampleFormControlSelect1').val();
+
+        // Create the FormData object
         var formData = new FormData($('#sample_form')[0]);
-        
+        formData.append('id', selectedItemID); // Append the selected item ID
         $.ajax({
             type: 'post',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -163,7 +189,7 @@
                 {
                     html = '<div class="alert alert-success">' + data.success + '</div>';
                     $('#sample_form')[0].reset();
-                    $('#shipping_datatable').DataTable().ajax.reload(null, false);
+                    $('#stock_datatable').DataTable().ajax.reload(null, false);
                 }
                 $('#form_result').html(html);
             },
@@ -176,30 +202,33 @@
     });
     $(document).on('click', '.edit', function(event){
         event.preventDefault(); 
-        var id = $(this).attr('id'); //alert(id);
+        var id  = $(this).attr('id'); //alert(id );
+        console.log('item_id : ', id );
         $('#form_result').html('');
 
         $.ajax({
-            url :"/shippers/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+            url: "/stocks/datatables/edit/" + id + "/",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            dataType:"json",
-            success:function(data)
-            {
-                console.log('success: '+data);
-                $('#ship_name').val(data.result.ship_name);
-                $('#img_path').val(data.result.img_path);
+            dataType: "json",
+            success: function(data) {
+                console.log('success: ' + data);
+                // console.log('item_id : ', data.result.id );
+                console.log('quantity: ', data.result.quantity);
+                $('#quantity').val(data.result.quantity);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Update');
                 $('#action').val('Edit'); 
+                $('.form-group1').hide();
                 $('#formModal').modal('show');
             },
-            error: function(data) {
-                var errors = data.responseJSON;
-                console.log(errors);
-            }
-        })
+        error: function(data) {
+            var errors = data.responseJSON;
+            console.log(errors);
+        }
     });
+});
+
     var methods_id;
  
     $(document).on('click', '.delete', function(){
@@ -209,7 +238,7 @@
 
     $('#ok_button').click(function(){
         $.ajax({
-            url:"/shippers/datatables/destroy/"+methods_id,
+            url:"/stocks/datatables/destroy/"+methods_id,
             beforeSend:function(){
                 $('#ok_button').text('Deleting...');
             },
