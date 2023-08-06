@@ -119,29 +119,8 @@
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/customers" class="menu-link @if(isset($active_menu) && $active_menu == 'customers') active @endif">
-                    <div data-i18n="customers">Customers</div>
-                  </a>
-                </li>
-              </ul>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="/items" class="menu-link @if(isset($active_menu) && $active_menu == 'items') active @endif">
-                    <div data-i18n="items">Items</div>
-                  </a>
-                </li>
-              </ul>
-              <ul class="menu-sub">
-                <li class="menu-item">
                   <a href="/shippers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
                     <div data-i18n="shipping">Shipping</div>
-                  </a>
-                </li>
-              </ul>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="/stocks/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
-                    <div data-i18n="shipping">Stocks</div>
                   </a>
                 </li>
               </ul>

@@ -48,7 +48,7 @@ class PaymentMethodController extends Controller
         // return View::make('paymentmethods.index',compact('pmethods'));
 
         if ($request->ajax()) {
-            $data = PaymentMethod::select('id','methods')->get();
+            $data = PaymentMethod::select('id','methods', 'img_path')->get();
             return DataTables::of($data)->addIndexColumn()
             ->addColumn('action', function($data){
                 $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
@@ -98,7 +98,8 @@ class PaymentMethodController extends Controller
     public function store2(Request $request)
     {
         $rules = array(
-            'methods'    =>  'required|max:255|min:3'
+            'methods'    =>  'required|max:255|min:3',
+            'img_path'    =>  'required|image',
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -107,9 +108,18 @@ class PaymentMethodController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/paymentmethods', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
  
         $form_data = array(
-            'methods'        =>  $request->methods
+            'methods'        =>  $request->methods,
+            'img_path'    => $imgPath
         );
  
         PaymentMethod::create($form_data);
@@ -183,7 +193,8 @@ class PaymentMethodController extends Controller
     public function update2(Request $request)
     {
         $rules = array(
-            'methods'        =>  'required|max:255|min:3'
+            'methods'        =>  'required|max:255|min:3',
+            'img_path'    =>  'required|image',
         );
  
         $error = Validator::make($request->all(), $rules);
@@ -192,8 +203,18 @@ class PaymentMethodController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        if ($request->hasFile('img_path')) {
+            $imageName = time().$request->file('img_path')->getClientOriginalName();
+            $path = $request->file('img_path')->storeAs('images/paymentmethods', $imageName, 'public');
+            $imgPath = 'storage/'.$path;
+        } else {
+            return response()->json(['errors' => ['Image not found']]);
+        }
+
         $form_data = array(
-            'methods'    =>  $request->methods
+            'methods'    =>  $request->methods,
+            'img_path'    => $imgPath
         );
  
         PaymentMethod::whereId($request->hidden_id)->update($form_data);
@@ -254,13 +275,14 @@ class PaymentMethodController extends Controller
      * into an Array that will be exported to Excel
      */
     public function exportData(){
-        $data = PaymentMethod::select('id','methods','created_at','updated_at')->get();
-        $data_array [] = array("id","methods","created_at","updated_at");
+        $data = PaymentMethod::select('id','methods','img_path','created_at','updated_at')->get();
+        $data_array [] = array("id","methods","img_path","created_at","updated_at");
         foreach($data as $data_item)
         {
             $data_array[] = array(
                 'id' =>$data_item->id,
                 'methods' => $data_item->methods,
+                'img_path' => $data_item->img_path,
                 'created_at' => $data_item->created_at,
                 'updated_at' => $data_item->updated_at
             );
