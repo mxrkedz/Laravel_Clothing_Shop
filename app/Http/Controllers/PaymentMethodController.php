@@ -44,7 +44,7 @@ class PaymentMethodController extends Controller
     public function datatable(Request $request)
     {
         // $pmethods = PaymentMethod::all();
-        
+        // dd($pmethods);
         // return View::make('paymentmethods.index',compact('pmethods'));
 
         if ($request->ajax()) {

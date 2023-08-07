@@ -95,7 +95,7 @@
         var table = $('.payment_methods_datatable').DataTable({ //Change ".payment_methods_datatable" depending on the table named on <html>
         processing: true,
         serverSide: true,
-        ajax: "{{ route('paymentmethods.datatable2') }}", //Change route index
+        ajax: "{{ route('paymentmethods.datatable') }}", //Change route index
         columns: [
             {data: 'id', name: 'id'},
             {data: 'methods', name: 'methods'},
@@ -120,113 +120,113 @@
         $('#formModal').modal('show');
     });
 
-    $('#sample_form').on('submit', function(event){
-        event.preventDefault(); 
-        var action_url = '';
+    // $('#sample_form').on('submit', function(event){
+    //     event.preventDefault(); 
+    //     var action_url = '';
 
-        if($('#action').val() == 'Add')
-        {
-            action_url = "{{ route('paymentmethods.store2') }}";
-        }
+    //     if($('#action').val() == 'Add')
+    //     {
+    //         action_url = "{{ route('paymentmethods.store2') }}";
+    //     }
 
-        if($('#action').val() == 'Edit')
-        {
-            action_url = "{{ route('paymentmethods.update2') }}";
-        }
+    //     if($('#action').val() == 'Edit')
+    //     {
+    //         action_url = "{{ route('paymentmethods.update2') }}";
+    //     }
 
-        var formData = new FormData($('#sample_form')[0]);
+    //     var formData = new FormData($('#sample_form')[0]);
 
-        $.ajax({
-            type: 'post',
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: action_url,
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
+    //     $.ajax({
+    //         type: 'post',
+    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    //         url: action_url,
+    //         data: formData,
+    //         dataType: 'json',
+    //         contentType: false,
+    //         processData: false,
             
-            success: function(data) {
-                console.log('success: '+data);
-                var html = '';
-                // $('#formModal').modal('hide');
-                $('#sample_form')[0].reset();
-                table.ajax.reload(null, false);
+    //         success: function(data) {
+    //             console.log('success: '+data);
+    //             var html = '';
+    //             // $('#formModal').modal('hide');
+    //             $('#sample_form')[0].reset();
+    //             table.ajax.reload(null, false);
 
-                if(data.errors)
-                {
-                    html = '<div class="alert alert-danger">';
-                    for(var count = 0; count < data.errors.length; count++)
-                    {
-                        html += '<p>' + data.errors[count] + '</p>';
-                    }
-                    html += '</div>';
-                }
-                if(data.success)
-                {
-                    html = '<div class="alert alert-success">' + data.success + '</div>';
-                    $('#sample_form')[0].reset();
-                    $('#payment_methods_table').DataTable().ajax.reload(null, false);
-                }
-                $('#form_result').html(html);
-            },
-            error: function(data) {
-                var errors = data.responseJSON;
-                console.log(errors);
-            }
-        });
+    //             if(data.errors)
+    //             {
+    //                 html = '<div class="alert alert-danger">';
+    //                 for(var count = 0; count < data.errors.length; count++)
+    //                 {
+    //                     html += '<p>' + data.errors[count] + '</p>';
+    //                 }
+    //                 html += '</div>';
+    //             }
+    //             if(data.success)
+    //             {
+    //                 html = '<div class="alert alert-success">' + data.success + '</div>';
+    //                 $('#sample_form')[0].reset();
+    //                 $('#payment_methods_table').DataTable().ajax.reload(null, false);
+    //             }
+    //             $('#form_result').html(html);
+    //         },
+    //         error: function(data) {
+    //             var errors = data.responseJSON;
+    //             console.log(errors);
+    //         }
+    //     });
         
-    });
-    $(document).on('click', '.edit', function(event){
-        event.preventDefault(); 
-        var id = $(this).attr('id'); //alert(id);
-        $('#form_result').html('');
+    // });
+    // $(document).on('click', '.edit', function(event){
+    //     event.preventDefault(); 
+    //     var id = $(this).attr('id'); //alert(id);
+    //     $('#form_result').html('');
 
-        $.ajax({
-            url :"/paymentmethods/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            dataType:"json",
-            success:function(data)
-            {
-                console.log('success: '+data);
-                $('#methods').val(data.result.methods);
-                $('#img_path').val(data.result.img_path);
-                $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
-                $('#action_button').val('Update');
-                $('#action').val('Edit'); 
-                $('#formModal').modal('show');
-            },
-            error: function(data) {
-                var errors = data.responseJSON;
-                console.log(errors);
-            }
-        })
-    });
-    var methods_id;
+    //     $.ajax({
+    //         url :"/paymentmethods/datatables/edit/"+id+"/", //Change "/paymentmethods/edit/" depending on route"
+    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    //         dataType:"json",
+    //         success:function(data)
+    //         {
+    //             console.log('success: '+data);
+    //             $('#methods').val(data.result.methods);
+    //             $('#img_path').val(data.result.img_path);
+    //             $('#hidden_id').val(id);
+    //             $('.modal-title').text('Edit Record');
+    //             $('#action_button').val('Update');
+    //             $('#action').val('Edit'); 
+    //             $('#formModal').modal('show');
+    //         },
+    //         error: function(data) {
+    //             var errors = data.responseJSON;
+    //             console.log(errors);
+    //         }
+    //     })
+    // });
+    // var methods_id;
  
-    $(document).on('click', '.delete', function(){
-        methods_id = $(this).attr('id');
-        $('#confirmModal').modal('show');
-    });
+    // $(document).on('click', '.delete', function(){
+    //     methods_id = $(this).attr('id');
+    //     $('#confirmModal').modal('show');
+    // });
 
-    $('#ok_button').click(function(){
-        $.ajax({
-            url:"/paymentmethods/datatables/destroy/"+methods_id,
-            beforeSend:function(){
-                $('#ok_button').text('Deleting...');
-            },
-            success:function(data)
-            {
-                setTimeout(function(){
-                $('#confirmModal').modal('hide');
-                $('#payment_methods_table').DataTable().ajax.reload();
-                //alert('Data Deleted');
-                $('#sample_form')[0].reset();
-                table.ajax.reload(null, false);
-                }, 2000);
-            }
-        })
-    });
+    // $('#ok_button').click(function(){
+    //     $.ajax({
+    //         url:"/paymentmethods/datatables/destroy/"+methods_id,
+    //         beforeSend:function(){
+    //             $('#ok_button').text('Deleting...');
+    //         },
+    //         success:function(data)
+    //         {
+    //             setTimeout(function(){
+    //             $('#confirmModal').modal('hide');
+    //             $('#payment_methods_table').DataTable().ajax.reload();
+    //             //alert('Data Deleted');
+    //             $('#sample_form')[0].reset();
+    //             table.ajax.reload(null, false);
+    //             }, 2000);
+    //         }
+    //     })
+    // });
 });
 
 </script>
