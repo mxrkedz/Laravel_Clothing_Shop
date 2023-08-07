@@ -4,7 +4,7 @@
 <h4 class="fw-bold py-3 mb-4">Shippers <span class="text-muted fw-light">/ Edit</span></h4>
         <div class="card">
         <div class="card-body">
-        <form action="{{route('shippers.update', $items->id)}}"  method="POST" enctype="multipart/form-data">
+        <form action="{{route('shippers.update', $shippers->id)}}"  method="POST" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         

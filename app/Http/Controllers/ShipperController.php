@@ -78,17 +78,19 @@ class ShipperController extends Controller
         $shippers->ship_name = $request->ship_name;
 
         if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
-
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
-
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
+            $imageName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+        
+            // Store the file in the 'public/images/shippers' directory using the storage facade.
+            $path = $request->file('img_path')->storeAs(
+                'public/images/shippers',
+                $imageName
             );
-            $shippers->img_path = '/storage/images/' . $fileName;
+        
+            // Get the full image path for the database record.
+            $imgPath = 'storage/' . str_replace('public/', '', $path);
+
+            // $shippers->img_path = '/storage/images/' . $fileName;
+            $shippers->img_path = $imgPath;
 
         }
 

@@ -80,14 +80,15 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('shippers/export', [ShipperController::class, 'exportData']);
 
         //CRUD Routes
-        Route::get('paymentmethods', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
-        Route::get('paymentmethods/create', [PaymentMethodController::class, 'create'])->name('paymentmethods.create');
-        Route::get('paymentmethods/store', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
-        Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
-        Route::get('paymentmethods/update/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
+        // Route::get('paymentmethods', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
+        // Route::get('paymentmethods/create', [PaymentMethodController::class, 'create'])->name('paymentmethods.create');
+        // Route::get('paymentmethods/store', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
+        // Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
+        // Route::get('paymentmethods/update/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
 
 
-        // Route::resource("paymentmethods", PaymentMethodController::class);
+        Route::resource("category", CategoryController::class);
+        Route::resource("paymentmethods", PaymentMethodController::class);
         Route::resource("items", ItemController::class);
         Route::resource("shippers", ShipperController::class);
         Route::resource("suppliers", SupplierController::class);
