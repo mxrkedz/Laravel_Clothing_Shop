@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "algolia/algoliasearch-client-php": "^1.27",
+        "algolia/algoliasearch-client-php": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.29",
+        "psr/http-message": "^1.0",
         "psr/simple-cache": "2.0",
         "santigarcor/laratrust": "^7.2",
         "yajra/laravel-datatables": "9.0"
