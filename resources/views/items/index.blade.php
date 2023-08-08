@@ -39,9 +39,11 @@
             <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
+                    <th scope="col" class="font-weight-bold">Image</th>
                       <th scope="col" class="font-weight-bold">Item Name</th>
                       <th scope="col" class="font-weight-bold">Price</th>
-                      <th scope="col" class="font-weight-bold">Image</th>
+                      <th scope="col" class="font-weight-bold">Category</th>
+                      <th scope="col" class="font-weight-bold">Supplier</th>
                       <th scope="col" class="font-weight-bold">Time Created</th>
                       <th scope="col" class="font-weight-bold">Time Updated</th>
                       <th scope="col" class="font-weight-bold">Action</th>
@@ -50,11 +52,11 @@
                 <tbody>
                     @foreach($items as $item)
                     <tr>
+                        <td><img src="{{$item->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
                         <td>{{$item->item_name}}</td>
                         <td>{{$item->sellprice}}</td>
-                        <td>
-                            <img src="{{$item->img_path}}" class="img-thumbnail" width="100" height="100" >
-                        </td>
+                        <td>{{$item->category_name}}</td>
+                        <td>{{$item->sup_name}}</td>
                         <td>{{$item->created_at}}</td>
                         <td>{{$item->updated_at}}</td>
                         <td>

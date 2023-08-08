@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Category;
+use App\Models\Supplier;
 use View;
 use Storage;
 use DB;
@@ -24,8 +26,18 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return View::make('items.index',compact('items'));
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+
+        $items = DB::table('items')
+        ->join('categories', 'items.cat_id', '=', 'categories.id')
+        ->join('suppliers','items.sup_id','=','suppliers.id')
+        ->select('items.id as it_id','items.*','categories.*','suppliers.*')
+        ->orderBy('items.id','ASC')->get();
+        return View::make('items.index',compact('categories','items','suppliers'));
+
+        // $items = Item::all();
+        // return View::make('items.index',compact('items'));
 
     }
     public function datatable(Request $request)
@@ -50,7 +62,10 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return View::make('items.create');
+        $suppliers = Supplier::all();
+
+        $categories = Category::all();
+        return View::make('items.create',compact('suppliers','categories'));
     }
 
     /**
@@ -64,6 +79,8 @@ class ItemController extends Controller
         $rules = [
             'item_name' => 'required|min:3',
             'sellprice' => 'required',
+            'sup_id' => 'required',
+            'cat_id' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
@@ -77,6 +94,9 @@ class ItemController extends Controller
 
         $items->item_name = $request->item_name;
         $items->sellprice = $request->sellprice;
+        $items->sup_id = $request->sup_id;
+        $items->cat_id = $request->cat_id;
+        // dd($item);
 
         if ($request->file()) {
             $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();

@@ -20,6 +20,30 @@
           <label>Upload Image : </label>
           <input type="file" name="img_path" accept='image/*' class="form-control">
       </div>
+      <div class="form-group row">
+        <label for="sup_id">Supplier</label>
+        <select class="form-select form-control @error('sup_id') is-invalid @enderror" name="sup_id">
+            <option selected value="{{ old('sup_id', $item->sup_id) }}">{{ $item->sup_name }}</option>
+            @foreach($suppliers as $supplier)
+                <option value="{{ $supplier->id }}">{{ $supplier->sup_name }}</option>
+            @endforeach
+        </select>
+        @error('sup_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="form-group row">
+        <label for="cat_id">Category</label>
+        <select class="form-select form-control @error('cat_id') is-invalid @enderror" name="cat_id">
+            <option selected value="{{ old('cat_id', $item->cat_id) }}">{{ $item->category_name }}</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+            @endforeach
+        </select>
+        @error('cat_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

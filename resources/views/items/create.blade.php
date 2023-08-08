@@ -26,7 +26,33 @@
         <div class="form-group row">
             <label for="name">Sell Price</label>
             <input type="text" class="form-control" id="sellprice" name="sellprice" placeholder="Enter Sell Price" onfocus="clearPlaceholder()" onblur="restorePlaceholder()">
-        
+
+            <div class="form-group row">
+                <label for="country">Supplier</label>
+                <select class="form-select form-control" name="sup_id" required>
+                    <option selected>Select Supplier</option>
+                    @foreach($suppliers as $supplier)
+                        <option value={{$supplier->id}}>{{$supplier->sup_name}}</option>
+                    @endforeach
+                </select>
+                @error('sup_id')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group row">
+                <label for="country">Category</label>
+                <select class="form-select form-control" name="cat_id" required>
+                    <option selected>Select Item Category</option>
+                    @foreach($categories as $category)
+                        <option value={{$category->id}}>{{$category->category_name}}</option>
+                    @endforeach
+                </select>
+                @error('cat_id')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
             <div class="form-group">
                 <label>Upload Image : </label>
                 <input type="file" name="img_path" accept='image/*' class="form-control">
