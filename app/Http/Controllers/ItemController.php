@@ -31,10 +31,10 @@ class ItemController extends Controller
 
         $items = DB::table('items')
         ->join('categories', 'items.cat_id', '=', 'categories.id')
-        ->join('suppliers','items.sup_id','=','suppliers.id')
-        ->select('items.id as it_id','items.*','categories.*','suppliers.*')
-        ->orderBy('items.id','ASC')->get();
-        return View::make('items.index',compact('categories','items','suppliers'));
+        ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+        ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+        ->orderBy('items.id', 'ASC')->get();
+        return View::make('items.index', compact('categories', 'items', 'suppliers'));
 
         // $items = Item::all();
         // return View::make('items.index',compact('items'));
@@ -65,7 +65,7 @@ class ItemController extends Controller
         $suppliers = Supplier::all();
 
         $categories = Category::all();
-        return View::make('items.create',compact('suppliers','categories'));
+        return View::make('items.create', compact('suppliers', 'categories'));
     }
 
     /**
@@ -89,8 +89,8 @@ class ItemController extends Controller
             'sellprice.required' => 'The :attribute field is required.',
         ])->validate();
 
-        
-        $items = new Item;
+
+        $items = new Item();
 
         $items->item_name = $request->item_name;
         $items->sellprice = $request->sellprice;
@@ -114,8 +114,8 @@ class ItemController extends Controller
         }
 
         $items->save();
-        return redirect()->route('items.index')->with('added','Added!');
-  
+        return redirect()->route('items.index')->with('added', 'Added!');
+
     }
 
     /**
@@ -161,35 +161,35 @@ class ItemController extends Controller
             'sellprice.required' => 'The :attribute field is required.',
         ])->validate();
 
-        
+
         try {
             $validatedData = $request->validate($rules, $messages);
             $items = Item::find($id);
 
-        $items->item_name = $request->item_name;
-        $items->sellprice = $request->sellprice;
+            $items->item_name = $request->item_name;
+            $items->sellprice = $request->sellprice;
 
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
 
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
+                // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+                // dd($fileName,$filePath);
 
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
-            );
-            $items->img_path = '/storage/images/' . $fileName;
+                $path = Storage::putFileAs(
+                    'public/images',
+                    $request->file('img_path'),
+                    $fileName
+                );
+                $items->img_path = '/storage/images/' . $fileName;
 
+            }
+
+            $items->save();
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
 
-        $items->save();
-    } catch (ValidationException $e) {
-        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-    }
-    
-            return redirect()->route('items.index')->with('updated','Updated!');
+                return redirect()->route('items.index')->with('updated', 'Updated!');
     }
 
     /**
@@ -201,6 +201,15 @@ class ItemController extends Controller
     public function destroy($id)
     {
         Item::destroy($id);
-       return back()->with('deleted','Deleted!');
+        return back()->with('deleted', 'Deleted!');
     }
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+        $items = Item::search($query)->get();
+        $categories = Category::all();
+
+        return view('layouts.userhome', compact('items', 'categories'));
+    }
+
 }

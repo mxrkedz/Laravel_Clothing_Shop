@@ -93,6 +93,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
         // Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
         // Route::get('paymentmethods/update/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
 
+        //Search
+        Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
 
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);
