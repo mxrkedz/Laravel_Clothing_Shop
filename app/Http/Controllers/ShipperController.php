@@ -26,14 +26,14 @@ class ShipperController extends Controller
     public function index()
     {
         $shippers = Shipper::all();
-        return View::make('shippers.index',compact('shippers'));
+        return View::make('shippers.index', compact('shippers'));
     }
 
     public function datatable(Request $request)
     {
         // dd($request);
         if ($request->ajax()) {
-            $data = Shipper::select('id', 'ship_name', 'img_path' )->get();
+            $data = Shipper::select('id', 'ship_name', 'img_path')->get();
             return DataTables::of($data)->addIndexColumn()
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
@@ -72,20 +72,20 @@ class ShipperController extends Controller
             'ship_name.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-        
-        $shippers = new Shipper;
+
+        $shippers = new Shipper();
 
         $shippers->ship_name = $request->ship_name;
 
         if ($request->file()) {
             $imageName = time() . '_' . $request->file('img_path')->getClientOriginalName();
-        
+
             // Store the file in the 'public/images/shippers' directory using the storage facade.
             $path = $request->file('img_path')->storeAs(
                 'public/images/shippers',
                 $imageName
             );
-        
+
             // Get the full image path for the database record.
             $imgPath = 'storage/' . str_replace('public/', '', $path);
 
@@ -95,7 +95,7 @@ class ShipperController extends Controller
         }
 
         $shippers->save();
-        return redirect()->route('shippers.index')->with('added','Added!');
+        return redirect()->route('shippers.index')->with('added', 'Added!');
     }
 
     public function store2(Request $request)
@@ -120,14 +120,14 @@ class ShipperController extends Controller
         } else {
             return response()->json(['errors' => ['Image not found']]);
         }
-        
+
         $form_data = array(
             'ship_name'    => $request->ship_name,
             'img_path'    => $imgPath
         );
-        
+
         $shippers = Shipper::create($form_data);
-        
+
         return response()->json(['success' => 'Shipping added successfully.']);
 
     }
@@ -157,8 +157,7 @@ class ShipperController extends Controller
 
     public function edit2($id)
     {
-        if(request()->ajax())
-        {
+        if(request()->ajax()) {
             $data = Shipper::findOrFail($id);
             // dd($data);
             return response()->json(['result' => $data]);
@@ -183,39 +182,39 @@ class ShipperController extends Controller
             'ship_name.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-        
+
         try {
             $validatedData = $request->validate($rules, $messages);
             $shippers = Shipper::find($id);
 
-        $shippers->ship_name = $request->ship_name;
+            $shippers->ship_name = $request->ship_name;
 
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
 
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
+                // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+                // dd($fileName,$filePath);
 
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
-            );
-            $shippers->img_path = '/storage/images/' . $fileName;
+                $path = Storage::putFileAs(
+                    'public/images',
+                    $request->file('img_path'),
+                    $fileName
+                );
+                $shippers->img_path = '/storage/images/' . $fileName;
 
+            }
+
+            $shippers->save();
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
 
-        $shippers->save();
-    } catch (ValidationException $e) {
-        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-    }
-    
-            return redirect()->route('shippers.index')->with('updated','Updated!');
+                return redirect()->route('shippers.index')->with('updated', 'Updated!');
     }
 
     public function update2(Request $request)
     {
-// dd($request);
+        // dd($request);
         $rules = array(
             'ship_name'    =>  'required|min:3',
             'img_path'    =>  'required|image',
@@ -235,16 +234,16 @@ class ShipperController extends Controller
         } else {
             return response()->json(['errors' => ['Image not found']]);
         }
-        
+
         $form_data = array(
             'ship_name'    => $request->ship_name,
             'img_path'    => $imgPath
         );
-              
+
         Shipper::whereId($request->hidden_id)->update($form_data);
- 
+
         return response()->json(['success' => 'Data is successfully updated']);
-    
+
     }
 
     /**
@@ -256,46 +255,47 @@ class ShipperController extends Controller
     public function destroy($id)
     {
         Shipper::destroy($id);
-       return back()->with('deleted','Deleted!');
+        return back()->with('deleted', 'Deleted!');
     }
     public function destroy2($id)
     {
         $data = Shipper::findOrFail($id);
         $data->delete();
     }
-    public function ExportExcel($data){
+    public function ExportExcel($data)
+    {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '4000M');
-        
+
         try {
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            
+
             // Add the column names as the first row
             $column_names = array_shift($data);
             $spreadSheet->getActiveSheet()->fromArray([$column_names], null, 'A1');
-            
+
             // Add the actual data starting from the second row
             $spreadSheet->getActiveSheet()->fromArray($data, null, 'A2');
-            
+
             $Excel_writer = new Xls($spreadSheet);
-            
+
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="Shipper_ExportedData.xls"');
             header('Cache-Control: max-age=0');
             ob_end_clean();
-            
+
             $Excel_writer->save('php://output');
             exit();
         } catch (Exception $e) {
             return;
         }
     }
-    public function exportData(){
-        $data = Shipper::select('id','ship_name','img_path','created_at','updated_at')->get();
+    public function exportData()
+    {
+        $data = Shipper::select('id', 'ship_name', 'img_path', 'created_at', 'updated_at')->get();
         $data_array [] = array("id","ship_name","img_path","created_at","updated_at");
-        foreach($data as $data_item)
-        {
+        foreach($data as $data_item) {
             $data_array[] = array(
                 'id' =>$data_item->id,
                 'ship_name' => $data_item->ship_name,
@@ -305,5 +305,37 @@ class ShipperController extends Controller
             );
         }
         $this->ExportExcel($data_array);
+    }
+    public function importData(Request $request)
+    {
+        $this->validate($request, [
+            'uploaded_file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        $the_file = $request->file('uploaded_file');
+        try {
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet        = $spreadsheet->getActiveSheet();
+            $row_limit    = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range    = range(2, $row_limit);
+            $column_range = range('E', $column_limit);
+            $startcount = 2;
+            $data = array();
+            foreach ($row_range as $row) {
+                $data[] = [
+                    'id' =>$sheet->getCell('A' . $row)->getValue(),
+                    'ship_name' => $sheet->getCell('B' . $row)->getValue(),
+                    'img_path' => $sheet->getCell('C' . $row)->getValue(),
+                    'created_at' => $sheet->getCell('D' . $row)->getValue(),
+                    'updated_at' => $sheet->getCell('E' . $row)->getValue(),
+                ];
+                $startcount++;
+            }
+            DB::table('shipping')->insert($data);
+        } catch (Exception $e) {
+            $error_code = $e->errorInfo[1];
+            return back()->withErrors('There was a problem uploading the data!');
+        }
+        return back()->withSuccess('Great! Data has been successfully uploaded.');
     }
 }

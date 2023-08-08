@@ -69,6 +69,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('category/datatables/destroy/{id}/', [CategoryController::class, 'destroy2']);
         Route::get('categories/datatables', [CategoryController::class, 'datatable'])->name('categorys.datatable');
         Route::get('category/export', [CategoryController::class, 'exportData']);
+        Route::post('category/import', [CategoryController::class, 'importData']);
 
         //Suppliers
         Route::get('suppliers/datatables', [SupplierController::class, 'datatable'])->name('suppliers.datatable');
@@ -95,6 +96,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
         //Search
         Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
+
 
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);

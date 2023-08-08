@@ -209,7 +209,7 @@ class ItemController extends Controller
         $items = Item::search($query)->get();
         $categories = Category::all();
 
-        return view('layouts.userhome', compact('items', 'categories'));
+        return view('items.show', compact('items', 'categories'));
     }
 
 }

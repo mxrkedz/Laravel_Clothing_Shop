@@ -20,7 +20,23 @@
             <a href="{{url('suppliers/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
         <br>
-
+        <!-- <form action="{{url("import")}}" method="post" enctype="multipart/form-data">
+                       @csrf
+                       <fieldset>
+                           <label>Select File to Upload  <small class="warning text-muted">{{__('Please upload only Excel (.xlsx or .xls) files')}}</small></label>
+                           <div class="input-group">
+                               <input type="file" required class="form-control" name="uploaded_file" id="uploaded_file">
+                               @if ($errors->has('uploaded_file'))
+                                   <p class="text-right mb-0">
+                                       <small class="danger text-muted" id="file-error">{{ $errors->first('uploaded_file') }}</small>
+                                   </p>
+                               @endif
+                               <div class="input-group-append" id="button-addon2">
+                                   <button class="btn btn-primary square" type="submit"><i class="ft-upload mr-1"></i> Upload</button>
+                               </div>
+                           </div>
+                       </fieldset>
+                   </form> -->
             <table class="table table-striped table-bordered supplier_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>
                     <tr> <!--Change to desired datas to display-->

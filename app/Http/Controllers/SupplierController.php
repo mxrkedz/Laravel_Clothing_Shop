@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
@@ -25,7 +26,7 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::all();
-        return View::make('suppliers.index',compact('suppliers'));
+        return View::make('suppliers.index', compact('suppliers'));
     }
     public function datatable(Request $request)
     {
@@ -79,8 +80,8 @@ class SupplierController extends Controller
             'sup_email.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-        
-        $suppliers = new Supplier;
+
+        $suppliers = new Supplier();
 
         $suppliers->sup_name = $request->sup_name;
         $suppliers->sup_contact = $request->sup_contact;
@@ -89,13 +90,13 @@ class SupplierController extends Controller
 
         if ($request->file()) {
             $imageName = time() . '_' . $request->file('img_path')->getClientOriginalName();
-        
+
             // Store the file in the 'public/images/shippers' directory using the storage facade.
             $path = $request->file('img_path')->storeAs(
                 'public/images/shippers',
                 $imageName
             );
-        
+
             // Get the full image path for the database record.
             $imgPath = 'storage/' . str_replace('public/', '', $path);
 
@@ -105,7 +106,7 @@ class SupplierController extends Controller
         }
 
         $suppliers->save();
-        return redirect()->route('suppliers.index')->with('added','Added!');
+        return redirect()->route('suppliers.index')->with('added', 'Added!');
     }
 
     public function store2(Request $request)
@@ -131,7 +132,7 @@ class SupplierController extends Controller
         } else {
             return response()->json(['errors' => ['Image not found']]);
         }
-        
+
         $form_data = array(
             'sup_name'    => $request->sup_name,
             'sup_contact' => $request->sup_contact,
@@ -139,11 +140,11 @@ class SupplierController extends Controller
             'sup_email'   => $request->sup_email,
             'img_path'    => $imgPath
         );
-        
+
         $supplier = Supplier::create($form_data);
-        
+
         return response()->json(['success' => 'Supplier added successfully.']);
-        
+
     }
     /**
      * Display the specified resource.
@@ -170,8 +171,7 @@ class SupplierController extends Controller
 
     public function edit2($id)
     {
-        if(request()->ajax())
-        {
+        if(request()->ajax()) {
             $data = Supplier::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -204,37 +204,37 @@ class SupplierController extends Controller
             'sup_email.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-        
+
         try {
             $validatedData = $request->validate($rules, $messages);
             $suppliers = Supplier::find($id);
 
-        $suppliers->sup_name = $request->sup_name;
-        $suppliers->sup_contact = $request->sup_contact;
-        $suppliers->sup_address = $request->sup_address;
-        $suppliers->sup_email = $request->sup_email;
+            $suppliers->sup_name = $request->sup_name;
+            $suppliers->sup_contact = $request->sup_contact;
+            $suppliers->sup_address = $request->sup_address;
+            $suppliers->sup_email = $request->sup_email;
 
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
 
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
+                // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+                // dd($fileName,$filePath);
 
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
-            );
-            $suppliers->img_path = '/storage/images/' . $fileName;
+                $path = Storage::putFileAs(
+                    'public/images',
+                    $request->file('img_path'),
+                    $fileName
+                );
+                $suppliers->img_path = '/storage/images/' . $fileName;
 
+            }
+
+            $suppliers->save();
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
 
-        $suppliers->save();
-    } catch (ValidationException $e) {
-        return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-    }
-    
-            return redirect()->route('suppliers.index')->with('updated','Updated!');
+                return redirect()->route('suppliers.index')->with('updated', 'Updated!');
     }
 
     public function update2(Request $request)
@@ -247,11 +247,10 @@ class SupplierController extends Controller
             'img_path'    =>  'required|image'
 
         );
- 
+
         $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
+
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
         if ($request->hasFile('img_path')) {
@@ -261,7 +260,7 @@ class SupplierController extends Controller
         } else {
             return response()->json(['errors' => ['Image not found']]);
         }
-        
+
         $form_data = array(
             'sup_name'    => $request->sup_name,
             'sup_contact' => $request->sup_contact,
@@ -269,11 +268,11 @@ class SupplierController extends Controller
             'sup_email'   => $request->sup_email,
             'img_path'    => $imgPath
         );
-        
+
         Supplier::whereId($request->hidden_id)->update($form_data);
- 
+
         return response()->json(['success' => 'Data is successfully updated']);
-    
+
     }
 
     /**
@@ -285,46 +284,47 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         Supplier::destroy($id);
-       return back()->with('deleted','Deleted!');
+        return back()->with('deleted', 'Deleted!');
     }
     public function destroy2($id)
     {
         $data = Supplier::findOrFail($id);
         $data->delete();
     }
-    public function ExportExcel($data){
+    public function ExportExcel($data)
+    {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '4000M');
-        
+
         try {
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            
+
             // Add the column names as the first row
             $column_names = array_shift($data);
             $spreadSheet->getActiveSheet()->fromArray([$column_names], null, 'A1');
-            
+
             // Add the actual data starting from the second row
             $spreadSheet->getActiveSheet()->fromArray($data, null, 'A2');
-            
+
             $Excel_writer = new Xls($spreadSheet);
-            
+
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="Supplier_ExportedData.xls"');
             header('Cache-Control: max-age=0');
             ob_end_clean();
-            
+
             $Excel_writer->save('php://output');
             exit();
         } catch (Exception $e) {
             return;
         }
     }
-    public function exportData(){
-        $data = Supplier::select('id','sup_name', 'sup_contact','sup_address','sup_email','img_path','created_at','updated_at')->get();
+    public function exportData()
+    {
+        $data = Supplier::select('id', 'sup_name', 'sup_contact', 'sup_address', 'sup_email', 'img_path', 'created_at', 'updated_at')->get();
         $data_array [] = array("id","sup_name","sup_contact","sup_address","sup_email","img_path","created_at","updated_at");
-        foreach($data as $data_item)
-        {
+        foreach($data as $data_item) {
             $data_array[] = array(
                 'id' =>$data_item->id,
                 'sup_name' => $data_item->sup_name,
@@ -337,5 +337,40 @@ class SupplierController extends Controller
             );
         }
         $this->ExportExcel($data_array);
+    }
+    public function importData(Request $request)
+    {
+        $this->validate($request, [
+            'uploaded_file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        $the_file = $request->file('uploaded_file');
+        try {
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet        = $spreadsheet->getActiveSheet();
+            $row_limit    = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range    = range(2, $row_limit);
+            $column_range = range('H', $column_limit);
+            $startcount = 2;
+            $data = array();
+            foreach ($row_range as $row) {
+                $data[] = [
+                    'id' =>$sheet->getCell('A' . $row)->getValue(),
+                    'sup_name' => $sheet->getCell('B' . $row)->getValue(),
+                    'sup_contact' => $sheet->getCell('C' . $row)->getValue(),
+                    'sup_address' => $sheet->getCell('D' . $row)->getValue(),
+                    'sup_email' => $sheet->getCell('E' . $row)->getValue(),
+                    'img_path' => $sheet->getCell('F' . $row)->getValue(),
+                    'created_at' => $sheet->getCell('G' . $row)->getValue(),
+                    'updated_at' => $sheet->getCell('H' . $row)->getValue(),
+                ];
+                $startcount++;
+            }
+            DB::table('suppliers')->insert($data);
+        } catch (Exception $e) {
+            $error_code = $e->errorInfo[1];
+            return back()->withErrors('There was a problem uploading the data!');
+        }
+        return back()->withSuccess('Great! Data has been successfully uploaded.');
     }
 }

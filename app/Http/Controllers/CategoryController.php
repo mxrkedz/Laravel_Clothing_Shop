@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-Use View;
-Use Storage;
-Use DB;
-Use Validator;
-Use DataTables;
+use View;
+use Storage;
+use DB;
+use Validator;
+use DataTables;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-Use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 
 class CategoryController extends Controller
 {
@@ -26,15 +26,15 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         //dd(compact('categories'));
-        return View::make('categorys.index',compact('categories'));
+        return View::make('categorys.index', compact('categories'));
     }
 
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = Category::select('id','category_name', 'img_path')->get();
+            $data = Category::select('id', 'category_name', 'img_path')->get();
             return DataTables::of($data)->addIndexColumn()
-            ->addColumn('action', function($data){
+            ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"> <i class="bi bi-pencil-square"></i>Edit</button>';
                 $button .= '   <button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"> <i class="bi bi-backspace-reverse-fill"></i> Delete</button>';
                 return $button;
@@ -71,12 +71,12 @@ class CategoryController extends Controller
             'category_name.min' => 'Minimum of 3 characters please',
         ])->validate();
 
-        $categories = new Category;
+        $categories = new Category();
 
         $categories->category_name = $request->category_name;
 
         $categories->save();
-        return redirect()->route('category.index')->with('added','Added!');
+        return redirect()->route('category.index')->with('added', 'Added!');
     }
     public function store2(Request $request)
     {
@@ -85,11 +85,10 @@ class CategoryController extends Controller
             'img_path'    =>  'required|image',
 
         );
- 
+
         $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
+
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
@@ -100,14 +99,14 @@ class CategoryController extends Controller
         } else {
             return response()->json(['errors' => ['Image not found']]);
         }
- 
+
         $form_data = array(
             'category_name'        =>  $request->category_name,
             'img_path'    =>  $imgPath
         );
- 
+
         Category::create($form_data);
- 
+
         return response()->json(['success' => 'Category Added Successfully.']);
     }
 
@@ -136,8 +135,7 @@ class CategoryController extends Controller
 
     public function edit2($id)
     {
-        if(request()->ajax())
-        {
+        if(request()->ajax()) {
             $data = Category::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -157,23 +155,23 @@ class CategoryController extends Controller
         ];
         $messages = [
             'category_name.required' => 'Please enter category name.',
-            
+
         ];
 
         try {
             $validatedData = $request->validate($rules, $messages);
             $categories = Category::find($id);
 
-        $categories->category_name = $request->category_name;
- 
-        $categories->save();
-            
-            
+            $categories->category_name = $request->category_name;
+
+            $categories->save();
+
+
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
-        
-                return redirect()->route('category.index')->with('updated','Updated!');
+
+                return redirect()->route('category.index')->with('updated', 'Updated!');
     }
 
     public function update2(Request $request)
@@ -183,11 +181,10 @@ class CategoryController extends Controller
             'img_path'    =>  'required|image',
 
         );
- 
+
         $error = Validator::make($request->all(), $rules);
- 
-        if($error->fails())
-        {
+
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
@@ -203,11 +200,11 @@ class CategoryController extends Controller
             'category_name'    =>  $request->category_name,
             'img_path'    => $imgPath
         );
- 
+
         Category::whereId($request->hidden_id)->update($form_data);
- 
+
         return response()->json(['success' => 'Data is successfully updated']);
-    
+
     }
 
     /**
@@ -219,35 +216,36 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::destroy($id);
-       return back()->with('deleted','Deleted!');
+        return back()->with('deleted', 'Deleted!');
     }
     public function destroy2($id)
     {
         $data = Category::findOrFail($id);
         $data->delete();
     }
-    public function ExportExcel($data){
+    public function ExportExcel($data)
+    {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '4000M');
-        
+
         try {
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            
+
             // Add the column names as the first row
             $column_names = array_shift($data);
             $spreadSheet->getActiveSheet()->fromArray([$column_names], null, 'A1');
-            
+
             // Add the actual data starting from the second row
             $spreadSheet->getActiveSheet()->fromArray($data, null, 'A2');
-            
+
             $Excel_writer = new Xls($spreadSheet);
-            
+
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="Category_ExportedData.xls"');
             header('Cache-Control: max-age=0');
             ob_end_clean();
-            
+
             $Excel_writer->save('php://output');
             exit();
         } catch (Exception $e) {
@@ -258,11 +256,11 @@ class CategoryController extends Controller
      *This function loads the customer data from the database then converts it
      * into an Array that will be exported to Excel
      */
-    public function exportData(){
-        $data = Category::select('id','category_name','img_path','created_at','updated_at')->get();
+    public function exportData()
+    {
+        $data = Category::select('id', 'category_name', 'img_path', 'created_at', 'updated_at')->get();
         $data_array [] = array("id","category_name","img_path","created_at","updated_at");
-        foreach($data as $data_item)
-        {
+        foreach($data as $data_item) {
             $data_array[] = array(
                 'id' =>$data_item->id,
                 'category_name' => $data_item->category_name,
@@ -272,5 +270,38 @@ class CategoryController extends Controller
             );
         }
         $this->ExportExcel($data_array);
+    }
+
+    public function importData(Request $request)
+    {
+        $this->validate($request, [
+            'uploaded_file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        $the_file = $request->file('uploaded_file');
+        try {
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet        = $spreadsheet->getActiveSheet();
+            $row_limit    = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range    = range(2, $row_limit);
+            $column_range = range('E', $column_limit);
+            $startcount = 2;
+            $data = array();
+            foreach ($row_range as $row) {
+                $data[] = [
+                    'id' =>$sheet->getCell('A' . $row)->getValue(),
+                    'category_name' => $sheet->getCell('B' . $row)->getValue(),
+                    'img_path' => $sheet->getCell('C' . $row)->getValue(),
+                    'created_at' => $sheet->getCell('D' . $row)->getValue(),
+                    'updated_at' => $sheet->getCell('E' . $row)->getValue(),
+                ];
+                $startcount++;
+            }
+            DB::table('categories')->insert($data);
+        } catch (Exception $e) {
+            $error_code = $e->errorInfo[1];
+            return back()->withErrors('There was a problem uploading the data!');
+        }
+        return back()->withSuccess('Great! Data has been successfully uploaded.');
     }
 }

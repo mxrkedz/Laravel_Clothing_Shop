@@ -82,7 +82,7 @@
                 <!-- Search Area -->
                 <div class="search-area">
                 <form action="{{ route('search') }}" method="get">
-                        <input type="search" name="search" id="headerSearch" placeholder="Search">
+                        <input type="search" name="q" id="headerSearch" placeholder="Search">
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
                 </div>
