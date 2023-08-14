@@ -61,6 +61,7 @@ Route::middleware(['admin'])->group(function () {
         Route::get('paymentmethods/datatables/destroy/{id}/', [PaymentMethodController::class, 'destroy2']);
         Route::get('paymentmethods/datatables', [PaymentMethodController::class, 'datatable'])->name('paymentmethods.datatable');
         Route::get('paymentmethods/export', [PaymentMethodController::class, 'exportData']);
+        Route::post('paymentmethods/import', [PaymentMethodController::class, 'importData']);
 
         //Categories
         Route::post('category/datatables/store', [CategoryController::class, 'store2'])->name('categorys.store');
@@ -78,6 +79,7 @@ Route::middleware(['admin'])->group(function () {
         Route::post('suppliers/datatables/update', [SupplierController::class, 'update2'])->name('suppliers.update2');
         Route::get('suppliers/datatables/destroy/{id}/', [SupplierController::class, 'destroy2']);
         Route::get('suppliers/export', [SupplierController::class, 'exportData']);
+        Route::post('suppliers/import', [SupplierController::class, 'importData']);
 
         //Shippings
         Route::get('shippers/datatables', [ShipperController::class, 'datatable'])->name('shippers.datatable');
@@ -86,6 +88,7 @@ Route::middleware(['admin'])->group(function () {
         Route::post('shippers/datatables/update', [ShipperController::class, 'update2'])->name('shippers.update2');
         Route::get('shippers/datatables/destroy/{id}/', [ShipperController::class, 'destroy2']);
         Route::get('shippers/export', [ShipperController::class, 'exportData']);
+        Route::post('shippers/import', [ShipperController::class, 'importData']);
 
         //CRUD Routes
         // Route::get('paymentmethods', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');

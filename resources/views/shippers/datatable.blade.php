@@ -21,7 +21,7 @@
             <a href="#" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Import Excel</a>
         </div>
         <br>
-        <!-- <form action="{{url("import")}}" method="post" enctype="multipart/form-data">
+        <form action="{{url('shippers/import')}}" method="post" enctype="multipart/form-data">
                        @csrf
                        <fieldset>
                            <label>Select File to Upload  <small class="warning text-muted">{{__('Please upload only Excel (.xlsx or .xls) files')}}</small></label>
@@ -37,7 +37,7 @@
                                </div>
                            </div>
                        </fieldset>
-                   </form> -->
+                   </form>
 
             <table class="table table-striped table-bordered shipping_datatable"> <!--Change "payment_methods_datatable" -->
                 <thead>

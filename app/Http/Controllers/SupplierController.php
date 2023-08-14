@@ -340,37 +340,42 @@ class SupplierController extends Controller
     }
     public function importData(Request $request)
     {
-        $this->validate($request, [
-            'uploaded_file' => 'required|file|mimes:xls,xlsx'
-        ]);
-        $the_file = $request->file('uploaded_file');
         try {
+            $request->validate([
+                'uploaded_file' => 'required|file|mimes:xls,xlsx'
+            ]);
+
+            $the_file = $request->file('uploaded_file');
             $spreadsheet = IOFactory::load($the_file->getRealPath());
-            $sheet        = $spreadsheet->getActiveSheet();
-            $row_limit    = $sheet->getHighestDataRow();
-            $column_limit = $sheet->getHighestDataColumn();
-            $row_range    = range(2, $row_limit);
-            $column_range = range('H', $column_limit);
-            $startcount = 2;
-            $data = array();
-            foreach ($row_range as $row) {
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $data = [];
+            foreach ($sheet->getRowIterator(2) as $row) {
+                $cellIterator = $row->getCellIterator('A', 'H');
+                $cellData = [];
+                foreach ($cellIterator as $cell) {
+                    $cellData[] = $cell->getValue();
+                }
+
                 $data[] = [
-                    'id' =>$sheet->getCell('A' . $row)->getValue(),
-                    'sup_name' => $sheet->getCell('B' . $row)->getValue(),
-                    'sup_contact' => $sheet->getCell('C' . $row)->getValue(),
-                    'sup_address' => $sheet->getCell('D' . $row)->getValue(),
-                    'sup_email' => $sheet->getCell('E' . $row)->getValue(),
-                    'img_path' => $sheet->getCell('F' . $row)->getValue(),
-                    'created_at' => $sheet->getCell('G' . $row)->getValue(),
-                    'updated_at' => $sheet->getCell('H' . $row)->getValue(),
+                    'id' => $cellData[0],
+                    'sup_name' => $cellData[1],
+                    'sup_contact' => $cellData[2],
+                    'sup_address' => $cellData[3],
+                    'sup_email' => $cellData[4],
+                    'img_path' => $cellData[5],
+                    'created_at' => $cellData[6],
+                    'updated_at' => $cellData[7],
                 ];
-                $startcount++;
             }
+
             DB::table('suppliers')->insert($data);
-        } catch (Exception $e) {
-            $error_code = $e->errorInfo[1];
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        } catch (\Exception $e) {
             return back()->withErrors('There was a problem uploading the data!');
         }
+
         return back()->withSuccess('Great! Data has been successfully uploaded.');
     }
 }
