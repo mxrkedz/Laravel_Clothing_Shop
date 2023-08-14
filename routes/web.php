@@ -35,7 +35,7 @@ Route::get('/', function () {
 // })->middleware(['auth', 'role:user'])->name('dashboard');
 
 // Route accessible for both User and Admin
-Route::middleware(['auth', 'role:user|admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/home', 'Index');
         // Route::get('/womens', function () {
@@ -50,7 +50,7 @@ Route::middleware(['auth', 'role:user|admin'])->group(function () {
     });
 });
 // Route accessible for users with only Admin role
-Route::middleware(['auth','role:admin'])->group(function () {
+Route::middleware(['admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin', 'AdminIndex');
         //DataTables Routes
@@ -107,10 +107,10 @@ Route::middleware(['auth','role:admin'])->group(function () {
     });
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__.'/auth.php';
