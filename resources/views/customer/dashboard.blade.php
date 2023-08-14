@@ -39,7 +39,15 @@
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image:url({{ asset('dashboard/assets/userdashboard/img/bg-img/men.webp') }});">
                         <div class="catagory-content">
-                            <a href="#">Mens</a>
+                            <a href="/mens">Mens</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Catagory -->
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/banner.webp') }});">
+                        <div class="catagory-content">
+                            <a href="/unisex">Unisex</a>
                         </div>
                     </div>
                 </div>
@@ -76,21 +84,5 @@
     </form>
     @endif
 @endauth
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Add smooth scrolling to links with the class "scroll-link"
-        $(".scroll-link").on('click', function(event) {
-            if (this.hash !== "") {
-                event.preventDefault();
 
-                var hash = this.hash;
-                $('html, body').animate({
-                    scrollTop: $(hash).offset().top
-                }, 800, function(){
-                    window.location.hash = hash;
-                });
-            }
-        });
-    });
-</script>
+

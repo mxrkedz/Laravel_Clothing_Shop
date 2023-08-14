@@ -42,9 +42,20 @@ Route::middleware(['auth'])->group(function () {
         //     return view('customer.women');
         // });
         Route::get('womens', [CartController::class, 'getItems'])->name('getItems');
+        Route::get('mens', [CartController::class, 'getItems2'])->name('getItems2');
+        Route::get('unisex', [CartController::class, 'getItems3'])->name('getItems3');
+        Route::get('cart', [CartController::class, 'cart'])->name('cart');
+        Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove_from_cart');
+        Route::patch('update-cart', [CartController::class, 'update'])->name('update_cart');
+        Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
+
 
         // ADD TO CART
         Route::post('/addcart/{id}', [CartController::class,'addcart'])->name('addcart');
+
+        //Search
+        Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
+
 
 
     });
@@ -97,8 +108,6 @@ Route::middleware(['admin'])->group(function () {
         // Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
         // Route::get('paymentmethods/update/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
 
-        //Search
-        Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
 
 
         Route::resource("category", CategoryController::class);

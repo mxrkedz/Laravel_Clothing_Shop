@@ -1,12 +1,12 @@
 @extends('layouts.userhome')
 @section('customerguestindex')
 <!-- ##### Breadcumb Area Start ##### -->
-<div class="breadcumb_area bg-img" style="background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/breadcumb.jpg') }});">
+<div class="breadcumb_area bg-img" style="background-size: cover; background-image: url({{ asset('dashboard/assets/userdashboard/img/bg-img/banner.webp') }});">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="page-title text-center">
-                        <h2>Search Result</h2>
+                        <h2>Unisex Collection</h2>
                     </div>
                 </div>
             </div>
@@ -18,8 +18,9 @@
     <div id="categories" class="top_catagory_area section-padding-80 clearfix">
         <div class="container">
             <div class="row justify-content-center" style="display: flex; flex-wrap: wrap;">
-            @if($items->count())
                 @foreach($items as $item) 
+                
+                
                 <!-- Single Product -->
                 
                 <div class="col-12 col-sm-6 col-lg-4">
@@ -53,10 +54,7 @@
                         
 
 </div>
-                @endforeach
-                @else
-                    <p>No results found.</p>
-                @endif
+@endforeach
 </div>
 </div>
 </div>

@@ -28,4 +28,14 @@ class Item extends Model
         'sup_id',
         'cat_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'cat_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'sup_id');
+    }
 }

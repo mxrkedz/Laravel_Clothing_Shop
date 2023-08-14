@@ -13,13 +13,13 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
+            $table->id();
             $table->bigInteger('user_id')->unsigned()->index()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('item_id')->unsigned()->index()->nullable();
             $table->foreign('item_id')->references('id')->on('items');
             $table->bigInteger('quantity');
-            $table->bigInteger('sellprice');
-
+            $table->timestamps();
         });
     }
 

@@ -6,7 +6,7 @@
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="page-title text-center">
-                        <h2><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt="" style="width: 3%; margin-top: -15px;";> Cart</h2>
+                        <h2><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt="" style="width: 3%; margin-top: -15px;"> Cart</h2>
                     </div>
                 </div>
             </div>
@@ -14,139 +14,121 @@
     </div>
 </div>
     <!-- ##### Breadcumb Area End ##### -->
-
-            <!-- Cart Summary -->
-            <!-- <div class="col-12 ">
-                
-
-                    <div class="order-details-confirmation" style="margin-top: 50px">
-                        <ul class="order-details-form mb-4">
-
-
-            <div class="cart-page-heading">
-
-          <label for="username">Username (In-Game)</label>
-          
-          <input type="text" class="form-control" id="username" placeholder="Enter In-Game" name="username">
+<br>
+<div class="container">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
         </div>
-        </div>
+    @endif
+</div>
+ <!-- Cart Summary -->
+ <div class="col-12 ">
 
-</div> -->
-            <div class="col-12 ">
-                
-
-                    <div class="w-100 order-details-confirmation" style="margin-top: 50px">
-                    
-                        <div class="cart-page-heading">
-                            <h5>Review Order Details</h5>
-                            <!-- <p>The Details</p> -->
-                        </div>
-
-                        <ul class="order-details-form mb-4">
-                          
-                            <li><span><u>Product Image</u></span><span><u>Product</u></span> <span><u>Price</u></span> <span><u>Action</u></span></li>
-                            @foreach($cart as $carts)
-                            <li><span><img src="{{asset($carts->img_path)}}" alt="" width="100px" height="100px"></span><span>{{$carts->item_name}}</span> <span style="display: flex;
-  flex-direction: column;
-  align-items: center;
-  list-style: none;
-  padding: 0;">${{$carts->sell_price}}</span> 
-                                   <td class="btn-group">
-                                   <span>
-  <div style="display: inline-block; padding: 5px; margin-right: 5px;">
-    <a href="{{ route('decrement', ['id' => $carts->product_id]) }}" style="color: blue;"><i class="fa-solid fa-minus"></i></a>
-    <a style="display: inline-block; width: 20px; height: 20px; border: 2px solid black; text-align: center; line-height: 15px; margin: 0px 5px;">{{$carts->quantity}}</a>
-    <a href="{{ route('increment', ['id' => $carts->product_id]) }}" style="color: blue;"><i class="fa-solid fa-plus"></i></a>
-  </div>
-  <div style="display: inline-block; padding: 5px;">
-    <a href="{{ route('deletecart', ['id' => $carts->product_id]) }}" style="color: red;"><i class="fa-solid fa-trash" style="font-size:16px;"></i></a>
-  </div>
-</span>
-
-
-</td>
-</li>
-                            @endforeach
-                            <li><span>Total</span> <span></span> <span>${{$totalprice}}</span> <span></span></li>
-                        </ul>
-                        <form id="myform" method="POST" action="{{ route('checkout', ['id' => $user]) }}">
-    @csrf
-    <div id="accordion" role="tablist" class="mb-4">
-        <div class="card">
-            <div class="card-header" role="tab" id="headingOne">
-                <h6 class="mb-0">
-                    <select name="payment_id" id="payment_id">
-                        <option selected disabled>Select Payment Method</option>
-                        @foreach($payment as $pay)
-                        <option value={{$pay->id}}>{{$pay->name}}</option>
-                        @endforeach
-                    </select>
-                </h6>
-            </div>
-        </div>
+<div class="w-100 order-details-confirmation" style="margin-top: 50px">
+@if(session('cart') && count(session('cart')) > 0)
+    <div class="cart-page-heading">
+        <h5>Review Order Details</h5>
+        <!-- <p>The Details</p> -->
     </div>
-    <button type="submit" class="btn essence-btn" id="checkout-button"><i class="fas fa-cart-plus"></i> Checkout</button>
-</form>
 
-<script>
-    var paymentSelect = document.getElementById('payment_id');
-    var checkoutButton = document.getElementById('checkout-button');
-
-    paymentSelect.addEventListener('change', function() {
-        if (!paymentSelect.value || paymentSelect.value === 'Select Payment Method') {
-            checkoutButton.disabled = true;
-        } else {
-            checkoutButton.disabled = false;
+<table id="cart" class="table table-hover table-condensed">
+    <thead>
+        <tr>
+            <th style="width:50%">Product</th>
+            <th style="width:10%">Price</th>
+            <th style="width:8%">Quantity</th>
+            <th style="width:22%" class="text-center">Subtotal</th>
+            <th style="width:10%" >Action</th>
+        </tr>
+    </thead>
+<tbody>
+        @php $total = 0 @endphp
+        @if(session('cart'))
+            @foreach(session('cart') as $id => $details)
+                @php $total += $details['price'] * $details['quantity'] @endphp
+                <tr data-id="{{ $id }}">
+                    <td data-th="Product">
+                        <div class="row">
+                            <div class="col-sm-3 hidden-xs"><img src="{{ asset($details['img_path']) }}" width="100" height="100" class="img-responsive"/></div>
+                            <div class="col-sm-9">
+                                <h6 class="">{{ $details['item_name'] }}</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-th="Price">₱{{ $details['price'] }}</td>
+                    <td data-th="Quantity">
+                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity cart_update" min="1" />
+                    </td>
+                    <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
+                    <td class="actions" data-th="">
+                        <button class="btn btn-danger btn-sm cart_remove"><i class="fa fa-trash-o"></i> Delete</button>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" class="text-right"><h5>Total: ₱{{ $total }}</h5></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="text-right">
+                <a href="{{ url('/') }}" class="btn btn-danger"> <i class="fa fa-arrow-left"></i> Continue Shopping</a>
+                <button class="btn btn-success"><i class="fa fa-money"></i> Checkout</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+@else
+<div class="text-center">
+        <h5>Your cart is empty.</h5>
+        <a href="{{ url('/') }}" class="btn btn-success"> <i class="fa fa-arrow-left"></i> Continue Shopping</a>
+    </div>
+@endif
+</div>
+</div>
+<br>
+@endsection
+@section('cartscripts')
+<script type="text/javascript">
+   $(".cart_update").change(function (e) {
+        e.preventDefault();
+   
+        var ele = $(this);
+   
+        $.ajax({
+            url: '{{ route('update_cart') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}', 
+                id: ele.parents("tr").attr("data-id"), 
+                quantity: ele.parents("tr").find(".quantity").val()
+            },
+            success: function (response) {
+               window.location.reload();
+            }
+        });
+    });
+    $(".cart_remove").click(function (e) {
+        e.preventDefault();
+   
+        var ele = $(this);
+   
+        if(confirm("Do you really want to remove?")) {
+            $.ajax({
+                url: '{{ route('remove_from_cart') }}',
+                method: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    id: ele.parents("tr").attr("data-id")
+                },
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
         }
     });
+   
 </script>
-
-
-
-                                
-                                
-
-                    </div>
-                </div>
-
-                <style>
-		#popup {
-			display: none;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background-color: #fff;
-			padding: 20px;
-			border: 1px solid #ccc;
-			box-shadow: 0px 0px 10px #ccc;
-			z-index: 9999;
-			max-width: 150%;
-			max-height: 90%;
-			overflow-y: auto;
-		}
-        .popup-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
-			z-index: 9998;
-		}
-	</style>
-
-<script>
-		var popup = document.getElementById("popup");
-
-		function showPopup() {
-			popup.style.display = "block";
-		}
-
-		function hidePopup() {
-			popup.style.display = "none";
-		}
-	</script>
-</head>
-            
 @endsection

@@ -215,10 +215,30 @@ class ItemController extends Controller
     public function search(Request $request)
     {
         $query = $request->get('q');
-        $items = Item::search($query)->get();
+        $items = DB::table('items')
+    ->join('categories', 'items.cat_id', '=', 'categories.id')
+    ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+    ->where('items.item_name', 'LIKE', '%' . $query . '%')
+    ->select('items.id as item_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')
+    ->orderBy('items.id', 'ASC')
+    ->get();
         $categories = Category::all();
 
         return view('items.show', compact('items', 'categories'));
+    }
+
+    public function getItems()
+    {
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        $items = DB::table('items')
+        ->join('categories', 'items.cat_id', '=', 'categories.id')
+        ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+        ->whereRaw('LOWER(categories.category_name) = ?', ['Women'])//WHERE categories = men
+        ->select('items.id as item_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')->orderBy('items.id', 'ASC')
+        ->get();
+
+        return View::make(('customer.women'), compact('items'));
     }
 
 }

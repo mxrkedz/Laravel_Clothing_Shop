@@ -57,6 +57,7 @@
         <ul class="single-mega cn-col-4">
             <li><a href="/womens">Women's Collection</a></li>
             <li><a href="/mens">Men's Collection</a></li>
+            <li><a href="/unisex">Unisex Collection</a></li>
         </ul>
     </div>
 </li>
@@ -67,10 +68,20 @@
                             @endif
                             @endauth
                             <!-- <li><a href="blog.html">Blog</a></li> -->
-                            <li><form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i></button>
-</form></li>
+                            <li>
+    @auth
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <li><button type="submit" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></li>
+        </form>
+    @else
+    <form action="{{ route('login') }}">
+            @csrf
+    <li><button class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Login</button></li>
+    </form>
+
+    @endauth
+</li>
                         </ul>
                     </div>
                     <!-- Nav End -->
@@ -88,7 +99,7 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <a href="" id="essenceCartBtn" style="display:flex;justify-content:center;"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt=""></a>
+                    <a href="/cart" id="essenceCartBtn"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt="">  <span>{{ count((array) session('cart')) }}</span></a>
                 </div>
             </div>
 
@@ -159,7 +170,7 @@
         </div>
     </footer>
     <!-- ##### Footer Area End ##### -->
-
+@yield('cartscripts')
 </body>
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
