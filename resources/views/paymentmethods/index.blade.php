@@ -39,6 +39,7 @@
             <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
+                      <th scope="col" class="font-weight-bold">Image</th>
                       <th scope="col" class="font-weight-bold">Method</th>
                       <th scope="col" class="font-weight-bold">Time Created</th>
                       <th scope="col" class="font-weight-bold">Time Updated</th>
@@ -48,6 +49,7 @@
                 <tbody>
                     @foreach($pmethods as $pmethod)
                     <tr>
+                        <td><img src="{{$pmethod->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
                         <td>{{$pmethod->methods}}</td>
                         <td>{{$pmethod->created_at}}</td>
                         <td>{{$pmethod->updated_at}}</td>

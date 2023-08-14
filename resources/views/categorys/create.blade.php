@@ -22,6 +22,8 @@
             <label for="name">Category Name</label>
             <input type="text" class="form-control" id="category_title" name="category_name" placeholder="Enter Category Name" onfocus="clearPlaceholder()" onblur="restorePlaceholder()">
 
+                <label>Upload Image : </label>
+                <input type="file" name="img_path" accept='image/*' class="form-control">
         </div>
         <br>
         <button type="submit" class="btn btn-primary float-left">Submit</button>

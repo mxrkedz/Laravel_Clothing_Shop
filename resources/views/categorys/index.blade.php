@@ -39,6 +39,7 @@
             <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
+                      <th scope="col" class="font-weight-bold">Image</th>
                       <th scope="col" class="font-weight-bold">Name</th>
                       <th scope="col" class="font-weight-bold">Time Created</th>
                       <th scope="col" class="font-weight-bold">Time Updated</th>
@@ -48,6 +49,7 @@
                 <tbody>
                     @foreach($categories as $category)
                     <tr>
+                        <td><img src="{{$category->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
                         <td>{{$category->category_name}}</td>
                         <td>{{$category->created_at}}</td>
                         <td>{{$category->updated_at}}</td>

@@ -51,7 +51,7 @@
                     <tr>
                         <td>{{$shipper->ship_name}}</td>
                         <td>
-                            <img src="{{asset($shipper->img_path)}}" alt="" width="50px" height="50px" >
+                            <img src="{{asset($shipper->img_path)}}" alt="" width="100px" height="auto" >
                         </td>
                         <td>{{$shipper->created_at}}</td>
                         <td>{{$shipper->updated_at}}</td>

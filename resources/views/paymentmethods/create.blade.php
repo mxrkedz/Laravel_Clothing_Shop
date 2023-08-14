@@ -22,6 +22,8 @@
             <label for="name">Method Name</label>
             <input type="text" class="form-control" id="method_name" name="methods" placeholder="Enter Method Name" onfocus="clearPlaceholder()" onblur="restorePlaceholder()">
 
+            <label>Upload Image : </label>
+                <input type="file" name="img_path" accept='image/*' class="form-control">
         </div>
         <br>
         <button type="submit" class="btn btn-primary float-left">Submit</button>

@@ -64,6 +64,7 @@ class CategoryController extends Controller
     {
         $rules = [
             'category_name' => 'required|min:3',
+            'img_path'    =>  'required|image',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
@@ -74,6 +75,20 @@ class CategoryController extends Controller
         $categories = new Category();
 
         $categories->category_name = $request->category_name;
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $categories->img_path = '/storage/images/' . $fileName;
+
+        }
 
         $categories->save();
         return redirect()->route('category.index')->with('added', 'Added!');
@@ -152,6 +167,7 @@ class CategoryController extends Controller
     {
         $rules = [
             'category_name' => 'required|max:255|min:3',
+            'img_path'    =>  'required|image',
         ];
         $messages = [
             'category_name.required' => 'Please enter category name.',
@@ -162,6 +178,20 @@ class CategoryController extends Controller
             $validatedData = $request->validate($rules, $messages);
             $categories = Category::find($id);
 
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+                // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+                // dd($fileName,$filePath);
+
+                $path = Storage::putFileAs(
+                    'public/images',
+                    $request->file('img_path'),
+                    $fileName
+                );
+                $categories->img_path = '/storage/images/' . $fileName;
+
+            }
             $categories->category_name = $request->category_name;
 
             $categories->save();

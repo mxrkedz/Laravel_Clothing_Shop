@@ -7,7 +7,8 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
+@section('active_menu', 'ship')
+@section('active_menu', 'dt')
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 <h4 class="fw-bold py-3 mb-4">Data Tables <span class="text-muted fw-light">/ Shipping</span></h4> <!--Change "Payment Methods" -->

@@ -11,6 +11,8 @@
         <div class="form-group row">
           <label for="method_name">Method Name</label>
           <input type="text" class="form-control" id="method_name"  name="methods" placeholder="" value="{{$pmethods->methods}}">
+          <label>Upload Image : </label>
+                <input type="file" name="img_path" accept='image/*' class="form-control">
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>

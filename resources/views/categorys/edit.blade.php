@@ -11,6 +11,8 @@
         <div class="form-group row">
           <label for="category_name">Category Name</label>
           <input type="text" class="form-control" id="category_name"  name="category_name" placeholder="" value="{{$categories->category_name}}">
+          <label>Upload Image : </label>
+                <input type="file" name="img_path" accept='image/*' class="form-control">
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>

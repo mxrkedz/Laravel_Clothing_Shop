@@ -80,6 +80,7 @@ class PaymentMethodController extends Controller
     {
         $rules = [
             'methods' => 'required|max:255|min:3',
+            'img_path'    =>  'required|image',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
@@ -90,6 +91,20 @@ class PaymentMethodController extends Controller
         $pmethods = new PaymentMethod();
 
         $pmethods->methods = $request->methods;
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+            // dd($fileName,$filePath);
+
+            $path = Storage::putFileAs(
+                'public/images',
+                $request->file('img_path'),
+                $fileName
+            );
+            $pmethods->img_path = '/storage/images/' . $fileName;
+
+        }
 
         $pmethods->save();
         return redirect()->route('paymentmethods.index')->with('added', 'Added!');
@@ -168,6 +183,7 @@ class PaymentMethodController extends Controller
     {
         $rules = [
             'methods' => 'required|max:255|min:3',
+            'img_path'    =>  'required|image',
         ];
         $messages = [
             'methods.required' => 'Please enter payment method name.',
@@ -176,6 +192,21 @@ class PaymentMethodController extends Controller
         try {
             $validatedData = $request->validate($rules, $messages);
             $pmethods = PaymentMethod::find($id);
+
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
+
+                // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
+                // dd($fileName,$filePath);
+
+                $path = Storage::putFileAs(
+                    'public/images',
+                    $request->file('img_path'),
+                    $fileName
+                );
+                $pmethods->img_path = '/storage/images/' . $fileName;
+
+            }
 
             $pmethods->methods = $request->methods;
 

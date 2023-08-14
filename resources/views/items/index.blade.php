@@ -52,7 +52,7 @@
                 <tbody>
                     @foreach($items as $item)
                     <tr>
-                        <td><img src="{{$item->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
+                        <td><img src="{{$item->img}}" class="img-thumbnail" width="100" height="100" ></td>
                         <td>{{$item->item_name}}</td>
                         <td>{{$item->sellprice}}</td>
                         <td>{{$item->category_name}}</td>
@@ -65,8 +65,8 @@
         <i class="fas fa-ellipsis-v fa-lg"></i>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 100px;">
-        <a class="dropdown-item" href="{{route('items.edit',$item->id)}}"><i class="fas fa-edit fa-lg" style="color: #FFAE42;"></i> Edit</a>
-        <form style="margin-bottom: 0;" action="{{route('items.destroy',$item->id)}}" method="POST">
+        <a class="dropdown-item" href="{{route('items.edit',$item->it_id)}}"><i class="fas fa-edit fa-lg" style="color: #FFAE42;"></i> Edit</a>
+        <form style="margin-bottom: 0;" action="{{route('items.destroy',$item->it_id)}}" method="POST">
             @method('DELETE')
             @csrf
             <button type="submit" class="dropdown-item"><i class="fas fa-trash fa-lg" style="color: #ff0000;"></i> Delete</button>

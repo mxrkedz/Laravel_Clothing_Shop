@@ -144,8 +144,8 @@
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/shippers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
-                    <div data-i18n="shipping">Shipping</div>
+                  <a href="/shippers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'ship') active @endif">
+                    <div data-i18n="ship">Shipping</div>
                   </a>
                 </li>
               </ul>

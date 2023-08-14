@@ -32,7 +32,7 @@ class ItemController extends Controller
         $items = DB::table('items')
         ->join('categories', 'items.cat_id', '=', 'categories.id')
         ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-        ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+        ->select('items.id as it_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')
         ->orderBy('items.id', 'ASC')->get();
         return View::make('items.index', compact('categories', 'items', 'suppliers'));
 
@@ -137,8 +137,15 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        $items =  Item::find($id);
-        return view('items.edit', compact('items'));
+        $item = DB::table('items')
+        ->join('categories', 'items.cat_id', '=', 'categories.id')
+        ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+        ->select('items.id as it_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')
+        ->where('items.id', $id)
+       ->first();
+        $suppliers = Supplier::where('id', '<>', $item->sup_id)->get(['sup_name','id']);
+        $categories = Category::where('id', '<>', $item->cat_id)->get(['category_name','id']);
+        return view('items.edit', compact('item', 'suppliers', 'categories'));
     }
 
     /**
@@ -153,6 +160,8 @@ class ItemController extends Controller
         $rules = [
             'item_name' => 'required|min:3',
             'sellprice' => 'required',
+            'sup_id' => 'required',
+            'cat_id' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages = [
