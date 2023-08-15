@@ -14,7 +14,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Clothing Shop</title>
+    <title>TwentyO'2 | Admin Dashboard</title>
 
     <meta name="description" content="" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('dashboard/assets/img/elements/mxrkedzLogo.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('dashboard/assets/userdashboard/img/core-img/brand1.png') }}" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

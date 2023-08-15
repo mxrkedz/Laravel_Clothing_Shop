@@ -15,6 +15,68 @@ use Validator;
 
 class CartController extends Controller
 {
+    public function addItem(Request $request)
+    {
+        $item_id = $request->input('item_id');
+        $quantity = $request->input('quantity');
+
+        if(Auth::check()) {
+
+            $item_check = Item::where('id', $item_id)->first();
+
+            if($item_check) {
+                if (Cart::where('item_id', $item_id)->where('user_id', Auth::id())->exists()) {
+                    return response()->json(['status' => $item_check->item_name." already added to cart!"]);
+                } else {
+                    $cartItem = new Cart();
+                    $cartItem->item_id = $item_id;
+                    $cartItem->user_id = Auth::id();
+                    $cartItem->quantity = $quantity;
+                    $cartItem->save();
+                    return response()->json(['status' => $item_check->item_name." added to cart!"]);
+                }
+            }
+        } else {
+            return response()->json(['status' => "Login To Continue!"]);
+        }
+    }
+
+    public function viewCart()
+    {
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+        return view('customer.cart', compact('cartItems'));
+    }
+
+    public function deleteItem(Request $request)
+    {
+        if(Auth::check()) {
+            $item_id = $request->input('item_id');
+            if(Cart::where('item_id', $item_id)->where('user_id', Auth::id())->exists()) {
+                $cartItem = Cart::where('item_id', $item_id)->where('user_id', Auth::id())->first();
+                $cartItem->delete();
+                return response()->json(['status' => "Item Removed Successfully!"]);
+            }
+        } else {
+            return response()->json(['status' => "Login To Continue!"]);
+        }
+    }
+
+    public function updateCart(Request $request)
+    {
+        $item_id = $request->input('item_id');
+        $quantity = $request->input('quantity');
+
+        if(Auth::check()) {
+            if(Cart::where('item_id', $item_id)->where('user_id', Auth::id())->exists()) {
+                $cart = Cart::where('item_id', $item_id)->where('user_id', Auth::id())->first();
+                $cart->quantity = $quantity;
+                $cart->update();
+
+                return response()->json(['status' => "Quantity Updated!"]);
+            }
+        }
+    }
+
     public function addCart($id)
     {
         // if(Auth::id()) {

@@ -20,12 +20,17 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- CSRF TOKEN -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon  -->
     <link rel="icon" href="{{ asset('dashboard/assets/userdashboard/img/core-img/brand1.png') }}   ">
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/css/core-style.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/css/style.css') }}">
+
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -99,7 +104,7 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <a href="/cart" id="essenceCartBtn"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt="">  <span>{{ count((array) session('cart')) }}</span></a>
+                    <a href="/cart" id="essenceCartBtn"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt=""></a>
                 </div>
             </div>
 
@@ -171,10 +176,11 @@
     </footer>
     <!-- ##### Footer Area End ##### -->
 @yield('cartscripts')
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
-    <script src="js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
     <script src="js/popper.min.js"></script>
     <!-- Bootstrap js -->
@@ -187,6 +193,9 @@
     <script src="js/active.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- custom js -->
+        <script src="{{ asset('dashboard/assets/js/cart.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         // Add smooth scrolling to links with the class "scroll-link"

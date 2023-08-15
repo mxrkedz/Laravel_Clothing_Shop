@@ -12,14 +12,12 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id')->unsigned()->index()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::create('orderlines', function (Blueprint $table) {
             $table->bigInteger('item_id')->unsigned()->index()->nullable();
             $table->foreign('item_id')->references('id')->on('items');
+            $table->bigInteger('orderinfo_id')->unsigned()->index()->nullable();
+            $table->foreign('orderinfo_id')->references('id')->on('orders');
             $table->bigInteger('quantity');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +28,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('orderlines');
     }
 };

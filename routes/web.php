@@ -10,6 +10,7 @@ use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,20 +42,29 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/womens', function () {
         //     return view('customer.women');
         // });
+        //ITEMS VIEW
         Route::get('womens', [CartController::class, 'getItems'])->name('getItems');
         Route::get('mens', [CartController::class, 'getItems2'])->name('getItems2');
         Route::get('unisex', [CartController::class, 'getItems3'])->name('getItems3');
-        Route::get('cart', [CartController::class, 'cart'])->name('cart');
-        Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove_from_cart');
-        Route::patch('update-cart', [CartController::class, 'update'])->name('update_cart');
-        Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
 
-
-        // ADD TO CART
-        Route::post('/addcart/{id}', [CartController::class,'addcart'])->name('addcart');
+        //CART
+        Route::post('add-to-cart', [CartController::class, 'addItem']);
+        Route::post('delete-cart-item', [CartController::class, 'deleteItem']);
+        Route::post('update-cart', [CartController::class, 'updateCart']);
+        Route::get('cart', [CartController::class, 'viewCart']);
+        Route::get('checkout', [CheckoutController::class, 'index']);
+        Route::post('place-order', [CheckoutController::class, 'placeOrder'])->name('place-order');
 
         //Search
         Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
+
+        // Route::get('cart', [CartController::class, 'cart'])->name('cart');
+        // Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove_from_cart');
+        // Route::patch('update-cart', [CartController::class, 'update'])->name('update_cart');
+        // Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
+        // ADD TO CART
+        // Route::post('/addcart/{id}', [CartController::class,'addcart']);
+
 
 
 
