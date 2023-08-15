@@ -11,7 +11,7 @@ class Stock extends Model
 
     protected $table = 'stocks';
 
-    protected $primaryKey = "id";
+    protected $primaryKey = "item_id";
     public function item()
     {
         return $this->belongsTo(Item::class, 'id');

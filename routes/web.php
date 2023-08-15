@@ -125,6 +125,7 @@ Route::middleware(['admin'])->group(function () {
         Route::resource("items", ItemController::class);
         Route::resource("shippers", ShipperController::class);
         Route::resource("suppliers", SupplierController::class);
+        Route::resource("stocks", StockController::class);
 
     });
 });

@@ -26,7 +26,12 @@ class StockController extends Controller
      */
     public function index()
     {
-        // FOR CRUD
+        $items = Item::all();
+
+        $stocks = DB::table('items')
+            ->join('stocks', 'items.id', 'stocks.item_id')->get();
+
+            return View::make('stocks.index', compact('stocks', 'items'));
     }
 
     public function datatable(Request $request)
@@ -60,6 +65,9 @@ class StockController extends Controller
     {
         // $items = Item::all();
         // return View::make('items.create', compact('items'));
+        $items = Item::all();
+
+        return View::make('stocks.create', compact('items'));
     }
 
     /**
@@ -70,7 +78,36 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'quantity' => 'required|numeric|min:0',
+        ];
+        $messages = [
+            'quantity.required' => 'Please enter Quantity.',
+            'quantity.numeric' => 'Quantity must be a number.',
+            'quantity.min' => 'Quantity must be at least :min.',
+
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $stock = new Stock;
+            $stock->item_id = $request->item_id;
+            $stock->quantity = $request->quantity;
+            $stock->save();
+
+        // $findStock = Stock::find($request->item_id);
+        // if (!$findStock) {
+        //     $stock = new Stock;
+        //     $stock->item_id = $request->item_id;
+        //     $stock->quantity = $request->quantity;
+        //     $stock->save();
+        // } else {
+        //     $findStock->quantity = $findStock->quantity + $request->quantity;
+        //     $findStock->save();
+        // }
+        return redirect()->route('stocks.index');
     }
 
     public function store2(Request $request)
@@ -116,7 +153,16 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        // FOR CRUD
+        $stock = DB::table('items AS is')
+            ->select('is.id', 'ss.item_id', 'is.item_name', 'ss.quantity')
+            ->join('stocks AS ss', 'ss.item_id', '=', 'is.id')
+            ->where('ss.item_id', $id)
+            ->first();
+        // dd($stock);
+
+        $items = Item::where('id', '<>', $stock->item_id)->get(['item_name', 'id']);
+
+        return View::make('stocks.edit', compact('items', 'stock'));
     }
 
     public function edit2($id)
@@ -138,9 +184,28 @@ class StockController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+{
+    $stock = DB::table('items AS is')
+        ->select('is.id', 'ss.item_id', 'is.item_name', 'ss.quantity')
+        ->join('stocks AS ss', 'ss.item_id', '=', 'is.id')
+        ->where('ss.item_id', $id)
+        ->first();
+
+    if (!$stock) {
+        // Handle the case where the stock doesn't exist for the given item
+        // You might want to return an error response or redirect with a message
     }
+
+    $stockQuantity = $stock->quantity + $request->quantity;
+
+    // Update the stock quantity
+    DB::table('stocks')
+        ->where('item_id', $id)
+        ->update(['quantity' => $stockQuantity]);
+
+    return redirect()->route('stocks.index')->with('updated', 'Updated!');
+}
+
 
     public function update2(Request $request)
     {
@@ -174,6 +239,7 @@ class StockController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Stock::destroy($id);
+        return back();
     }
 }
