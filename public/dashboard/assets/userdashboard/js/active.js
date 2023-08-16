@@ -133,10 +133,7 @@
         $(".cart-list, .cart-content").niceScroll();
     }
 
-    // :: wow Active Code
-    if ($window.width() > 767) {
-        new WOW().init();
-    }
+
 
     // :: Tooltip Active Code
     if ($.fn.tooltip) {

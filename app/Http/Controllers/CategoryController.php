@@ -292,7 +292,7 @@ class CategoryController extends Controller
         $data_array [] = array("id","category_name","img_path","created_at","updated_at");
         foreach($data as $data_item) {
             $data_array[] = array(
-                'id' =>$data_item->id,
+                'id' => $data_item->id,
                 'category_name' => $data_item->category_name,
                 'img_path' => $data_item->img_path,
                 'created_at' => $data_item->created_at,
@@ -319,7 +319,7 @@ class CategoryController extends Controller
             $data = array();
             foreach ($row_range as $row) {
                 $data[] = [
-                    'id' =>$sheet->getCell('A' . $row)->getValue(),
+                    'id' => $sheet->getCell('A' . $row)->getValue(),
                     'category_name' => $sheet->getCell('B' . $row)->getValue(),
                     'img_path' => $sheet->getCell('C' . $row)->getValue(),
                     'created_at' => $sheet->getCell('D' . $row)->getValue(),

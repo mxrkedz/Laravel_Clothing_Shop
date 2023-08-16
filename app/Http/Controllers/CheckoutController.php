@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\PaymentMethod;
 use App\Models\Order;
+use App\Models\Stock;
 use App\Models\Orderline;
 use App\Models\User;
 use App\Models\Shipper;
@@ -28,20 +29,20 @@ class CheckoutController extends Controller
     {
         $order = new Order();
 
-        // $pmethod_id = $request->input('pmethod_id');
-        // $shipper_id = $request->input('shipper_id');
+        $pmethod_id = $request->input('pmethod_id');
+        $shipper_id = $request->input('shipper_id');
 
-        // if ($pmethod_id == "Select Payment Method") {
-        //     return redirect()->back()->with('message', 'Please select a payment method.');
-        // }
-        // if ($shipper_id == "Select Shipper") {
-        //     return redirect()->back()->with('message', 'Please select a shipping courier.');
-        // }
-        // $ship = $request->shipper_id;
-        // $pm = $request->pmethod_id;
+        if ($pmethod_id == "Select Payment Method") {
+            return redirect()->back()->with('message', 'Please select a payment method.');
+        }
+        if ($shipper_id == "Select Shipper") {
+            return redirect()->back()->with('message', 'Please select a shipping courier.');
+        }
+        $ship = $request->shipper_id;
+        $pm = $request->pmethod_id;
 
-        // $order->pm_id = $pm;
-        // $order->ship_id = $ship;
+        $order->pm_id = $pm;
+        $order->ship_id = $ship;
 
         $order->fname = $request->input('fname');
         $order->lname = $request->input('lname');
@@ -59,10 +60,20 @@ class CheckoutController extends Controller
 
         $cartitems = Cart::where('user_id', Auth::id())->get();
         foreach($cartitems as $item) {
+            $orderLineQuantity = $item->quantity;
+
+            // Find the item's stock and update the quantity
+            $stock = Stock::where('item_id', $item->item_id)->first();
+            if ($stock) {
+                $stock->quantity -= $orderLineQuantity;
+                $stock->save();
+            }
             Orderline::create([
-                'item_id' => $item->items->id,
+                'item_id' => $item->item_id,
                 'orderinfo_id' => $order->id,
                 'quantity' => $item->quantity
+
+
             ]);
         }
 
@@ -79,8 +90,15 @@ class CheckoutController extends Controller
             $user->postcode = $request->input('postcode');
             $user->update();
         }
+        Cart::where('user_id', Auth::id())->delete();
 
-        return response()->json(['success' => true, 'message' => 'Your order has been placed successfully.']);
+        // return response()->json(['success' => true, 'message' => 'Your order has been placed successfully.']);
+        return redirect()->route('order.success');
 
+    }
+
+    public function success()
+    {
+        return view('transact.success');
     }
 }

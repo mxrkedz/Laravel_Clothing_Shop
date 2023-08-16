@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('cart', [CartController::class, 'viewCart']);
         Route::get('checkout', [CheckoutController::class, 'index']);
         Route::post('place-order', [CheckoutController::class, 'placeOrder'])->name('place-order');
+        Route::get('order-success', [CheckoutController::class, 'success'])->name('order.success');
 
         //Search
         Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');

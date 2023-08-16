@@ -28,10 +28,9 @@
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/css/core-style.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/userdashboard/js/bootstrap.min.js') }}">
 
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -181,20 +180,21 @@
 </body>
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Classy Nav js -->
-    <script src="js/classy-nav.min.js"></script>
-    <!-- Active js -->
-    <script src="js/active.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Popper js -->
+    <script src="dashboard/assets/userdashboard/js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="dashboard/assets/userdashboard/js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="dashboard/assets/userdashboard/js/plugins.js"></script>
+    <!-- Classy Nav js -->
+    <script src="dashboard/assets/userdashboard/js/classy-nav.min.js"></script>
+    <!-- Active js -->
+    <script src="dashboard/assets/userdashboard/js/active.js"></script>
+
         <!-- custom js -->
-        <script src="{{ asset('dashboard/assets/js/cart.js') }}"></script>
+        <script src="dashboard/assets/js/cart.js"></script>
 
 <script>
     $(document).ready(function() {

@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     $('.addToCartBtn').click(function (e) {
         e.preventDefault();
@@ -6,15 +5,12 @@ $(document).ready(function(){
         var item_id = $(this).closest('.item_data').find('.item_id').val();
         var quantity = $(this).closest('.item_data').find('.qty-input').val();
 
-        // alert('Item ID: ' + item_id);
-        // alert('Quantity: ' + quantity);
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
+
         $.ajax({
             method: "POST",
             url: "/add-to-cart",
@@ -31,32 +27,31 @@ $(document).ready(function(){
     $('.increment-btn').click(function (e) {
         e.preventDefault();
 
-        // var inc_value = $('.qty-input').val();
         var inc_value = $(this).closest('.item_data').find('.qty-input').val();
+        var item_id = $(this).closest('.item_data').find('.item_id').val();
+        
         var value = parseInt(inc_value, 10);
-        value = isNaN(value) ? 0 : value; // Corrected: isNaN, not isNav
+        value = isNaN(value) ? 0 : value;
         if(value < 10)
         {
             value++;
-            // $('.qty-input').val(value);
             $(this).closest('.item_data').find('.qty-input').val(value);
-
+            updateQuantityOnServer(item_id, value); // Call here
         }
     });
 
     $('.decrement-btn').click(function (e) {
         e.preventDefault();
 
-        // var dec_value = $('.qty-input').val();
         var dec_value = $(this).closest('.item_data').find('.qty-input').val();
+        var item_id = $(this).closest('.item_data').find('.item_id').val();
         var value = parseInt(dec_value, 10);
-        value = isNaN(value) ? 0 : value; // Corrected: isNaN, not isNav
+        value = isNaN(value) ? 0 : value;
         if(value > 1)
         {
             value--;
-            // $('.qty-input').val(value);
             $(this).closest('.item_data').find('.qty-input').val(value);
-
+            updateQuantityOnServer(item_id, value); // Call here
         }
     });
 
@@ -68,6 +63,7 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         var item_id = $(this).closest('.item_data').find('.item_id').val();
         $.ajax({
             method:"POST",
@@ -80,33 +76,26 @@ $(document).ready(function(){
                 window.location.reload();
                 swal("",response.status, "success");
             }
-        })
+        });
     });
 
-    $('.changeQuantity').click(function (e) {
-        e.preventDefault();
-
+    function updateQuantityOnServer(item_id, new_quantity) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        var item_id = $(this).closest('.item_data').find('.item_id').val();
-        var quantity = $(this).closest('.item_data').find('.qty-input').val();
-
         $.ajax({
-            method:"POST",
-            url:"update-cart",
-            data:{
-                'item_id' : item_id,
-                'quantity' : quantity,
+            method: "POST",
+            url: "/update-cart",
+            data: {
+                'item_id': item_id,
+                'quantity': new_quantity,
             },
-            success: function (response){
-                // alert(response)
-                window.location.reload();
-                // swal("",response.status, "success");
+            success: function(response) {
+                // Handle the server response if needed
             }
-        })
-    });
-});//
+        });
+    }
+});

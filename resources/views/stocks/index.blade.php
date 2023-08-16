@@ -10,7 +10,7 @@
 @section('active_menu', 'manage')
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4">Manage <span class="text-muted fw-light">/ Category</span></h4>
+<h4 class="fw-bold py-3 mb-4">Manage <span class="text-muted fw-light">/ Stocks</span></h4>
     <div class="card">
         <div class="card-body">   
           @if(Session::has('added'))
@@ -34,12 +34,21 @@
     </div>
 </div>
 @endif
+@if(Session::has('error'))
+    <div class="container text-white rounded align-items-center float-end" style="background-color: #ff4545; max-width: 175px;">
+        <div class="container-body">
+            <p class="container-text text-center">{{ Session::get('error') }}</p>
+    </div>
+</div>
+@endif
+
 
             <p><a href="{{route('stocks.create')}}" class="btn btn-primary btn-lg float-start" role="button" aria-disabled="true" style="text-align: right; margin-bottom: 20px;">Create New</a></p>
             <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
-                      <th scope="col" class="font-weight-bold">Item ID</th>
+                      <th scope="col" class="font-weight-bold">Image</th>
+                      <th scope="col" class="font-weight-bold">Name</th>
                       <th scope="col" class="font-weight-bold">Quantity</th>
                       <th scope="col" class="font-weight-bold">Description</th>
                       <th scope="col" class="font-weight-bold">Action</th>
@@ -48,7 +57,8 @@
                 <tbody>
                     @foreach($stocks as $stock)
                     <tr>
-                        <td>{{$stock->item_id}}</td>
+                        <td><img src="{{$stock->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
+                        <td>{{$stock->item_name}}</td>
                         <td>{{$stock->quantity}}</td>
                         <td>{{$stock->created_at}}</td>
                         <td>{{$stock->updated_at}}</td>

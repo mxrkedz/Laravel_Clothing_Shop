@@ -18,6 +18,8 @@
     <!-- ##### Breadcumb Area End ##### -->
 
     <!-- ##### Checkout Area Start ##### -->
+    <form action="{{ url('place-order') }}" method="POST" id="checkout-form">
+        @csrf
     <div class="checkout_area section-padding-80">
         <div class="container">
             <div class="row">
@@ -29,8 +31,6 @@
                             <h5>Billing Address</h5>
                         </div>
 
-                        <form action="{{ url('place-order') }}" method="POST" id="checkout-form">
-                            @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="first_name">First Name <span>*</span></label>
@@ -131,6 +131,3 @@
 
     <!-- ##### Checkout Area End ##### -->
 @endsection
-<script>
-    
-</script>

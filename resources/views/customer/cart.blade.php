@@ -18,6 +18,10 @@
     <div class="card shadow">
         <div class="card-body">
             @php $total = 0; @endphp
+            @if($cartItems->isEmpty())
+                <p>Your Cart is Empty</p>
+                <a href="/"class="btn btn-outline-success float-end">Continue Shopping</a>
+            @else
             @foreach($cartItems as $item)
             <div class="row item_data">
                 <div class="col-md-2 my-auto">
@@ -50,7 +54,9 @@
             <h6>Total Price : ₱ {{ $total }}
             </h6>
             <a href="/checkout"class="btn btn-outline-success float-end">Proceed to Checkout</a>
+            @endif
         </div>
+        
     </div>
 </div>
 @endsection
