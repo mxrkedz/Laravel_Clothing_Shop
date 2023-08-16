@@ -11,6 +11,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ChartsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,10 +124,15 @@ Route::middleware(['admin'])->group(function () {
 
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);
-        Route::resource("items", ItemController::class);
+        Route::resource("items", ItemController::class)->middleware('role:admin,user');;
         Route::resource("shippers", ShipperController::class);
         Route::resource("suppliers", SupplierController::class);
         Route::resource("stocks", StockController::class);
+
+        //charts
+        Route::get('/charts',[ChartsController::class, 'index'])->name('admin.dashboard');
+
+        
 
     });
 });
