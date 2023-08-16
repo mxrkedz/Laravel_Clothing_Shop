@@ -34,41 +34,41 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="first_name">First Name <span>*</span></label>
-                                    <input type="text" class="form-control" name="fname" id="first_name" value="" required>
+                                    <input type="text" class="form-control" name="fname" id="first_name" value="{{ Auth::user()->name}}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="last_name">Last Name <span>*</span></label>
-                                    <input type="text" class="form-control" name="lname" id="last_name" value="" required>
+                                    <input type="text" class="form-control" name="lname" id="last_name" value="{{ Auth::user()->lname}}" required>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="country">Country <span>*</span></label>
-                                    <input type="text" class="form-control" name="country" id="last_name" value="" required>
+                                    <input type="text" class="form-control" name="country" id="last_name" value="{{ Auth::user()->country}}" required>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="street_address">Address 1 <span>*</span></label>
-                                    <input type="text" class="form-control mb-3" name="address1" id="street_address" value="">
+                                    <input type="text" class="form-control mb-3" name="address1" id="street_address" value="{{ Auth::user()->address1}}">
                                     <label for="street_address">Address 2 <span>*</span></label>
-                                    <input type="text" class="form-control" name="address2" id="street_address2" value="">
+                                    <input type="text" class="form-control" name="address2" id="street_address2" value="{{ Auth::user()->address2}}">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="postcode">Postcode <span>*</span></label>
-                                    <input type="text" class="form-control" name="postcode" id="postcode" value="">
+                                    <input type="text" class="form-control" name="postcode" id="postcode" value="{{ Auth::user()->postcode}}">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="city">Town/City <span>*</span></label>
-                                    <input type="text" class="form-control" name="city" id="city" value="">
+                                    <input type="text" class="form-control" name="city" id="city" value="{{ Auth::user()->city}}">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="state">Province <span>*</span></label>
-                                    <input type="text" class="form-control" name="province" id="state" value="">
+                                    <input type="text" class="form-control" name="province" id="state" value="{{ Auth::user()->province}}">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="phone_number">Phone No <span>*</span></label>
-                                    <input type="text" class="form-control" name="phone" id="phone_number">
+                                    <input type="text" class="form-control" name="phone" id="phone_number" value="{{ Auth::user()->phone}}">
                                 </div>
                                 <div class="col-12 mb-4">
                                     <label for="email_address">Email Address <span>*</span></label>
-                                    <input type="email" class="form-control" name="email" id="email_address" value="">
+                                    <input type="email" class="form-control" name="email" id="email_address" value="{{ Auth::user()->email}}">
                                 </div>
                             </div>
                         </form>

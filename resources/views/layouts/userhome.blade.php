@@ -56,7 +56,7 @@
                     <div class="classynav" style="position: relative;">
                         <ul>
                         <li><a href="/home">Home</a></li>
-                        <li><a href='/#categories' class="scroll-link">Shop</a>
+                        <li><a href='/home #categories' id="shopLink" class="scroll-link">Shop</a>
     <div class="dropdown" style="top: 60px; max-height: 400px; overflow-y: auto; margin-left: 25px;">
         <ul class="single-mega cn-col-4">
             <li><a href="/womens">Women's Collection</a></li>
@@ -103,7 +103,7 @@
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <a href="/cart" id="essenceCartBtn"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt=""></a>
+                    <a href="/cart" id="essenceCartBtn"><img src="{{ asset('dashboard/assets/userdashboard/img/core-img/bag.svg') }}" alt=""><span id="cartItemCount">0</span></a>
                 </div>
             </div>
 
@@ -211,6 +211,24 @@
                 });
             }
         });
+    });
+
+    // Fetch the cart item count and update the cart icon
+    $(document).ready(function () {
+        fetchCartItemCount();
+
+        function fetchCartItemCount() {
+            $.ajax({
+                url: "{{ route('cart.count') }}", // Replace with the actual route
+                method: 'GET',
+                success: function (response) {
+                    $('#cartItemCount').text(response.count);
+                }
+            });
+        }
+
+        // You can call this function whenever you add/remove items to/from the cart to update the quantity
+        // fetchCartItemCount();
     });
 </script>
 </html>

@@ -205,4 +205,14 @@ class CartController extends Controller
         return View::make(('customer.unisex'), compact('items'));
     }
 
+    public function getCartItemCount()
+    {
+        if (Auth::check()) {
+            $cartItemCount = Cart::where('user_id', Auth::id())->sum('quantity');
+            return response()->json(['count' => $cartItemCount]);
+        } else {
+            return response()->json(['count' => 0]);
+        }
+    }
+
 }

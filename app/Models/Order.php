@@ -35,4 +35,9 @@ class Order extends Model
         return $this->belongsTo(PaymentMethod::class, 'pm_id', 'id');
     }
 
+    public function items()
+    {
+        return $this->belongsToMany(Item::class, 'orderlines', 'orderinfo_id', 'item_id')->withPivot('quantity');
+    }
+
 }
