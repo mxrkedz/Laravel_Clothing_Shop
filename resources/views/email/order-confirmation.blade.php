@@ -14,13 +14,13 @@
     <p>Date: {{ $order->created_at }}</p>
     <p>Products Ordered: </p>
     @foreach ($order->items as $orderItems)
-    <p>{{ $orderItems->item_name }} x{{$orderItems->pivot->quantity}} - PHP {{ $orderItems->pivot->quantity * $orderItems->sellprice }}</p>
+    <p>{{ $orderItems->item_name }} x{{$orderItems->pivot->quantity}} - PHP {{ number_format($orderItems->pivot->quantity * $orderItems->sellprice,2) }}</p>
     @endforeach
     @php $total = 0 @endphp
     @foreach ($order->items as $orderItems)
         @php $total +=  $orderItems->sellprice * $orderItems->pivot->quantity @endphp
     @endforeach
-    <h2>Total : ₱ {{ $total }}</h2>
+    <h2>Total : ₱ {{ number_format($total, 2) }}</h2>
     <br>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">

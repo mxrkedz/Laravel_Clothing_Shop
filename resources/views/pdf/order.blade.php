@@ -57,8 +57,8 @@
             <tr>
                 <td>{{ $orderItem->item_name }}</td>
                 <td>{{ $orderItem->pivot->quantity }}</td>
-                <td>PHP {{ $orderItem->sellprice }}</td>
-                <td>PHP {{ $orderItem->pivot->quantity * $orderItem->sellprice }}</td>
+                <td>PHP {{ number_format($orderItem->sellprice,2) }}</td>
+                <td>PHP {{ number_format($orderItem->pivot->quantity * $orderItem->sellprice,2) }}</td>
                 @php $total += $orderItem->pivot->quantity * $orderItem->sellprice; @endphp
             </tr>
             @endforeach
@@ -66,7 +66,7 @@
         <tfoot>
             <tr>
                 <th colspan="3">Total:</th>
-                <td>PHP {{ $total }}</td>
+                <td>PHP {{ number_format($total,2) }}</td>
             </tr>
         </tfoot>
     </table>
