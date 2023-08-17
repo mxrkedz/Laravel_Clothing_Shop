@@ -19,14 +19,14 @@
 
 
              <div class="col-sm-6 col-md-6">
-                <h2>TownDemographics</h2>
+                <h2>Orders Demographics</h2>
 
 
-                @if (empty($townChart))
+                @if (empty($orderChart))
                     <div></div>
                 @else
-                    <div>{!! $townChart->container() !!}</div>
-                    {!! $townChart->script() !!}
+                    <div>{!! $orderChart->container() !!}</div>
+                    {!! $orderChart->script() !!}
                 @endif
             </div>
 

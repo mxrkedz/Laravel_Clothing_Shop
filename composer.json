@@ -7,12 +7,7 @@
     "require": {
         "php": "^8.0.2",
         "algolia/algoliasearch-client-php": "3.*",
-<<<<<<< HEAD
-        "consoletvs/charts": "6.*",
-=======
-        "barryvdh/laravel-debugbar": "^3.8",
         "barryvdh/laravel-dompdf": "^2.0",
->>>>>>> 5daf809cc39304d8d71f2c7fd2f183bc463d7c58
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

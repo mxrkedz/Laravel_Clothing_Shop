@@ -4,11 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "9d3e93adf82c2d0119ecf19ccbe11eb5",
-=======
     "content-hash": "67a45df168a5a392bac19d6945a48ed6",
->>>>>>> 5daf809cc39304d8d71f2c7fd2f183bc463d7c58
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2753,8 +2750,6 @@
             "time": "2022-12-02T22:17:43+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "masterminds/html5",
             "version": "2.8.1",
             "source": {
@@ -2888,7 +2883,6 @@
             "time": "2023-02-04T15:27:00+00:00"
         },
         {
->>>>>>> 5daf809cc39304d8d71f2c7fd2f183bc463d7c58
             "name": "monolog/monolog",
             "version": "2.9.1",
             "source": {

@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Charts\SupplierChart;
-use App\Charts\TownChart;
+use App\Charts\OrderChart;
 use App\Charts\SalesChart;
 use App\Charts\ItemChart;
 use Barryvdh\Debugbar\Facade as DebugBar;
@@ -96,24 +96,28 @@ class ChartsController extends Controller
         ]);
 
 
-        $town = DB::table('customers')
-            ->whereNotNull('address')
-            ->groupBy('address')
-            ->orderBy('address', 'ASC')
-            ->pluck(DB::raw('count(address) as total'), 'address')
+        $order = DB::table('orders')
+            ->whereNotNull('created_at')
+            ->groupBy('created_at')
+            ->orderBy(DB::raw('day(created_at)'), 'ASC')
+            ->pluck(
+                DB::raw('count(created_at) as total'),
+                DB::raw('dayname(created_at) AS day'),
+                )
+
             ->all();
 
 
-        $townChart = new TownChart();
-        $dataset = $townChart->labels(array_keys($town));
-        $dataset = $townChart->dataset(
-            'town Demographics',
+        $orderChart = new OrderChart();
+        $dataset = $orderChart->labels(array_keys($order));
+        $dataset = $orderChart->dataset(
+            'Orders',
             'bar',
-            array_values($town)
+            array_values($order)
         );
    
         $dataset = $dataset->backgroundColor($this->bgcolor);
-        $townChart->options([
+        $orderChart->options([
             'responsive' => true,
             'legend' => ['display' => true],
             'tooltips' => ['enabled' => true],
@@ -198,11 +202,11 @@ class ChartsController extends Controller
         ]);
 
 
-        $items = DB::table('orderlines AS ol')
-        ->join('items AS i', 'ol.item_id', '=', 'i.id')
-        ->groupBy('i.sellprice')
+        $items = DB::table('stocks AS st')
+        ->join('items AS i', 'st.item_id', '=', 'i.id')
+        ->groupBy('i.item_name')
         ->orderBy('total', 'DESC')
-        ->pluck(DB::raw('sum(ol.quantity) AS total'), 'sellprice')
+        ->pluck(DB::raw('sum(st.quantity) AS total'), 'item_name')
         ->all();
 
 
@@ -211,7 +215,7 @@ class ChartsController extends Controller
        
         $dataset = $itemChart->labels(array_keys($items));
         $dataset = $itemChart->dataset(
-            'Item sold',
+            'Stock Quantity',
             'bar',
             array_values($items)
         );
@@ -250,7 +254,7 @@ class ChartsController extends Controller
 
         return view(
             'dashboard.index',
-            compact('supplierChart', 'townChart', 'salesChart', 'itemChart')
+            compact('supplierChart', 'orderChart', 'salesChart', 'itemChart')
         );
     }
 }
