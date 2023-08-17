@@ -120,19 +120,22 @@ Route::middleware(['admin'])->group(function () {
         // Route::get('paymentmethods/edit/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
         // Route::get('paymentmethods/update/{id}', [PaymentMethodController::class, 'index'])->name('paymentmethods.index');
 
+        Route::get('items/export', [ItemController::class, 'exportData']);
+        Route::post('items/import', [ItemController::class, 'importData']);
 
+        Route::get('stocks/export', [StockController::class, 'exportData']);
 
         Route::resource("category", CategoryController::class);
         Route::resource("paymentmethods", PaymentMethodController::class);
-        Route::resource("items", ItemController::class)->middleware('role:admin,user');;
+        Route::resource("items", ItemController::class);
         Route::resource("shippers", ShipperController::class);
         Route::resource("suppliers", SupplierController::class);
         Route::resource("stocks", StockController::class);
 
         //charts
-        Route::get('/charts',[ChartsController::class, 'index'])->name('admin.dashboard');
+        Route::get('/charts', [ChartsController::class, 'index'])->name('admin.dashboard');
 
-        
+
 
     });
 });

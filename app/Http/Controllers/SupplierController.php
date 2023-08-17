@@ -326,7 +326,7 @@ class SupplierController extends Controller
         $data_array [] = array("id","sup_name","sup_contact","sup_address","sup_email","img_path","created_at","updated_at");
         foreach($data as $data_item) {
             $data_array[] = array(
-                'id' =>$data_item->id,
+                'id' => $data_item->id,
                 'sup_name' => $data_item->sup_name,
                 'sup_contact' => $data_item->sup_contact,
                 'sup_address' => $data_item->sup_address,

@@ -240,5 +240,91 @@ class ItemController extends Controller
 
         return View::make(('customer.women'), compact('items'));
     }
+    public function ExportExcel($data)
+    {
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '4000M');
 
+        try {
+            $spreadSheet = new Spreadsheet();
+            $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+            // Add the column names as the first row
+            $column_names = array_shift($data);
+            $spreadSheet->getActiveSheet()->fromArray([$column_names], null, 'A1');
+
+            // Add the actual data starting from the second row
+            $spreadSheet->getActiveSheet()->fromArray($data, null, 'A2');
+
+            $Excel_writer = new Xls($spreadSheet);
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Items_ExportedData.xls"');
+            header('Cache-Control: max-age=0');
+            ob_end_clean();
+
+            $Excel_writer->save('php://output');
+            exit();
+        } catch (Exception $e) {
+            return;
+        }
+    }
+    public function exportData()
+    {
+        $data = Item::select('id', 'item_name', 'sellprice', 'img_path', 'sup_id', 'cat_id', 'created_at', 'updated_at')->get();
+        $data_array [] = array("id","item_name", "sellprice", "img_path", "sup_id","cat_id", "created_at","updated_at");
+        foreach($data as $data_item) {
+            $data_array[] = array(
+                'id' => $data_item->id,
+                'item_name' => $data_item->item_name,
+                'sellprice' => $data_item->sellprice,
+                'img_path' => $data_item->img_path,
+                'sup_id' => $data_item->sup_id,
+                'cat_id' => $data_item->cat_id,
+                'created_at' => $data_item->created_at,
+                'updated_at' => $data_item->updated_at
+            );
+        }
+        $this->ExportExcel($data_array);
+    }
+    public function importData(Request $request)
+    {
+        try {
+            $request->validate([
+                'uploaded_file' => 'required|file|mimes:xls,xlsx'
+            ]);
+
+            $the_file = $request->file('uploaded_file');
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $data = [];
+            foreach ($sheet->getRowIterator(2) as $row) {
+                $cellIterator = $row->getCellIterator('A', 'H');
+                $cellData = [];
+                foreach ($cellIterator as $cell) {
+                    $cellData[] = $cell->getValue();
+                }
+
+                $data[] = [
+                    'id' => $cellData[0],
+                    'item_name' => $cellData[1],
+                    'sellprice' => $cellData[2],
+                    'img_path' => $cellData[3],
+                    'sup_id' => $cellData[4],
+                    'cat_id' => $cellData[5],
+                    'created_at' => $cellData[6],
+                    'updated_at' => $cellData[7],
+                ];
+            }
+
+            DB::table('items')->insert($data);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        } catch (\Exception $e) {
+            return back()->withErrors('There was a problem uploading the data!');
+        }
+
+        return back()->withSuccess('Great! Data has been successfully uploaded.');
+    }
 }

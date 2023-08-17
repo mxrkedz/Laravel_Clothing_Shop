@@ -17,7 +17,7 @@
         <div class="col-12 table-responsive">
         <div align="left">
             <button type="button" name="create_record" id="create_record" class="btn btn-primary btn-lg float-start" style="margin-right: 15px;">Create New</button>
-            <a href="{{url('category/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+            <a href="{{url('category/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px; margin-left: 10px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
         </div>
         <br>
         <form action="{{url('category/import')}}" method="post" enctype="multipart/form-data">

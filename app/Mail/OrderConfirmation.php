@@ -47,7 +47,7 @@ class OrderConfirmation extends Mailable
         return $this->to($this->email)
             ->view('email.order-confirmation')
             ->with(['order' => $this->order])
-            ->attachData($pdfData, 'order.pdf', [
+            ->attachData($pdfData, 'receipt.pdf', [
                 'mime' => 'application/pdf',
             ]);
     }

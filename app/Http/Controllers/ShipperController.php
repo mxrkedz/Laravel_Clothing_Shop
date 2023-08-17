@@ -297,7 +297,7 @@ class ShipperController extends Controller
         $data_array [] = array("id","ship_name","img_path","created_at","updated_at");
         foreach($data as $data_item) {
             $data_array[] = array(
-                'id' =>$data_item->id,
+                'id' => $data_item->id,
                 'ship_name' => $data_item->ship_name,
                 'img_path' => $data_item->img_path,
                 'created_at' => $data_item->created_at,
@@ -316,7 +316,7 @@ class ShipperController extends Controller
             $the_file = $request->file('uploaded_file');
             $spreadsheet = IOFactory::load($the_file->getRealPath());
             $sheet = $spreadsheet->getActiveSheet();
-            
+
             $data = [];
             foreach ($sheet->getRowIterator(2) as $row) {
                 $cellIterator = $row->getCellIterator('A', 'E');
@@ -324,7 +324,7 @@ class ShipperController extends Controller
                 foreach ($cellIterator as $cell) {
                     $cellData[] = $cell->getValue();
                 }
-                
+
                 $data[] = [
                     'id' => $cellData[0],
                     'ship_name' => $cellData[1],
@@ -333,14 +333,14 @@ class ShipperController extends Controller
                     'updated_at' => $cellData[4],
                 ];
             }
-            
+
             DB::table('shipping')->insert($data);
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (\Exception $e) {
             return back()->withErrors('There was a problem uploading the data!');
         }
-        
+
         return back()->withSuccess('Great! Data has been successfully uploaded.');
     }
 }

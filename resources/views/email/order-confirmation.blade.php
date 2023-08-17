@@ -12,10 +12,6 @@
     <h2>Here are the details:</h2>
     <p>Order ID: {{ $order->id }}</p>
     <p>Date: {{ $order->created_at }}</p>
-    <p>Products Ordered: </p>
-    @foreach ($order->items as $orderItems)
-    <p>{{ $orderItems->item_name }} x{{$orderItems->pivot->quantity}} - PHP {{ number_format($orderItems->pivot->quantity * $orderItems->sellprice,2) }}</p>
-    @endforeach
     @php $total = 0 @endphp
     @foreach ($order->items as $orderItems)
         @php $total +=  $orderItems->sellprice * $orderItems->pivot->quantity @endphp

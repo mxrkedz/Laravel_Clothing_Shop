@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Order Confirmation</title>
+    <title>Order Successful!</title>
     <style>
         body {
             text-align: center;

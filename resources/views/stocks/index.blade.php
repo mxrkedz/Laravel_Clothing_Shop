@@ -41,16 +41,19 @@
     </div>
 </div>
 @endif
-
-
-            <p><a href="{{route('stocks.create')}}" class="btn btn-primary btn-lg float-start" role="button" aria-disabled="true" style="text-align: right; margin-bottom: 20px;">Create New</a></p>
-            <table class="table" width="auto">
+<div class="row">
+        <div class="col-12 table-responsive">
+            <div align="left"><a href="{{route('stocks.create')}}" class="btn btn-primary btn-lg float-start" role="button" aria-disabled="true" style="margin-right: 15px;">Create New</a>
+            <a href="{{url('stocks/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+</div>
+<br>            <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
                       <th scope="col" class="font-weight-bold">Image</th>
                       <th scope="col" class="font-weight-bold">Name</th>
                       <th scope="col" class="font-weight-bold">Quantity</th>
-                      <th scope="col" class="font-weight-bold">Description</th>
+                      <th scope="col" class="font-weight-bold">Time Created</th>
+                      <th scope="col" class="font-weight-bold">Time Updated</th>
                       <th scope="col" class="font-weight-bold">Action</th>
                     </tr>
                 </thead>

@@ -237,4 +237,48 @@ class StockController extends Controller
         Stock::destroy($id);
         return back()->with('deleted', 'Deleted!');
     }
+
+    public function ExportExcel($data)
+    {
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '4000M');
+
+        try {
+            $spreadSheet = new Spreadsheet();
+            $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+            // Add the column names as the first row
+            $column_names = array_shift($data);
+            $spreadSheet->getActiveSheet()->fromArray([$column_names], null, 'A1');
+
+            // Add the actual data starting from the second row
+            $spreadSheet->getActiveSheet()->fromArray($data, null, 'A2');
+
+            $Excel_writer = new Xls($spreadSheet);
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Stock_ExportedData.xls"');
+            header('Cache-Control: max-age=0');
+            ob_end_clean();
+
+            $Excel_writer->save('php://output');
+            exit();
+        } catch (Exception $e) {
+            return;
+        }
+    }
+    public function exportData()
+    {
+        $data = Stock::select('item_id', 'quantity', 'created_at', 'updated_at')->get();
+        $data_array [] = array("item_id","quantity","created_at","updated_at");
+        foreach($data as $data_item) {
+            $data_array[] = array(
+                'item_id' => $data_item->item_id,
+                'quantity' => $data_item->quantity,
+                'created_at' => $data_item->created_at,
+                'updated_at' => $data_item->updated_at
+            );
+        }
+        $this->ExportExcel($data_array);
+    }
 }

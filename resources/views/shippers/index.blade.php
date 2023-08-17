@@ -34,9 +34,29 @@
     </div>
 </div>
 @endif
-
-            <p><a href="{{route('shippers.create')}}" class="btn btn-primary btn-lg float-start" role="button" aria-disabled="true" style="text-align: right; margin-bottom: 20px;">Create New</a></p>
-            <table class="table" width="auto">
+<div class="row">
+        <div class="col-12 table-responsive">
+            <div align="left"><a href="{{route('shippers.create')}}" class="btn btn-primary btn-lg float-start" role="button" aria-disabled="true" style="margin-right: 15px;">Create New</a>
+            <a href="{{url('shippers/export')}}" name="excel" id="excel" class="btn btn-outline-secondary" style="margin-top: 6px;"><span class="tf-icons bx bx-grid"></span> Export Excel</a>
+</div>
+<br>
+        <form action="{{url('shippers/import')}}" method="post" enctype="multipart/form-data">
+                       @csrf
+                       <fieldset>
+                           <label>Select File to Upload  <small class="warning text-muted">{{__('Please upload only Excel (.xlsx or .xls) files')}}</small></label>
+                           <div class="input-group">
+                               <input type="file" required class="form-control" name="uploaded_file" id="uploaded_file">
+                               @if ($errors->has('uploaded_file'))
+                                   <p class="text-right mb-0">
+                                       <small class="danger text-muted" id="file-error">{{ $errors->first('uploaded_file') }}</small>
+                                   </p>
+                               @endif
+                               <div class="input-group-append" id="button-addon2">
+                                   <button class="btn btn-primary square" type="submit"><i class="ft-upload mr-1"></i> Upload</button>
+                               </div>
+                           </div>
+                       </fieldset>
+                   </form>            <table class="table" width="auto">
                 <thead width="flex">
                     <tr>
                       <th scope="col" class="font-weight-bold">Shipper Name</th>
