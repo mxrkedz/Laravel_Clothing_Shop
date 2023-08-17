@@ -34,41 +34,51 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="first_name">First Name <span>*</span></label>
-                                    <input type="text" class="form-control" name="fname" id="first_name" value="{{ Auth::user()->name}}" required>
+                                    <input type="text" class="form-control firstname" name="fname" id="first_name" value="{{ Auth::user()->name}}" required>
+                                    <span id = "fname_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="last_name">Last Name <span>*</span></label>
-                                    <input type="text" class="form-control" name="lname" id="last_name" value="{{ Auth::user()->lname}}" required>
+                                    <input type="text" class="form-control lastname" name="lname" id="last_name" value="{{ Auth::user()->lname}}" required>
+                                    <span id = "lastname_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="country">Country <span>*</span></label>
-                                    <input type="text" class="form-control" name="country" id="last_name" value="{{ Auth::user()->country}}" required>
+                                    <input type="text" class="form-control country" name="country" id="last_name" value="{{ Auth::user()->country}}" required>
+                                    <span id = "country_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="street_address">Address 1 <span>*</span></label>
-                                    <input type="text" class="form-control mb-3" name="address1" id="street_address" value="{{ Auth::user()->address1}}">
+                                    <input type="text" class="form-control mb-3 addr1" name="address1" id="street_address" value="{{ Auth::user()->address1}}">
+                                    <span id = "addr1_error" class="text-danger"></span>
                                     <label for="street_address">Address 2 <span>*</span></label>
-                                    <input type="text" class="form-control" name="address2" id="street_address2" value="{{ Auth::user()->address2}}">
+                                    <input type="text" class="form-control addr2" name="address2" id="street_address2" value="{{ Auth::user()->address2}}">
+                                    <span id = "addr2_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="postcode">Postcode <span>*</span></label>
-                                    <input type="text" class="form-control" name="postcode" id="postcode" value="{{ Auth::user()->postcode}}">
+                                    <input type="text" class="form-control pcode" name="postcode" id="postcode" value="{{ Auth::user()->postcode}}">
+                                    <span id = "pcode_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="city">Town/City <span>*</span></label>
-                                    <input type="text" class="form-control" name="city" id="city" value="{{ Auth::user()->city}}">
+                                    <input type="text" class="form-control towncity" name="city" id="city" value="{{ Auth::user()->city}}">
+                                    <span id = "towncity_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="state">Province <span>*</span></label>
-                                    <input type="text" class="form-control" name="province" id="state" value="{{ Auth::user()->province}}">
+                                    <input type="text" class="form-control provi" name="province" id="state" value="{{ Auth::user()->province}}">
+                                    <span id = "provi_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label for="phone_number">Phone No <span>*</span></label>
-                                    <input type="text" class="form-control" name="phone" id="phone_number" value="{{ Auth::user()->phone}}">
+                                    <input type="text" class="form-control phonenum" name="phone" id="phone_number" value="{{ Auth::user()->phone}}">
+                                    <span id = "phonenum_error" class="text-danger"></span>
                                 </div>
                                 <div class="col-12 mb-4">
                                     <label for="email_address">Email Address <span>*</span></label>
-                                    <input type="email" class="form-control" name="email" id="email_address" value="{{ Auth::user()->email}}">
+                                    <input type="email" class="form-control emailadd" name="email" id="email_address" value="{{ Auth::user()->email}}">
+                                    <span id = "emailadd_error" class="text-danger"></span>
                                 </div>
                             </div>
                         </form>
@@ -121,7 +131,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" id="checkout-button" class="btn essence-btn">Place Order</button>
+                        <button type="submit" id="checkout-button" class="btn essence-btn placeorder_btn">Place Order</button>
                     </div>
                 </div>
             </div>
