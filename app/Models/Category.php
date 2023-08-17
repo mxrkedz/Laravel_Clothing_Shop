@@ -15,4 +15,9 @@ class Category extends Model
         'category_name',
         'img_path',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'cat_id');
+    }
 }

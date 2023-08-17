@@ -75,7 +75,7 @@ Route::middleware(['auth'])->group(function () {
 // Route accessible for users with only Admin role
 Route::middleware(['admin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/admin', 'AdminIndex');
+        Route::get('/admin', 'AdminIndex')->name('admin.dashboard');
         //DataTables Routes
         //Payment Methods
         Route::post('paymentmethods/datatables/store', [PaymentMethodController::class, 'store2'])->name('paymentmethods.store2');
@@ -133,7 +133,6 @@ Route::middleware(['admin'])->group(function () {
         Route::resource("stocks", StockController::class);
 
         //charts
-        Route::get('/charts', [ChartsController::class, 'index'])->name('admin.dashboard');
 
 
 

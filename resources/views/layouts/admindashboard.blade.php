@@ -81,12 +81,6 @@
                 <i class="menu-icon tf-icons bx bx-globe"></i>
                 <div data-i18n="Website">Open Site</div>
               </a>
-              <li class="menu-item">
-                <a href="/charts" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-chart"></i>
-                  <div data-i18n="Website">Charts</div>
-                </a>
-            </li>
             <!-- Manage -->
             <li class="menu-item parent-menu">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -96,7 +90,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/category" class="menu-link @if(isset($active_menu) && $active_menu == 'category') active @endif">
+                  <a href="/category" class="menu-link">
                     <div data-i18n="Category">Category</div>
                   </a>
                 </li>
@@ -104,7 +98,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods" class="menu-link @if(isset($active_menu) && $active_menu == 'test') active @endif">
+                  <a href="/paymentmethods" class="menu-link">
                     <div data-i18n="payment">Payment Method</div>
                   </a>
                 </li>
@@ -112,7 +106,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/items" class="menu-link @if(isset($active_menu) && $active_menu == 'item') active @endif">
+                  <a href="/items" class="menu-link">
                     <div data-i18n="Items">Items</div>
                   </a>
                 </li>
@@ -120,7 +114,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/shippers" class="menu-link @if(isset($active_menu) && $active_menu == 'shipping') active @endif">
+                  <a href="/shippers" class="menu-link">
                     <div data-i18n="Items">Shipping</div>
                   </a>
                 </li>
@@ -128,7 +122,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/suppliers" class="menu-link @if(isset($active_menu) && $active_menu == 'supplier') active @endif">
+                  <a href="/suppliers" class="menu-link">
                     <div data-i18n="Items">Suppliers</div>
                   </a>
                 </li>
@@ -136,7 +130,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/stocks" class="menu-link @if(isset($active_menu) && $active_menu == 'stock') active @endif">
+                  <a href="/stocks" class="menu-link">
                     <div data-i18n="Items">Stocks</div>
                   </a>
                 </li>
@@ -150,28 +144,28 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/categories/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'categories') active @endif">
+                  <a href="/categories/datatables" class="menu-link">
                     <div data-i18n="categories">Categories</div>
                   </a>
                 </li>
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/shippers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'ship') active @endif">
+                  <a href="/shippers/datatables" class="menu-link">
                     <div data-i18n="ship">Shipping</div>
                   </a>
                 </li>
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/suppliers/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'suppliers') active @endif">
+                  <a href="/suppliers/datatables" class="menu-link">
                     <div data-i18n="suppliers">Suppliers</div>
                   </a>
                 </li>
               </ul>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="/paymentmethods/datatables" class="menu-link @if(isset($active_menu) && $active_menu == 'paymentmethods/datatables') active @endif">
+                  <a href="/paymentmethods/datatables" class="menu-link">
                     <div data-i18n="paymentmethods">Payment Methods</div>
                   </a>
                 </li>

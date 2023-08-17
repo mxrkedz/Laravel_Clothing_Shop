@@ -27,7 +27,7 @@ class StockController extends Controller
     public function index()
     {
         $stocks = Stock::with('item')
-        ->select('stocks.*') // If you need specific columns from stocks table
+        ->select('stocks.*')
         ->get();
 
         $items = Item::all();
