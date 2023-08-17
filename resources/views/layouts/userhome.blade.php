@@ -195,6 +195,7 @@
 
         <!-- custom js -->
         <script src="dashboard/assets/js/cart.js"></script>
+        <script src="dashboard/assets/js/checkout.js"></script>
 
 <script>
     $(document).ready(function() {
