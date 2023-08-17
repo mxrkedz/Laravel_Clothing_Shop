@@ -81,6 +81,11 @@
                 <i class="menu-icon tf-icons bx bx-globe"></i>
                 <div data-i18n="Website">Open Site</div>
               </a>
+              <li class="menu-item">
+                <a href="/charts" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-chart"></i>
+                  <div data-i18n="Website">Charts</div>
+                </a>
             </li>
             <!-- Manage -->
             <li class="menu-item parent-menu">

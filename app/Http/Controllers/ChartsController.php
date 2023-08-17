@@ -140,11 +140,11 @@ class ChartsController extends Controller
         $sales = DB::table('orders AS o')
             ->join('orderlines AS ol', 'o.id', '=', 'ol.orderinfo_id')
             ->join('items AS i', 'ol.item_id', '=', 'i.id')
-            ->orderBy(DB::raw('month(o.created_at)'), 'ASC')
+            ->orderBy(DB::raw('day(o.created_at)'), 'ASC')
             ->groupBy('o.created_at')
             ->pluck(
                 DB::raw('sum(ol.quantity * i.sellprice) AS total'),
-                DB::raw('monthname(o.created_at) AS month')
+                DB::raw('dayname(o.created_at) AS day')
             )
             ->all();
 
@@ -154,7 +154,7 @@ class ChartsController extends Controller
 
         $dataset = $salesChart->labels(array_keys($sales));
         $dataset = $salesChart->dataset(
-            'Monthly sales',
+            'Daily sales',
             'line',
             array_values($sales)
         );
