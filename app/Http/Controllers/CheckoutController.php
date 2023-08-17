@@ -10,6 +10,8 @@ use App\Models\Stock;
 use App\Models\Orderline;
 use App\Models\User;
 use App\Models\Shipper;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmation;
 use Auth;
 use DB;
 use View;
@@ -22,6 +24,9 @@ class CheckoutController extends Controller
         $paymentMethods = PaymentMethod::all();
         $shipper = Shipper::all();
         $cartitems = Cart::where('user_id', Auth::id())->get();
+        if ($cartitems->isEmpty()) {
+            return redirect()->route('cart.view')->with('message', 'Your cart is empty. Please add items to your cart before proceeding to checkout.');
+        }
         return view('customer.checkout', compact('cartitems', 'paymentMethods', 'shipper'));
     }
 
@@ -91,6 +96,10 @@ class CheckoutController extends Controller
             $user->update();
         }
         Cart::where('user_id', Auth::id())->delete();
+
+        // Send order confirmation email
+        // Mail::to(Auth::user()->email)->send(new OrderConfirmation($order));
+        Mail::to($order->email)->send(new OrderConfirmation($order->email, $order));
 
         // return response()->json(['success' => true, 'message' => 'Your order has been placed successfully.']);
         return redirect()->route('order.success');

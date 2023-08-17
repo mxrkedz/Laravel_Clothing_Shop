@@ -26,12 +26,11 @@ class StockController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $stocks = Stock::with('item')
+        ->select('stocks.*') // If you need specific columns from stocks table
+        ->get();
 
-        $stocks = DB::table('items')
-            ->join('stocks', 'items.id', 'stocks.item_id')
-            ->select('stocks.*', 'items.item_name', 'items.img_path')
-            ->get();
+        $items = Item::all();
 
         return View::make('stocks.index', compact('stocks', 'items'));
     }

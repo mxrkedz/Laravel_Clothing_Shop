@@ -38,4 +38,9 @@ class Item extends Model
     {
         return $this->belongsTo(Supplier::class, 'sup_id');
     }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
+    }
 }

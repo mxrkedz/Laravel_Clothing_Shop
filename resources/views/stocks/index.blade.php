@@ -57,8 +57,8 @@
                 <tbody>
                     @foreach($stocks as $stock)
                     <tr>
-                        <td><img src="{{$stock->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
-                        <td>{{$stock->item_name}}</td>
+                        <td><img src="{{$stock->item->img_path}}" class="img-thumbnail" width="100" height="100" ></td>
+                        <td>{{ $stock->item->item_name }}</td>
                         <td>{{$stock->quantity}}</td>
                         <td>{{$stock->created_at}}</td>
                         <td>{{$stock->updated_at}}</td>

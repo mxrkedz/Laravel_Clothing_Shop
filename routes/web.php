@@ -52,11 +52,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('add-to-cart', [CartController::class, 'addItem']);
         Route::post('delete-cart-item', [CartController::class, 'deleteItem']);
         Route::post('update-cart', [CartController::class, 'updateCart']);
-        Route::get('cart', [CartController::class, 'viewCart']);
+        Route::get('cart', [CartController::class, 'viewCart'])->name('cart.view');
         Route::get('checkout', [CheckoutController::class, 'index']);
         Route::post('place-order', [CheckoutController::class, 'placeOrder'])->name('place-order');
         Route::get('order-success', [CheckoutController::class, 'success'])->name('order.success');
-
+        Route::get('/cart/count', [CartController::class, 'getCartItemCount'])->name('cart.count');
         //Search
         Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->name('search');
 
