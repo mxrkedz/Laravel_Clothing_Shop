@@ -18,4 +18,8 @@ class Supplier extends Model
         'sup_email',
         'img_path',
     ];
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'sup_id');
+    }
 }

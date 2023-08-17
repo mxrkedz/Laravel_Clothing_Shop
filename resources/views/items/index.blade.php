@@ -55,8 +55,8 @@
                         <td><img src="{{$item->img}}" class="img-thumbnail" width="100" height="100" ></td>
                         <td>{{$item->item_name}}</td>
                         <td>{{$item->sellprice}}</td>
-                        <td>{{$item->category_name}}</td>
-                        <td>{{$item->sup_name}}</td>
+                        <td>{{$item->category->category_name}}</td>
+                        <td>{{$item->supplier->sup_name}}</td>
                         <td>{{$item->created_at}}</td>
                         <td>{{$item->updated_at}}</td>
                         <td>

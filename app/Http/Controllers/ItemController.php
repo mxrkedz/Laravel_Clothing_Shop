@@ -28,13 +28,20 @@ class ItemController extends Controller
     {
         $categories = Category::all();
         $suppliers = Supplier::all();
-
-        $items = DB::table('items')
-        ->join('categories', 'items.cat_id', '=', 'categories.id')
-        ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-        ->select('items.id as it_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')
-        ->orderBy('items.id', 'ASC')->get();
+    
+        $items = Item::with(['category', 'supplier'])
+            ->select('items.id as it_id', 'items.img_path as img', 'items.*')
+            ->orderBy('items.id', 'ASC')
+            ->get();
+    
         return View::make('items.index', compact('categories', 'items', 'suppliers'));
+
+        // $items = DB::table('items')
+        // ->join('categories', 'items.cat_id', '=', 'categories.id')
+        // ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+        // ->select('items.id as it_id', 'items.img_path as img', 'items.*', 'categories.*', 'suppliers.*')
+        // ->orderBy('items.id', 'ASC')->get();
+        // return View::make('items.index', compact('categories', 'items', 'suppliers'));
 
         // $items = Item::all();
         // return View::make('items.index',compact('items'));
